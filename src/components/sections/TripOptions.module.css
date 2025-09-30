@@ -1,0 +1,51 @@
+/* TripOptions Module CSS */
+
+.stampSvg {
+  z-index: 1;
+}
+
+.tripBorderSvg {
+  z-index: 1;
+  filter: url(#layered-shadow);
+  transition: filter 0.3s ease;
+}
+
+.tripBorderSvg:hover {
+  filter: url(#layered-shadow-hover);
+}
+
+.embla {
+  overflow: hidden;
+  position: relative;
+}
+
+.embla__container {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: -1.5rem;
+  padding-left: 1.5rem;
+}
+
+.embla__slide {
+  flex: 0 0 auto;
+  min-width: 0;
+  position: relative;
+}
+
+.cardContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.navButton {
+  z-index: 20;
+}
+
+@media (max-width: 768px) {
+  .embla__container {
+    gap: 1rem;
+    margin-left: -1rem;
+    padding-left: 1rem;
+  }
+}
