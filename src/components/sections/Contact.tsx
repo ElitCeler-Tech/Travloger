@@ -27,54 +27,54 @@ const AirmailBorder = React.memo(() => (
       <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="diagonalStripesTop" patternUnits="userSpaceOnUse" width="180" height="180" patternTransform="rotate(45)">
-            <rect x="35" width="55" height="180" fill="#9F440D"/>
-            <rect x="75" width="55" height="180" fill="transparent"/>
-            <rect x="125" width="55" height="180" fill="#344155"/>
+            <rect x="35" width="55" height="180" fill="#9F440D" />
+            <rect x="75" width="55" height="180" fill="transparent" />
+            <rect x="125" width="55" height="180" fill="#344155" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#diagonalStripesTop)"/>
+        <rect width="100%" height="100%" fill="url(#diagonalStripesTop)" />
       </svg>
     </div>
-    
+
     {/* Bottom border */}
     <div className="absolute bottom-0 left-0 right-0 h-5 opacity-95">
       <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="diagonalStripesBottom" patternUnits="userSpaceOnUse" width="180" height="180" patternTransform="rotate(45)">
-            <rect x="35" width="55" height="180" fill="#9F440D"/>
-            <rect x="75" width="55" height="180" fill="transparent"/>
-            <rect x="125" width="55" height="180" fill="#344155"/>
+            <rect x="35" width="55" height="180" fill="#9F440D" />
+            <rect x="75" width="55" height="180" fill="transparent" />
+            <rect x="125" width="55" height="180" fill="#344155" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#diagonalStripesBottom)"/>
+        <rect width="100%" height="100%" fill="url(#diagonalStripesBottom)" />
       </svg>
     </div>
-    
+
     {/* Left border */}
     <div className="absolute top-0 bottom-0 left-0 w-5 opacity-95">
       <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="diagonalStripesLeft" patternUnits="userSpaceOnUse" width="180" height="180" patternTransform="rotate(45)">
-            <rect x="35" width="55" height="180" fill="#9F440D"/>
-            <rect x="75" width="55" height="180" fill="transparent"/>
-            <rect x="125" width="55" height="180" fill="#344155"/>
+            <rect x="35" width="55" height="180" fill="#9F440D" />
+            <rect x="75" width="55" height="180" fill="transparent" />
+            <rect x="125" width="55" height="180" fill="#344155" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#diagonalStripesLeft)"/>
+        <rect width="100%" height="100%" fill="url(#diagonalStripesLeft)" />
       </svg>
     </div>
-    
+
     {/* Right border */}
     <div className="absolute top-0 bottom-0 right-0 w-5 opacity-95">
       <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="diagonalStripesRight" patternUnits="userSpaceOnUse" width="180" height="180" patternTransform="rotate(45)">
-            <rect x="35" width="55" height="180" fill="#9F440D"/>
-            <rect x="75" width="55" height="180" fill="transparent"/>
-            <rect x="125" width="55" height="180" fill="#344155"/>
+            <rect x="35" width="55" height="180" fill="#9F440D" />
+            <rect x="75" width="55" height="180" fill="transparent" />
+            <rect x="125" width="55" height="180" fill="#344155" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#diagonalStripesRight)"/>
+        <rect width="100%" height="100%" fill="url(#diagonalStripesRight)" />
       </svg>
     </div>
   </>
@@ -127,7 +127,7 @@ const Contact: React.FC = React.memo(() => {
     threshold: 0.3,
     triggerOnce: true
   });
-  
+
   const { setRef: setFormRef, isInView: isFormVisible } = useIntersectionObserver({
     threshold: 0.2,
     triggerOnce: true
@@ -146,10 +146,10 @@ const Contact: React.FC = React.memo(() => {
   const debouncedValidation = useDebounce((...args: unknown[]) => {
     const fieldName = args[0] as keyof ContactForm;
     const value = args[1] as string;
-    
+
     setValidationErrors(prev => {
       const newErrors = { ...prev };
-      
+
       switch (fieldName) {
         case 'email':
           if (value && !validateEmail(value)) {
@@ -182,16 +182,16 @@ const Contact: React.FC = React.memo(() => {
         default:
           break;
       }
-      
+
       return newErrors;
     });
   }, 300);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    
+
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     // Trigger debounced validation
     if (value) {
       debouncedValidation(name as keyof ContactForm, value);
@@ -200,37 +200,53 @@ const Contact: React.FC = React.memo(() => {
 
   const validateForm = useCallback((): boolean => {
     const errors: Partial<ContactForm> = {};
-    
+
     if (!formData.name || typeof formData.name !== 'string' || !formData.name.trim()) errors.name = 'Name is required';
     else if (formData.name.length < 2) errors.name = 'Name must be at least 2 characters';
-    
+
     if (!formData.email || typeof formData.email !== 'string' || !formData.email.trim()) errors.email = 'Email is required';
     else if (!validateEmail(formData.email)) errors.email = 'Please enter a valid email address';
-    
+
     if (!formData.phone || typeof formData.phone !== 'string' || !formData.phone.trim()) errors.phone = 'Phone is required';
     else if (!validatePhone(formData.phone)) errors.phone = 'Please enter a valid phone number';
-    
+
     if (!formData.message || typeof formData.message !== 'string' || !formData.message.trim()) errors.message = 'Message is required';
     else if (formData.message.length < 10) errors.message = 'Message must be at least 10 characters';
-    
+
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   }, [formData]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
     try {
-      // Simulate API call with realistic delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          source: 'contact_form',
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          customNotes: formData.message,
+          destination: formData.tripType // Using tripType as destination context
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to submit');
+      }
+
       // Reset form on success
       setFormData({
         name: '',
@@ -241,37 +257,36 @@ const Contact: React.FC = React.memo(() => {
       });
       setValidationErrors({});
       setSubmitStatus('success');
-      
+
       // Auto-hide success message after 5 seconds
       setTimeout(() => setSubmitStatus('idle'), 5000);
-    } catch {
+    } catch (error) {
+      console.error('Contact form submission error:', error);
       setSubmitStatus('error');
       // Auto-hide error message after 5 seconds
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } finally {
       setIsSubmitting(false);
     }
-  }, [validateForm]);
+  }, [formData, validateForm]);
 
   // Memoized animation classes
-  const headerAnimationClass = useMemo(() => 
-    `text-center mb-12 sm:mb-16 font-body transition-all duration-1000 ease-out ${
-      isHeaderVisible && !prefersReducedMotion
+  const headerAnimationClass = useMemo(() =>
+    `text-center mb-12 sm:mb-16 font-body transition-all duration-1000 ease-out ${isHeaderVisible && !prefersReducedMotion
+      ? 'opacity-100 translate-y-0'
+      : prefersReducedMotion
         ? 'opacity-100 translate-y-0'
-        : prefersReducedMotion
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-8'
+        : 'opacity-0 translate-y-8'
     }`,
     [isHeaderVisible, prefersReducedMotion]
   );
 
   const formAnimationClass = useMemo(() =>
-    `max-w-7xl mx-auto transition-all duration-1000 ease-out ${
-      isFormVisible && !prefersReducedMotion
+    `max-w-7xl mx-auto transition-all duration-1000 ease-out ${isFormVisible && !prefersReducedMotion
+      ? 'opacity-100 translate-y-0'
+      : prefersReducedMotion
         ? 'opacity-100 translate-y-0'
-        : prefersReducedMotion
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-12'
+        : 'opacity-0 translate-y-12'
     }`,
     [isFormVisible, prefersReducedMotion]
   );
@@ -337,9 +352,8 @@ const Contact: React.FC = React.memo(() => {
                           value={formData.name}
                           onChange={handleInputChange}
                           placeholder="John Carter"
-                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#134956] focus:border-[#134956] transition-colors placeholder-gray-400 ${
-                            validationErrors.name ? 'border-red-500' : 'border-black'
-                          }`}
+                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#134956] focus:border-[#134956] transition-colors placeholder-gray-400 ${validationErrors.name ? 'border-red-500' : 'border-black'
+                            }`}
                           required
                           aria-describedby={validationErrors.name ? 'name-error' : undefined}
                         />
@@ -360,9 +374,8 @@ const Contact: React.FC = React.memo(() => {
                           value={formData.email}
                           onChange={handleInputChange}
                           placeholder="example@email.com"
-                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#134956] focus:border-[#134956] transition-colors placeholder-gray-400 ${
-                            validationErrors.email ? 'border-red-500' : 'border-black'
-                          }`}
+                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#134956] focus:border-[#134956] transition-colors placeholder-gray-400 ${validationErrors.email ? 'border-red-500' : 'border-black'
+                            }`}
                           required
                           aria-describedby={validationErrors.email ? 'email-error' : undefined}
                         />
@@ -387,9 +400,8 @@ const Contact: React.FC = React.memo(() => {
                           value={formData.phone}
                           onChange={handleInputChange}
                           placeholder="(123) 456 - 789"
-                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#134956] focus:border-[#134956] transition-colors placeholder-gray-400 ${
-                            validationErrors.phone ? 'border-red-500' : 'border-black'
-                          }`}
+                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#134956] focus:border-[#134956] transition-colors placeholder-gray-400 ${validationErrors.phone ? 'border-red-500' : 'border-black'
+                            }`}
                           required
                           aria-describedby={validationErrors.phone ? 'phone-error' : undefined}
                         />
@@ -432,9 +444,8 @@ const Contact: React.FC = React.memo(() => {
                         onChange={handleInputChange}
                         placeholder="Please type your message here..."
                         rows={6}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#134956] focus:border-[#134956] transition-colors placeholder-gray-400 resize-none ${
-                          validationErrors.message ? 'border-red-500' : 'border-black'
-                        }`}
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#134956] focus:border-[#134956] transition-colors placeholder-gray-400 resize-none ${validationErrors.message ? 'border-red-500' : 'border-black'
+                          }`}
                         required
                         aria-describedby={validationErrors.message ? 'message-error' : undefined}
                       />
@@ -449,11 +460,10 @@ const Contact: React.FC = React.memo(() => {
                     <button
                       type="submit"
                       disabled={isSubmitting || Object.keys(validationErrors).length > 0}
-                      className={`w-full py-4 px-6 rounded-lg font-medium text-white transition-all duration-300 transform font-cta ${
-                        isSubmitting || Object.keys(validationErrors).length > 0
+                      className={`w-full py-4 px-6 rounded-lg font-medium text-white transition-all duration-300 transform font-cta ${isSubmitting || Object.keys(validationErrors).length > 0
                           ? 'bg-gray-400 cursor-not-allowed'
                           : 'bg-[#134956] hover:bg-[#0f3d47] active:bg-[#0a2d35] shadow-lg hover:shadow-xl hover:shadow-[#134956]/30 hover:scale-105'
-                      }`}
+                        }`}
                       aria-describedby="submit-button-description"
                     >
                       {isSubmitting ? (

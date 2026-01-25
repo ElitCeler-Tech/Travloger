@@ -1,29 +1,71 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabaseAdmin'
+import nodemailer from 'nodemailer'
 
 export const dynamic = 'force-dynamic'
 
-// Create table SQL (run once in your DB):
-// create table if not exists leads (
-//   id uuid primary key default gen_random_uuid(),
-//   source text not null default 'enquiry',
-//   name text,
-//   phone text,
-//   email text,
-//   number_of_travelers text,
-//   travel_dates text,
-//   custom_notes text,
-//   raw jsonb,
-//   created_at timestamptz default now()
-// );
+// Helper function to send lead notification email
+async function sendLeadEmail(leadData: any) {
+  const { name, email, phone, numberOfTravelers, travelDates, customNotes, destination } = leadData
+
+  // Check if email service is configured
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+    console.warn('Email notification skipped: GMAIL_USER or GMAIL_APP_PASSWORD not set')
+    return
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  })
+
+  const adminEmail = process.env.ADMIN_EMAIL || process.env.GMAIL_USER
+  const mailOptions = {
+    from: `"Travloger Lead Robot" <${process.env.GMAIL_USER}>`,
+    to: adminEmail,
+    subject: `New Lead Captured: ${name} - ${destination || 'Enquiry'}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+        <div style="background-color: #0d4a57; color: white; padding: 20px; text-align: center;">
+          <h2 style="margin: 0;">New Inquiry Received</h2>
+        </div>
+        <div style="padding: 20px; color: #333;">
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email || 'Not provided'}</p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <p><strong>Destination:</strong> ${destination || 'General Enquiry'}</p>
+          <p><strong>Travelers:</strong> ${numberOfTravelers || 'Not specified'}</p>
+          <p><strong>Travel Date:</strong> ${travelDates || 'Not specified'}</p>
+          <p><strong>Message:</strong></p>
+          <div style="background-color: #f9f9f9; padding: 15px; border-radius: 4px; border-left: 4px solid #0d4a57;">
+            ${customNotes || 'No additional notes provided.'}
+          </div>
+        </div>
+        <div style="background-color: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #777;">
+          Sent with ❤️ from Travloger Lead System
+        </div>
+      </div>
+    `,
+  }
+
+  try {
+    await transporter.sendMail(mailOptions)
+    console.log('Lead notification email sent successfully to:', adminEmail)
+  } catch (error) {
+    console.error('Failed to send lead notification email:', error)
+  }
+}
 
 export async function POST(req: Request) {
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
     if (!supabaseUrl || !serviceKey ||
-        supabaseUrl === 'https://your-project.supabase.co' ||
-        serviceKey === 'your-service-role-key') {
+      supabaseUrl === 'https://your-project.supabase.co' ||
+      serviceKey === 'your-service-role-key') {
       return NextResponse.json({
         error: 'Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.'
       }, { status: 500 })
@@ -74,6 +116,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: message }, { status: 500 })
     }
 
+    // Attempt to send email notification asynchronously
+    // In a production Next.js environment, consider using a background job if this is slow
+    const leadData = {
+      name,
+      email,
+      phone,
+      numberOfTravelers,
+      travelDates,
+      customNotes,
+      destination
+    }
+
+    // We don't await here to keep response fast, but in Next.js/Vercel functions 
+    // it might get terminated, so for reliability we'll await or use waitUntil
+    await sendLeadEmail(leadData)
+
     return NextResponse.json({ lead: data }, { status: 201 })
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : 'Internal server error'
@@ -87,8 +145,8 @@ export async function GET() {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
     if (!supabaseUrl || !serviceKey ||
-        supabaseUrl === 'https://your-project.supabase.co' ||
-        serviceKey === 'your-service-role-key') {
+      supabaseUrl === 'https://your-project.supabase.co' ||
+      serviceKey === 'your-service-role-key') {
       return NextResponse.json({
         error: 'Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.',
         leads: []
