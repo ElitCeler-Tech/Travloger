@@ -8,10 +8,31 @@ import ItineraryModal from '../ui/ItineraryModal';
 import { Button } from '../ui/Button';
 import LazyLoad from '@/components/ui/LazyLoad';
 import { mobileFirst } from '@/lib/mobile-first-patterns';
-import { usePackages, Package } from '@/lib/usePackages';
+import { usePackages } from '@/lib/usePackages';
 
 // Use the Package interface from usePackages instead of TripCard
-type TripCard = Package;
+// Use the Package interface from usePackages as base, but ensure features property uses our strict type
+interface TripCard {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  nights: number;
+  days: number;
+  price: number;
+  category: 'custom' | 'group';
+  route?: string;
+  trending?: boolean;
+  destination?: string;
+  duration?: string;
+  highlights?: string[];
+  includes?: string[];
+  features?: {
+    name: string;
+    icon?: 'default' | 'flights' | 'bus' | 'train';
+    included: boolean;
+  }[];
+}
 
 interface TripOptionsContent {
   heading?: string;
@@ -186,7 +207,7 @@ const TripCard = ({ trip, setSelectedTrip, setIsModalOpen }: {
                         <circle cx="16" cy="15" r="1" />
                       </svg>
                     )}
-                    {feature.icon === 'default' && (
+                    {(!feature.icon || feature.icon === 'default') && (
                       <svg className="w-3 h-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3" />
                       </svg>
