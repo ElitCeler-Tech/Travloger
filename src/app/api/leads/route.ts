@@ -4,8 +4,18 @@ import nodemailer from 'nodemailer'
 
 export const dynamic = 'force-dynamic'
 
+interface LeadEmailData {
+  name: string
+  email?: string
+  phone: string
+  numberOfTravelers?: string
+  travelDates?: string
+  customNotes?: string
+  destination?: string
+}
+
 // Helper function to send lead notification email
-async function sendLeadEmail(leadData: any) {
+async function sendLeadEmail(leadData: LeadEmailData) {
   const { name, email, phone, numberOfTravelers, travelDates, customNotes, destination } = leadData
 
   // Check if email service is configured
