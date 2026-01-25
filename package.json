@@ -20,6 +20,7 @@
     "gsap": "^3.13.0",
     "motion": "^12.23.3",
     "next": "15.3.6",
+    "nodemailer": "^6.10.1",
     "pg": "^8.16.3",
     "postcss": "^8.5.6",
     "react": "^19.0.0",
@@ -28,19 +29,18 @@
     "react-virtualized-auto-sizer": "^1.0.26",
     "react-window": "^1.8.11",
     "swiper": "^11.2.10",
-    "tailwind-merge": "^3.3.1",
-    "nodemailer": "^6.9.13"
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.15",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.6",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5",
-    "@types/nodemailer": "^6.4.15"
+    "typescript": "^5"
   }
 }
