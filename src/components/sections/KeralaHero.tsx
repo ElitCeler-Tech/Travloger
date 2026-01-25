@@ -14,6 +14,11 @@ type HeroContent = {
   mobileVideoUrl?: string
   whatsappPhone?: string
   whatsappMessage?: string
+  trustIndicators?: {
+    google: { rating: string; label: string };
+    payLater: { rating: string; label: string };
+    instagram: { rating: string; label: string; url?: string };
+  };
 }
 
 const KeralaHero = React.memo(({ content }: { content?: HeroContent }) => {
@@ -47,8 +52,8 @@ const KeralaHero = React.memo(({ content }: { content?: HeroContent }) => {
           className="w-6 h-6"
         />
       ),
-      rating: "4.9",
-      text: "Ratings"
+      rating: content?.trustIndicators?.google?.rating || "4.9",
+      text: content?.trustIndicators?.google?.label || "Ratings"
     },
     {
       icon: (
@@ -60,8 +65,8 @@ const KeralaHero = React.memo(({ content }: { content?: HeroContent }) => {
           className="w-6 h-6"
         />
       ),
-      rating: "Pay Later",
-      text: "Flexible"
+      rating: content?.trustIndicators?.payLater?.rating || "Pay Later",
+      text: content?.trustIndicators?.payLater?.label || "Flexible"
     },
     {
       icon: (
@@ -73,8 +78,9 @@ const KeralaHero = React.memo(({ content }: { content?: HeroContent }) => {
           className="w-6 h-6"
         />
       ),
-      rating: "5K+",
-      text: "Followers"
+      rating: content?.trustIndicators?.instagram?.rating || "5K+",
+      text: content?.trustIndicators?.instagram?.label || "Followers",
+      url: content?.trustIndicators?.instagram?.url
     }
   ];
 
@@ -254,26 +260,44 @@ const KeralaHero = React.memo(({ content }: { content?: HeroContent }) => {
         <div className="bg-white/20 backdrop-blur-sm ">
           <div className="container mx-auto px- py-2">
             <div className="flex justify-center items-center space-x-10 md:space-x-12 lg:space-x-16">
-              {trustIndicators.map((indicator, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div className="flex items-center justify-center">
-                    {indicator.icon}
-                  </div>
-                  <div className="text-left">
-                    <div className="flex items-center gap-1">
-                      {indicator.rating === "4.9" && (
-                        <span className="text-yellow-400 text-sm drop-shadow-sm">★</span>
-                      )}
-                      <span className="text-white font-semibold text-xs md:text-base drop-shadow-sm">
-                        {indicator.rating}
-                      </span>
+              {trustIndicators.map((indicator, index) => {
+                const content = (
+                  <div key={index} className="flex items-center gap-2">
+                    <div className="flex items-center justify-center">
+                      {indicator.icon}
                     </div>
-                    <div className="text-white/90 text-xs md:text-xs font-small drop-shadow-sm">
-                      {indicator.text}
+                    <div className="text-left">
+                      <div className="flex items-center gap-1">
+                        {indicator.rating === "4.9" && (
+                          <span className="text-yellow-400 text-sm drop-shadow-sm">★</span>
+                        )}
+                        <span className="text-white font-semibold text-xs md:text-base drop-shadow-sm">
+                          {indicator.rating}
+                        </span>
+                      </div>
+                      <div className="text-white/90 text-xs md:text-xs font-small drop-shadow-sm">
+                        {indicator.text}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+
+                if ('url' in indicator && indicator.url) {
+                  return (
+                    <a
+                      key={index}
+                      href={indicator.url as string}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:scale-105 transition-transform duration-200"
+                    >
+                      {content}
+                    </a>
+                  );
+                }
+
+                return content;
+              })}
             </div>
           </div>
         </div>

@@ -34,22 +34,23 @@ const companies = [
 ];
 
 type BrandsContent = {
-  heading?: string
-  subheading?: string
-  brands?: {
-    id: string
-    name: string
-    logoUrl: string
-    width?: number
-    height?: number
-  }[]
+    heading?: string
+    subheading?: string
+    scrollDuration?: number
+    brands?: {
+        id: string
+        name: string
+        logoUrl: string
+        width?: number
+        height?: number
+    }[]
 }
 
 const CompanyLogos = React.memo(({ content }: { content?: BrandsContent }) => {
-  // Use CMS content if available, otherwise fall back to default
-  const heading = content?.heading || "Brands Who've Worked with Us"
-  const subheading = content?.subheading || "Corporate clients who trust Travloger for their offsites & escapes"
-  const displayBrands = content?.brands || companies
+    // Use CMS content if available, otherwise fall back to default
+    const heading = content?.heading || "Brands Who've Worked with Us"
+    const subheading = content?.subheading || "Corporate clients who trust Travloger for their offsites & escapes"
+    const displayBrands = content?.brands || companies
     const { setRef: titleRef } = useIntersectionObserver({
         threshold: 0.3,
         triggerOnce: true
@@ -75,14 +76,14 @@ const CompanyLogos = React.memo(({ content }: { content?: BrandsContent }) => {
                             delay={0.2}
                         >
                             <h2 className={cn(
-                              "font-bold text-gray-900 mb-4 font-heading",
-                              mobileFirst.text('h1')
+                                "font-bold text-gray-900 mb-4 font-heading",
+                                mobileFirst.text('h1')
                             )}>
-                              {heading.includes('Brands Who&apos;ve Worked') ? (
-                                <span dangerouslySetInnerHTML={{ __html: heading }} />
-                              ) : (
-                                <>Brands Who&apos;ve Worked <span className='text-[#134956]'>{heading}</span></>
-                              )}
+                                {heading.includes('Brands Who&apos;ve Worked') ? (
+                                    <span dangerouslySetInnerHTML={{ __html: heading }} />
+                                ) : (
+                                    <>Brands Who&apos;ve Worked <span className='text-[#134956]'>{heading}</span></>
+                                )}
                             </h2>
                         </LazyLoad>
                     </div>
@@ -96,7 +97,7 @@ const CompanyLogos = React.memo(({ content }: { content?: BrandsContent }) => {
                     <div className="relative flex overflow-hidden before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:bg-gradient-to-r before:from-white before:via-white/0 before:to-transparent before:content-[''] after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:bg-gradient-to-l after:from-white after:via-white/0 after:to-transparent after:content-['']">
                         <motion.div
                             initial={{ opacity: 0, x: -100 }}
-                            animate={{ 
+                            animate={{
                                 opacity: logosInView ? 1 : 0,
                                 x: logosInView ? 0 : -100
                             }}
@@ -104,7 +105,7 @@ const CompanyLogos = React.memo(({ content }: { content?: BrandsContent }) => {
                         >
                             <motion.div
                                 transition={{
-                                    duration: prefersReducedMotion ? 0 : 25,
+                                    duration: prefersReducedMotion ? 0 : (content?.scrollDuration || 25),
                                     ease: 'linear',
                                     repeat: prefersReducedMotion ? 0 : Infinity,
                                 }}
@@ -119,25 +120,25 @@ const CompanyLogos = React.memo(({ content }: { content?: BrandsContent }) => {
                                         return logoSource && typeof logoSource === 'string' && logoSource.trim() !== '';
                                     })
                                     .map((company) => (
-                                    <motion.div 
-                                        key={company.name} 
-                                        className="flex-shrink-0 flex items-center justify-center group"
-                                        whileHover={{ 
-                                            scale: 1.05,
-                                            transition: { duration: 0.3 }
-                                        }}
-                                    >
-                                        <div className="w-24 h-12 md:w-28 md:h-14 lg:w-32 lg:h-16 flex items-center justify-center">
-                                            <Image 
-                                                src={'logoUrl' in company ? company.logoUrl : company.logo} 
-                                                alt={`${company.name} logo`} 
-                                                width={company.width || 120} 
-                                                height={company.height || 60} 
-                                                className="object-contain opacity-70 group-hover:opacity-100 transition-all duration-300 max-w-full max-h-full" 
-                                            />
-                                        </div>
-                                    </motion.div>
-                                ))}
+                                        <motion.div
+                                            key={company.name}
+                                            className="flex-shrink-0 flex items-center justify-center group"
+                                            whileHover={{
+                                                scale: 1.05,
+                                                transition: { duration: 0.3 }
+                                            }}
+                                        >
+                                            <div className="w-24 h-12 md:w-28 md:h-14 lg:w-32 lg:h-16 flex items-center justify-center">
+                                                <Image
+                                                    src={'logoUrl' in company ? company.logoUrl : company.logo}
+                                                    alt={`${company.name} logo`}
+                                                    width={company.width || 120}
+                                                    height={company.height || 60}
+                                                    className="object-contain opacity-70 group-hover:opacity-100 transition-all duration-300 max-w-full max-h-full"
+                                                />
+                                            </div>
+                                        </motion.div>
+                                    ))}
                             </motion.div>
                         </motion.div>
                     </div>
@@ -149,7 +150,7 @@ const CompanyLogos = React.memo(({ content }: { content?: BrandsContent }) => {
                 <div className="container mx-auto px-4">
                     {!prefersReducedMotion ? (
                         <div className="text-center">
-                            <motion.p 
+                            <motion.p
                                 className="text-gray-600 text-sm md:text-base lg:text-lg font-body leading-relaxed"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: footerInView ? 1 : 0, y: footerInView ? 0 : 20 }}
@@ -157,7 +158,7 @@ const CompanyLogos = React.memo(({ content }: { content?: BrandsContent }) => {
                             >
                                 {subheading}
                             </motion.p>
-                            
+
                             {/* Decorative line */}
                             <motion.div
                                 className="w-24 h-1 bg-gradient-to-r from-teal-400 to-orange-400 mx-auto mt-4 md:mt-6 rounded-full"
@@ -175,7 +176,7 @@ const CompanyLogos = React.memo(({ content }: { content?: BrandsContent }) => {
                                 <p className="text-gray-600 text-sm md:text-base lg:text-lg font-body leading-relaxed">
                                     {subheading}
                                 </p>
-                                
+
                                 {/* Decorative line */}
                                 <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-orange-400 mx-auto mt-4 md:mt-6 rounded-full" />
                             </div>

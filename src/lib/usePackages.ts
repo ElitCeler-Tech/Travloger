@@ -1,5 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 
+export interface FeatureTag {
+  name: string
+  icon: 'default' | 'flights' | 'bus' | 'train'
+  included: boolean
+}
+
 export interface Package {
   id: string
   title: string
@@ -15,6 +21,7 @@ export interface Package {
   duration: string
   highlights: string[]
   includes: string[]
+  features?: FeatureTag[]
   original_price?: number
 }
 
@@ -33,15 +40,15 @@ export const usePackages = (options: UsePackagesOptions = {}) => {
     try {
       setLoading(true)
       setError(null)
-      
+
       const params = new URLSearchParams()
       if (options.tripType) params.append('trip_type', options.tripType)
       if (options.featured) params.append('featured', 'true')
       if (options.category) params.append('category', options.category)
-      
+
       const response = await fetch(`/api/packages?${params.toString()}`)
       const data = await response.json()
-      
+
       if (response.ok) {
         setPackages(data.packages || [])
       } else {

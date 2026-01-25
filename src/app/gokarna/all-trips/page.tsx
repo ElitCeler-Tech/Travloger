@@ -23,91 +23,91 @@ interface TripCard {
 }
 
 const gokarnaTrips: TripCard[] = [
-    // Custom Trips
-    {
-      id: 'custom-1',
-      title: '3 Days 2 Nights - Gokarna Dandeli',
-      description: 'Experience the perfect blend of jungle adventure and beach relaxation',
-      image: '/cards/1.jpg',
-      nights: 2,
-      days: 3,
-      price: 15999,
-      category: 'custom',
-      route: 'Hubli → Jungle → Gokarna → Murudeshwar → Hubli',
-      trending: true,
-    },
-    {
-      id: 'custom-2',
-      title: '3 Days 2 Nights - Gokarna',
-      description: 'Explore the spiritual and coastal beauty of Gokarna',
-      image: '/cards/2.jpg',
-      nights: 2,
-      days: 3,
-      price: 12999,
-      category: 'custom',
-      route: 'Hubli → Gokarna → Murudeshwar → Hubli',
-    },
-    {
-      id: 'custom-3',
-      title: '4 Days 3 Nights - Gokarna Dandeli',
-      description: 'Extended adventure with jungle and beach experiences',
-      image: '/cards/3.jpg',
-      nights: 3,
-      days: 4,
-      price: 19999,
-      category: 'custom',
-      route: 'Hubli → Dandeli → Gokarna → Murudeshwar → Hubli',
-   
-    },
-    {
-      id: 'custom-4',
-      title: '6 Days 5 Nights - Gokarna',
-      description: 'Comprehensive tour from Goa to Gokarna with Dandeli adventure',
-      image: '/cards/1.jpg',
-      nights: 5,
-      days: 6,
-      price: 29999,
-      category: 'custom',
-      route: 'Goa → Gokarna → Murudeshwar → Dandeli → Hubli',
+  // Custom Trips
+  {
+    id: 'custom-1',
+    title: '3 Days 2 Nights - Gokarna Dandeli',
+    description: 'Experience the perfect blend of jungle adventure and beach relaxation',
+    image: '/cards/1.jpg',
+    nights: 2,
+    days: 3,
+    price: 15999,
+    category: 'custom',
+    route: 'Hubli → Jungle → Gokarna → Murudeshwar → Hubli',
+    trending: true,
+  },
+  {
+    id: 'custom-2',
+    title: '3 Days 2 Nights - Gokarna',
+    description: 'Explore the spiritual and coastal beauty of Gokarna',
+    image: '/cards/2.jpg',
+    nights: 2,
+    days: 3,
+    price: 12999,
+    category: 'custom',
+    route: 'Hubli → Gokarna → Murudeshwar → Hubli',
+  },
+  {
+    id: 'custom-3',
+    title: '4 Days 3 Nights - Gokarna Dandeli',
+    description: 'Extended adventure with jungle and beach experiences',
+    image: '/cards/3.jpg',
+    nights: 3,
+    days: 4,
+    price: 19999,
+    category: 'custom',
+    route: 'Hubli → Dandeli → Gokarna → Murudeshwar → Hubli',
 
-    },
-    {
-      id: 'custom-5',
-      title: '4 Days 3 Nights - Gokarna with Udupi',
-      description: 'Spiritual journey combining Gokarna temples with Udupi heritage',
-      image: '/cards/2.jpg',
-      nights: 3,
-      days: 4,
-      price: 17999,
-      category: 'custom',
-      route: 'Hubli → Gokarna → Murudeshwar → Udupi → Hubli/Udupi',
+  },
+  {
+    id: 'custom-4',
+    title: '6 Days 5 Nights - Gokarna',
+    description: 'Comprehensive tour from Goa to Gokarna with Dandeli adventure',
+    image: '/cards/1.jpg',
+    nights: 5,
+    days: 6,
+    price: 29999,
+    category: 'custom',
+    route: 'Goa → Gokarna → Murudeshwar → Dandeli → Hubli',
 
-    },
-    {
-      id: 'custom-6',
-      title: '5 Days 4 Nights Gokarna Dandeli with Udupi',
-      description: 'Ultimate adventure combining jungle, beaches, and spiritual sites',
-      image: '/cards/3.jpg',
-      nights: 4,
-      days: 5,
-      price: 24999,
-      category: 'custom',
-      route: 'Hubli → Dandeli → Gokarna → Murudeshwar → Udupi → Hubli/Udupi',
+  },
+  {
+    id: 'custom-5',
+    title: '4 Days 3 Nights - Gokarna with Udupi',
+    description: 'Spiritual journey combining Gokarna temples with Udupi heritage',
+    image: '/cards/2.jpg',
+    nights: 3,
+    days: 4,
+    price: 17999,
+    category: 'custom',
+    route: 'Hubli → Gokarna → Murudeshwar → Udupi → Hubli/Udupi',
 
-    },
-    {
-      id: 'custom-7',
-      title: '5 Days 4 Nights - Gokarna Goa',
-      description: 'Perfect blend of Goa beaches and Gokarna spirituality',
-      image: '/cards/1.jpg',
-      nights: 4,
-      days: 5,
-      price: 22999,
-      category: 'custom',
-      route: 'Goa → Gokarna → Murudeshwar → Hubli',
+  },
+  {
+    id: 'custom-6',
+    title: '5 Days 4 Nights Gokarna Dandeli with Udupi',
+    description: 'Ultimate adventure combining jungle, beaches, and spiritual sites',
+    image: '/cards/3.jpg',
+    nights: 4,
+    days: 5,
+    price: 24999,
+    category: 'custom',
+    route: 'Hubli → Dandeli → Gokarna → Murudeshwar → Udupi → Hubli/Udupi',
 
-    }
-  ];
+  },
+  {
+    id: 'custom-7',
+    title: '5 Days 4 Nights - Gokarna Goa',
+    description: 'Perfect blend of Goa beaches and Gokarna spirituality',
+    image: '/cards/1.jpg',
+    nights: 4,
+    days: 5,
+    price: 22999,
+    category: 'custom',
+    route: 'Goa → Gokarna → Murudeshwar → Hubli',
+
+  }
+];
 
 // Clean Card Container replacing the old stamp border
 const StampBorder = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
@@ -139,10 +139,10 @@ const GokarnaAllTripsPage = () => {
 
   // Modern Trip Card Component with Stamp Border
   const TripCard = ({ trip }: { trip: TripCard }) => (
-    <StampBorder 
+    <StampBorder
       className="transition-all duration-300 hover:scale-[1.02] hover:shadow-xl group"
     >
-      <motion.div 
+      <motion.div
         className="relative"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -158,7 +158,7 @@ const GokarnaAllTripsPage = () => {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-          
+
           {/* Duration Badge */}
           <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 shadow-sm">
             <span className="text-xs font-bold text-gray-900 tracking-wide">
@@ -224,15 +224,15 @@ const GokarnaAllTripsPage = () => {
                     style={{ filter: 'brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(346deg) brightness(118%) contrast(119%)' }}
                   />
                 ) : (
-                  <svg 
-                    className="w-3 h-3 flex-shrink-0 text-green-600" 
-                    fill="currentColor" 
+                  <svg
+                    className="w-3 h-3 flex-shrink-0 text-green-600"
+                    fill="currentColor"
                     viewBox="0 0 20 20"
                   >
-                    <path 
-                      fillRule="evenodd" 
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" 
-                      clipRule="evenodd" 
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
                     />
                   </svg>
                 )}
@@ -254,8 +254,8 @@ const GokarnaAllTripsPage = () => {
                 ₹{trip.price.toLocaleString()}
               </p>
             </div>
-            
-            <Button 
+
+            <Button
               onClick={() => {
                 setSelectedTrip(trip);
                 setIsModalOpen(true);
@@ -344,14 +344,14 @@ const GokarnaAllTripsPage = () => {
 
         {/* Modal */}
         {isModalOpen && (
-          <ItineraryModal 
-            isOpen={isModalOpen} 
-            onClose={() => setIsModalOpen(false)} 
-            trip={selectedTrip} 
+          <ItineraryModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            trip={selectedTrip}
           />
         )}
       </div>
-      
+
       {/* Floating Action Bar */}
       <FloatingActionBar />
     </div>

@@ -2,13 +2,15 @@ export async function fetchCityContent(slug: string) {
   try {
     console.log(`fetchCityContent - Fetching content for slug: ${slug}`);
 
-    // Use the backend API URL (port 5000) instead of the admin app URL (port 3000)
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_ADMIN_BASE_URL || 'http://localhost:5000';
+    // Strictly target the backend API (port 5000)
+    // Avoid hitting the admin dashboard (port 3000) for data
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
     const apiUrl = `${baseUrl.replace(/\/$/, '')}/api/cms/cities/${slug}`;
-    console.log(`fetchCityContent - API URL: ${apiUrl}`);
+    console.log(`fetchCityContent - Fetching from backend: ${apiUrl}`);
 
     const res = await fetch(apiUrl, {
-      cache: 'no-store'
+      cache: 'no-store',
+      next: { revalidate: 0 }
     });
 
     console.log(`fetchCityContent - Response status: ${res.status}`);

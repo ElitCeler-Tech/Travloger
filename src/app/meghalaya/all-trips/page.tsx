@@ -256,10 +256,10 @@ const MeghalayaAllTripsPage = () => {
 
   // Modern Trip Card Component with Stamp Border
   const TripCard = ({ trip }: { trip: TripCard }) => (
-    <StampBorder 
+    <StampBorder
       className="transition-all duration-300 hover:scale-[1.02] hover:shadow-xl group"
     >
-      <motion.div 
+      <motion.div
         className="relative"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -275,7 +275,7 @@ const MeghalayaAllTripsPage = () => {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-          
+
           {/* Duration Badge */}
           <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 shadow-sm">
             <span className="text-xs font-bold text-gray-900 tracking-wide">
@@ -341,15 +341,15 @@ const MeghalayaAllTripsPage = () => {
                     style={{ filter: 'brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(346deg) brightness(118%) contrast(119%)' }}
                   />
                 ) : (
-                  <svg 
-                    className="w-3 h-3 flex-shrink-0 text-green-600" 
-                    fill="currentColor" 
+                  <svg
+                    className="w-3 h-3 flex-shrink-0 text-green-600"
+                    fill="currentColor"
                     viewBox="0 0 20 20"
                   >
-                    <path 
-                      fillRule="evenodd" 
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" 
-                      clipRule="evenodd" 
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
                     />
                   </svg>
                 )}
@@ -371,8 +371,8 @@ const MeghalayaAllTripsPage = () => {
                 ₹{trip.price.toLocaleString()}
               </p>
             </div>
-            
-            <Button 
+
+            <Button
               onClick={() => {
                 setSelectedTrip(trip);
                 setIsModalOpen(true);
@@ -461,14 +461,14 @@ const MeghalayaAllTripsPage = () => {
 
         {/* Modal */}
         {isModalOpen && (
-          <ItineraryModal 
-            isOpen={isModalOpen} 
-            onClose={() => setIsModalOpen(false)} 
-            trip={selectedTrip} 
+          <ItineraryModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            trip={selectedTrip}
           />
         )}
       </div>
-      
+
       {/* Floating Action Bar */}
       <FloatingActionBar />
     </div>

@@ -88,15 +88,15 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
   ];
 
   const modalVariants = {
-    hidden: { 
+    hidden: {
       opacity: 0,
       y: '100%'
     },
-    visible: { 
+    visible: {
       opacity: 1,
       y: 0
     },
-    exit: { 
+    exit: {
       opacity: 0,
       y: '100%'
     }
@@ -109,14 +109,14 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
   };
 
   const buttonVariants = {
-    hover: { 
+    hover: {
       scale: 1.05,
       transition: {
         duration: 0.2
       }
     },
-    tap: { 
-      scale: 0.95 
+    tap: {
+      scale: 0.95
     }
   };
 
@@ -170,7 +170,7 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
                   className="object-cover object-center"
                   sizes="100vw"
                 />
-                
+
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute bottom-4 left-6">
@@ -184,7 +184,7 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
               </div>
 
               {/* Content */}
-              <div 
+              <div
                 className="bg-white flex-1 overflow-y-scroll"
                 style={{
                   scrollbarWidth: 'thin',
@@ -213,7 +213,7 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
                               <div className="w-px h-5 bg-gray-300 mt-0.5 border-l-2 border-dotted"></div>
                             )}
                           </div>
-                          
+
                           {/* Right side - Content */}
                           <div className="flex-1">
                             <p className="text-gray-900 font-body leading-relaxed text-sm font-semibold">{day.title}</p>
@@ -227,7 +227,7 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
                   </div>
 
                   {/* Key Attractions */}
-                  <div className="">
+                  <div className="mb-5">
                     <div className="mb-2">
                       <h3 className="text-xl font-bold text-gray-900 font-heading">Key <span className='text-[#134956]'>Attractions</span></h3>
                     </div>
@@ -248,7 +248,31 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
                     </div>
                   </div>
 
-            
+                  {/* Inclusions */}
+                  <div className="">
+                    <div className="mb-2">
+                      <h3 className="text-xl font-bold text-gray-900 font-heading">What&apos;s <span className='text-[#134956]'>Included</span></h3>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {(trip.detailedItinerary?.inclusions || [
+                        'Hotels/Stay',
+                        'Daily Breakfast',
+                        'Private Transport',
+                        'Sightseeing',
+                        'Trip Assistance',
+                        'All Taxes'
+                      ]).map((item, index) => (
+                        <div key={index} className="flex items-center gap-2 py-1 px-2 border border-gray-100 rounded-md bg-gray-50/50">
+                          <svg className="w-4 h-4 text-[#134956]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span className="text-gray-700 font-body text-xs font-medium">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+
                 </div>
               </div>
 
@@ -273,9 +297,9 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
       </AnimatePresence>
 
       {/* Enquire Modal - Higher z-index to appear above itinerary modal */}
-      <EnquireModal 
-        isOpen={isEnquireModalOpen} 
-        onClose={handleCloseEnquireModal} 
+      <EnquireModal
+        isOpen={isEnquireModalOpen}
+        onClose={handleCloseEnquireModal}
       />
     </>
   );
