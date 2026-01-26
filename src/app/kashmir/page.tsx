@@ -1,7 +1,7 @@
 import NextDynamic from 'next/dynamic';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import Hero from '@/components/sections/Hero';
+import LadakhHero from '@/components/sections/LadakhHero';
 import FloatingActionBar from '@/components/ui/FloatingActionBar';
 import { ScrollProgress } from '@/components/ui/ScrollIndicators';
 import { fetchCityContent } from '@/app/lib/cityContent'
@@ -47,7 +47,7 @@ export default async function KashmirPage() {
     <>
       <ScrollProgress />
       <Header content={content?.header || undefined} />
-      <Hero content={content?.hero || undefined} />
+      <LadakhHero content={content?.hero || undefined} />
       <TripOptions content={content?.tripOptions || undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
       <Accommodation />
@@ -58,7 +58,7 @@ export default async function KashmirPage() {
       <FAQ content={content?.faq || undefined} />
       <Footer />
       <FloatingActionBar />
-    </> 
+    </>
   );
 }
 

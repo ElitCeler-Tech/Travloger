@@ -39,34 +39,34 @@ interface KeralaTripHighlightsProps {
 }
 
 const keralaHighlights: HighlightImage[] = [
-  { 
-    id: '1', 
-    src: highlight1, 
+  {
+    id: '1',
+    src: highlight1,
     alt: 'Alleppey Backwaters - Kerala\'s Venice of the East'
   },
-  { 
-    id: '2', 
-    src: highlight2, 
+  {
+    id: '2',
+    src: highlight2,
     alt: 'Munnar Tea Gardens - Misty Mountains and Tea Estates'
   },
-  { 
-    id: '3', 
-    src: highlight3, 
+  {
+    id: '3',
+    src: highlight3,
     alt: 'Kovalam Beach - Pristine Arabian Sea Coastline'
   },
-  { 
-    id: '4', 
-    src: highlight1, 
+  {
+    id: '4',
+    src: highlight1,
     alt: 'Kumarakom Bird Sanctuary - Nature\'s Paradise'
   },
-  { 
-    id: '5', 
-    src: highlight2, 
+  {
+    id: '5',
+    src: highlight2,
     alt: 'Periyar Wildlife Sanctuary - Rich Biodiversity'
   },
-  { 
-    id: '6', 
-    src: highlight3, 
+  {
+    id: '6',
+    src: highlight3,
     alt: 'Fort Kochi - Colonial Heritage and Chinese Fishing Nets'
   },
 ];
@@ -84,12 +84,9 @@ const KeralaTripHighlights = ({ content }: KeralaTripHighlightsProps) => {
     if (!content?.highlights || content.highlights.length === 0) {
       return keralaHighlights;
     }
-    
+
     // Smart merging: combine default items with CMS items
-    return keralaHighlights.map(defaultItem => {
-      const cmsItem = content.highlights?.find((item: HighlightImage) => item.id === defaultItem.id);
-      return cmsItem || defaultItem;
-    });
+    return content.highlights;
   }, [content?.highlights]);
 
   useEffect(() => {
@@ -151,10 +148,10 @@ const KeralaTripHighlights = ({ content }: KeralaTripHighlightsProps) => {
               breakpoints={{
                 320: {
                   spaceBetween: 15,
-                    coverflowEffect: {
-                      rotate: 45,
-                      depth: 250,
-                      modifier: 1.2,
+                  coverflowEffect: {
+                    rotate: 45,
+                    depth: 250,
+                    modifier: 1.2,
                   }
                 },
                 640: {
@@ -188,9 +185,9 @@ const KeralaTripHighlights = ({ content }: KeralaTripHighlightsProps) => {
                   key={slide.id}
                   className="!w-[280px] !h-[380px] sm:!w-[320px] sm:!h-[420px] md:!w-[360px] md:!h-[460px] lg:!w-[400px] lg:!h-[500px]"
                 >
-                  <motion.div 
+                  <motion.div
                     className="relative w-full h-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-500 group"
-                    whileHover={{ 
+                    whileHover={{
                       y: -10,
                       transition: { duration: 0.3 }
                     }}
@@ -203,12 +200,12 @@ const KeralaTripHighlights = ({ content }: KeralaTripHighlightsProps) => {
                       sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 360px, 400px"
                       quality={95}
                       priority={index < 3}
-                      placeholder="blur"
+                      placeholder={typeof slide.src === 'string' ? undefined : 'blur'}
                     />
-                    
+
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300" />
-                    
+
                     {/* Content */}
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                       <motion.div
@@ -216,7 +213,8 @@ const KeralaTripHighlights = ({ content }: KeralaTripHighlightsProps) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 + index * 0.1 }}
                       >
-
+                        <h3 className="text-xl font-bold font-heading mb-1 text-shadow-sm">{slide.alt}</h3>
+                        <div className="h-1 w-12 bg-[#134956] rounded-full" />
                       </motion.div>
                     </div>
 

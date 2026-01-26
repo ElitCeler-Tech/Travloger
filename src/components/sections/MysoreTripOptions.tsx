@@ -10,6 +10,7 @@ import { Button } from '../ui/Button';
 import { useIntersectionObserver } from '@/lib/hooks';
 import LazyLoad from '@/components/ui/LazyLoad';
 import { mobileFirst } from '@/lib/mobile-first-patterns';
+import { HighlightedHeading } from '@/components/ui/HighlightedHeading';
 
 interface TripCard {
   id: string;
@@ -538,7 +539,9 @@ const MysoreTripOptions = React.memo(({ content }: MysoreTripOptionsProps) => {
               "font-bold text-gray-900 mb-4 font-heading",
               mobileFirst.text('h1')
             )}>
-              {content?.heading || (
+              {content?.heading ? (
+                <HighlightedHeading text={content.heading} />
+              ) : (
                 <>
                   How Do You Want To{' '}
                   <span className="text-[#134956]">Explore Mysore</span>?

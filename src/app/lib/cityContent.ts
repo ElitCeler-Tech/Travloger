@@ -21,7 +21,12 @@ export async function fetchCityContent(slug: string) {
     }
 
     const data = await res.json();
-    console.log(`fetchCityContent - Received data:`, data);
+    console.log(`fetchCityContent - DEBUG - Received for ${slug}:`, {
+      hasHero: !!data?.hero,
+      heroTitle: data?.hero?.title,
+      mobileVideo: data?.hero?.mobileVideoUrl,
+      desktopVideo: data?.hero?.desktopVideoUrl
+    });
 
     return data;
   } catch (error) {

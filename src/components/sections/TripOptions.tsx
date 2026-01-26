@@ -253,6 +253,33 @@ const TripCard = ({ trip, setSelectedTrip, setIsModalOpen }: {
   );
 };
 
+// Helper component to highlight the destination name in the heading
+const HighlightedHeading = ({ text }: { text: string }) => {
+  // If the text contains "Explore", highlight everything after it
+  if (text.includes('Explore ')) {
+    const parts = text.split('Explore ');
+    return (
+      <>
+        {parts[0]}Explore <span className="text-[#134956]">{parts[1]}</span>
+      </>
+    );
+  }
+
+  // Basic fallback: highlight the last word if it looks like a destination heading
+  const words = text.split(' ');
+  if (words.length > 3) {
+    const lastWord = words.pop();
+    return (
+      <>
+        {words.join(' ')} <span className="text-[#134956]">{lastWord}</span>
+      </>
+    );
+  }
+
+  // Return plain text if no pattern matches
+  return <>{text}</>;
+};
+
 const TripOptions = React.memo(({ content }: TripOptionsProps) => {
   const [activeTab, setActiveTab] = useState<'custom' | 'group'>('custom');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -301,7 +328,9 @@ const TripOptions = React.memo(({ content }: TripOptionsProps) => {
               "font-bold text-gray-900 mb-4 font-heading",
               mobileFirst.text('h1')
             )}>
-              {content?.heading || (
+              {content?.heading ? (
+                <HighlightedHeading text={content.heading} />
+              ) : (
                 <>
                   How Do You Want To{' '}
                   <span className="text-[#134956]">Explore Kashmir</span>?

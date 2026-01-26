@@ -3,18 +3,18 @@
 import React from 'react';
 import Image from 'next/image';
 import heroBg from '../../../public/hero-bg.png';
-import { motion } from 'framer-motion';
-import { staggerContainer, staggerItem } from '@/lib/animations';
-import { useReducedMotion } from '@/lib/hooks';
-import { mobileFirst, accessibility } from '@/lib/mobile-first-patterns';
+import { accessibility } from '@/lib/mobile-first-patterns';
 
 interface HeroContent {
   title?: string;
   subtitle?: string;
-  backgroundImageUrl?: string;
+  backgroundImageUrl?: string; // Mobile/Fallback image
   mobileVideoUrl?: string;
+  desktopVideoUrl?: string;    // New: Desktop specific video
   ctaText?: string;
   ctaSecondaryText?: string;
+  whatsappPhone?: string;
+  whatsappMessage?: string;
   trustIndicators?: {
     google: { rating: string; label: string };
     payLater: { rating: string; label: string };
@@ -22,33 +22,31 @@ interface HeroContent {
   };
 }
 
+// Extended props to allow passing defaults from wrapper components
 interface HeroProps {
   content?: HeroContent;
+  defaultContent?: HeroContent; // Optional default values for fallback
 }
 
-const Hero = React.memo(({ content }: HeroProps) => {
-  const prefersReducedMotion = useReducedMotion();
+const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
 
-  // Debug: Log the content to see what's being passed
-  console.log('Hero content:', content);
-  console.log('Mobile video URL:', content?.mobileVideoUrl);
-  console.log('Will show video?', !!content?.mobileVideoUrl);
 
-  // WhatsApp contact function
+
+  /* Commented out for blackout test
   const handleWhatsAppClick = () => {
-    const phoneNumber = '+919876543210'; // Replace with actual number
-    const message = encodeURIComponent('Hi! I am interested in Kashmir tour packages. Can you help me plan my trip?');
+    const phoneNumber = (content?.whatsappPhone || defaultContent?.whatsappPhone || '+919876543210').replace(/\s+/g, '');
+    const message = encodeURIComponent(content?.whatsappMessage || defaultContent?.whatsappMessage || 'Hi! I am interested in planning a trip. Can you help me?');
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };
 
-  // Scroll to packages section
   const handleItineraryClick = () => {
     const packagesSection = document.querySelector('#packages');
     if (packagesSection) {
       packagesSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
+  */
 
   // Static trust indicators data
   const trustIndicators = [
@@ -101,22 +99,14 @@ const Hero = React.memo(({ content }: HeroProps) => {
         Skip to main content
       </a>
 
-      {/* Background Video for Small Screens */}
+      {/* Background Video/Image for Mobile */}
       <div className="absolute inset-0 z-0 md:hidden">
+
         {content?.mobileVideoUrl ? (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover"
-            style={{ objectPosition: '30% center' }}
-          >
-            <source src={content.mobileVideoUrl} type="video/mp4" />
-            {/* Fallback to image if video fails to load */}
+          <div className="relative w-full h-full">
             <Image
               src={content?.backgroundImageUrl || heroBg}
-              alt="Kashmir landscape with traditional boats on Dal Lake"
+              alt="Background"
               fill
               className="object-cover"
               style={{ objectPosition: '30% center' }}
@@ -125,11 +115,22 @@ const Hero = React.memo(({ content }: HeroProps) => {
               {...(!content?.backgroundImageUrl && { placeholder: "blur" })}
               quality={85}
             />
-          </video>
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover z-10"
+              style={{ objectPosition: '30% center' }}
+              key={content.mobileVideoUrl}
+            >
+              <source src={content.mobileVideoUrl} type="video/mp4" />
+            </video>
+          </div>
         ) : (
           <Image
             src={content?.backgroundImageUrl || heroBg}
-            alt="Kashmir landscape with traditional boats on Dal Lake"
+            alt="Background"
             fill
             className="object-cover"
             style={{ objectPosition: '30% center' }}
@@ -141,140 +142,100 @@ const Hero = React.memo(({ content }: HeroProps) => {
         )}
       </div>
 
-      {/* Background Image for Large Screens */}
+      {/* Background Image/Video for Large Screens */}
       <div className="absolute inset-0 z-0 hidden md:block">
-        <Image
-          src={content?.backgroundImageUrl || heroBg}
-          alt="Kashmir landscape with traditional boats on Dal Lake"
-          fill
-          className="object-cover object-center"
-          priority
-          sizes="100vw"
-          {...(!content?.backgroundImageUrl && { placeholder: "blur" })}
-          quality={85}
-        />
-      </div>
-      {/* Gradient Overlay - Mobile Optimized */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/1 to-black/1" />
 
-      {/* Content Container - Mobile First Left Aligned */}
-      <div className={`relative z-20 h-[70vh] flex items-center ${mobileFirst.container('xl')}`}>
-        {!prefersReducedMotion ? (
-          <motion.div
-            className="w-full max-w-2xl mx-auto lg:mx-0 lg:max-w-3xl px-4 sm:px-6 lg:px-8"
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Main Heading - Left Aligned */}
-            {/* <motion.h1 
-              className={`text-white font-heading leading-tight tracking-wide sm:mb-6 text-left text-4xl sm:text-5xl md:text-6xl lg:text-7xl`}
-              variants={staggerItem}
-            >Confused ? <br />Talk to us - It&apos;s Free
-            </motion.h1> */}
-
-            {/* Subtitle - Left Aligned
-            <motion.p 
-              className={`text-white font-subheading leading-tight tracking-wide mb-8 sm:mb-10 md:mb-12 text-left ${mobileFirst.text('heroSubtitle')}`}
-              variants={staggerItem}
+        {content?.desktopVideoUrl ? (
+          <div className="relative w-full h-full">
+            {/* Fallback Image behind the video */}
+            <Image
+              src={content?.backgroundImageUrl || defaultContent?.backgroundImageUrl || heroBg}
+              alt="Hero background"
+              fill
+              className="object-cover object-center"
+              priority
+              sizes="100vw"
+              placeholder={typeof (content?.backgroundImageUrl || defaultContent?.backgroundImageUrl || heroBg) === 'string' ? undefined : 'blur'}
+              quality={85}
+            />
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover z-10"
+              style={{ objectPosition: 'center center' }}
+              key={content.desktopVideoUrl} // Force re-render if URL changes
             >
-              One Story to Remember.
-            </motion.p> */}
-
-            {/* CTA Buttons - Vertical Stack */}
-            <motion.div
-              className="flex flex-col items-start gap-4 mt-7"
-              variants={staggerItem}
-            >
-              {/* <motion.button
-                onClick={handleWhatsAppClick}
-                className={`${mobileFirst.button('primary', 'responsive')} font-cta shadow-lg hover:shadow-xl w-full sm:w-auto sm:min-w-[200px] md:min-w-[240px] h-12 md:h-14 flex items-center justify-center px-6 py-3 ${accessibility.focus}`}
-                whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
-                whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
-                aria-label="Contact us on WhatsApp to plan your Kashmir trip"
-              >
-                <span className="flex items-center justify-center gap-4">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                  </svg>
-                  Plan on WhatsApp
-                </span>
-              </motion.button> */}
-
-              {/* <motion.button
-                onClick={handleItineraryClick}
-                className={`bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 hover:border-white/50 text-white font-cta transition-all duration-300 hover:shadow-lg w-full sm:w-auto sm:min-w-[200px] md:min-w-[240px] h-12 md:h-14 flex items-center justify-center px-6 py-3 ${mobileFirst.button('ghost', 'responsive')} ${accessibility.focus}`}
-                whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
-                whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
-                aria-label="View our Kashmir tour packages and itineraries"
-              >
-                <span className="flex items-center justify-center gap-4">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Get My Itinerary
-                </span>
-              </motion.button> */}
-            </motion.div>
-          </motion.div>
+              <source src={content.desktopVideoUrl} type="video/mp4" />
+            </video>
+          </div>
         ) : (
-          // Fallback for users who prefer reduced motion
-          <div className="w-full max-w-2xl mx-auto lg:mx-0 lg:max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h1 className={`text-white font-heading leading-tight tracking-wide mb-4 sm:mb-6 text-left text-4xl sm:text-5xl md:text-6xl lg:text-7xl`}>
-              {content?.title || (
-                <>
-                  Two Ways To{' '}
-                  <span className="text-teal-400 inline-block">
-                    Explore Kashmir
-                  </span>
-                  .
-                </>
+          <Image
+            src={content?.backgroundImageUrl || defaultContent?.backgroundImageUrl || heroBg}
+            alt={content?.title || defaultContent?.title || "Hero background"}
+            fill
+            className="object-cover object-center"
+            priority
+            sizes="100vw"
+            placeholder={typeof (content?.backgroundImageUrl || defaultContent?.backgroundImageUrl || heroBg) === 'string' ? undefined : 'blur'}
+            quality={85}
+          />
+        )}
+      </div>
+
+      {/* BLACKOUT TEST - Temporarily Hiding Content */}
+      {/* 
+      <div className={`relative z-30 min-h-[600px] h-[70vh] flex items-start pt-32 sm:pt-40 lg:pt-48 ${mobileFirst.container('xl')}`}>
+        <div className="w-full max-w-2xl mx-auto lg:mx-0 lg:max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div>
+            <h1 className="text-white font-heading leading-tight tracking-tight mb-4 sm:mb-6 text-left text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+              {content?.title || defaultContent?.title || (
+                <>Two Ways To <span className="text-teal-400">Explore</span></>
               )}
             </h1>
 
-            <p className={`text-white font-subheading leading-tight tracking-wide mb-8 sm:mb-10 md:mb-12 text-left ${mobileFirst.text('heroSubtitle')}`}>
-              {content?.subtitle || "One Story to Remember."}
+            <p className="text-white font-subheading leading-relaxed tracking-wide mb-8 sm:mb-10 text-left text-lg sm:text-xl md:text-2xl opacity-90">
+              {content?.subtitle || defaultContent?.subtitle || "One Story to Remember."}
             </p>
 
-            {/* CTA Buttons - Static Version - Vertical Stack */}
-            <div className="flex flex-col items-start gap-4">
+            <div className="flex flex-wrap items-start gap-4">
               <button
                 onClick={handleWhatsAppClick}
-                className={`${mobileFirst.button('primary', 'responsive')} font-cta shadow-lg hover:shadow-xl w-full sm:w-auto sm:min-w-[200px] md:min-w-[240px] h-12 md:h-14 flex items-center justify-center px-6 py-3 ${accessibility.focus}`}
-                aria-label="Contact us on WhatsApp to plan your Kashmir trip"
+                className="bg-teal-500 hover:bg-teal-600 text-white rounded-full transition-all duration-300 font-cta w-full sm:w-auto min-w-[200px] h-12 md:h-14 flex items-center justify-center px-8 shadow-lg"
               >
-                <span className="flex items-center justify-center gap-4">
+                <span className="flex items-center gap-2">
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
                   </svg>
-                  Plan on WhatsApp
+                  {content?.ctaText || defaultContent?.ctaText || "Plan on WhatsApp"}
                 </span>
               </button>
 
               <button
                 onClick={handleItineraryClick}
-                className={`bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 hover:border-white/50 text-white font-cta transition-all duration-300 hover:shadow-lg w-full sm:w-auto sm:min-w-[200px] md:min-w-[240px] h-12 md:h-14 flex items-center justify-center px-6 py-3 ${mobileFirst.button('ghost', 'responsive')} ${accessibility.focus}`}
-                aria-label="View our Kashmir tour packages and itineraries"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full transition-all duration-300 font-cta w-full sm:w-auto min-w-[200px] h-12 md:h-14 flex items-center justify-center px-8 shadow-sm"
               >
-                <span className="flex items-center justify-center gap-4">
+                <span className="flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
-                  Get My Itinerary
+                  {content?.ctaSecondaryText || defaultContent?.ctaSecondaryText || "Get My Itinerary"}
                 </span>
               </button>
             </div>
           </div>
-        )}
+        </div>
       </div>
+      */}
 
       {/* Static Trust Indicators with Glass Effect */}
       <div className="absolute bottom-0 left-0 right-0 z-30">
         <div className="bg-white/20 backdrop-blur-sm ">
-          <div className="container mx-auto px- py-2">
+          <div className="container mx-auto px-4 py-2">
             <div className="flex justify-center items-center space-x-10 md:space-x-12 lg:space-x-16">
               {trustIndicators.map((indicator, index) => {
-                const content = (
+                const innerContent = (
                   <div key={index} className="flex items-center gap-2">
                     <div className="flex items-center justify-center">
                       {indicator.icon}
@@ -288,7 +249,7 @@ const Hero = React.memo(({ content }: HeroProps) => {
                           {indicator.rating}
                         </span>
                       </div>
-                      <div className="text-white/90 text-xs md:text-xs font-small drop-shadow-sm">
+                      <div className="text-white/90 text-[10px] md:text-xs font-small drop-shadow-sm">
                         {indicator.text}
                       </div>
                     </div>
@@ -304,12 +265,12 @@ const Hero = React.memo(({ content }: HeroProps) => {
                       rel="noopener noreferrer"
                       className="hover:scale-105 transition-transform duration-200"
                     >
-                      {content}
+                      {innerContent}
                     </a>
                   );
                 }
 
-                return content;
+                return innerContent;
               })}
             </div>
           </div>

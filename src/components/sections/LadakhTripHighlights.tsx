@@ -39,34 +39,34 @@ interface LadakhTripHighlightsProps {
 }
 
 const defaultLadakhHighlights: HighlightImage[] = [
-  { 
-    id: '1', 
-    src: highlight1, 
+  {
+    id: '1',
+    src: highlight1,
     alt: 'Pangong Lake - Ladakh\'s Crown Jewel'
   },
-  { 
-    id: '2', 
-    src: highlight2, 
+  {
+    id: '2',
+    src: highlight2,
     alt: 'Khardungla Pass - World\'s Highest Motorable Pass'
   },
-  { 
-    id: '3', 
-    src: highlight3, 
+  {
+    id: '3',
+    src: highlight3,
     alt: 'Thiksey Monastery - Ancient Buddhist Heritage'
   },
-  { 
-    id: '4', 
-    src: highlight1, 
+  {
+    id: '4',
+    src: highlight1,
     alt: 'Nubra Valley - Desert in the Mountains'
   },
-  { 
-    id: '5', 
-    src: highlight2, 
+  {
+    id: '5',
+    src: highlight2,
     alt: 'Hemis Monastery - Largest Monastery in Ladakh'
   },
-  { 
-    id: '6', 
-    src: highlight3, 
+  {
+    id: '6',
+    src: highlight3,
     alt: 'Shanti Stupa - Peace Pagoda Overlooking Leh'
   },
 ];
@@ -84,12 +84,9 @@ const LadakhTripHighlights = ({ content }: LadakhTripHighlightsProps) => {
     if (!content?.highlights || content.highlights.length === 0) {
       return defaultLadakhHighlights;
     }
-    
+
     // Smart merging: combine default items with CMS items
-    return defaultLadakhHighlights.map(defaultItem => {
-      const cmsItem = content.highlights?.find((item: HighlightImage) => item.id === defaultItem.id);
-      return cmsItem || defaultItem;
-    });
+    return content.highlights;
   }, [content?.highlights]);
 
   useEffect(() => {
@@ -151,10 +148,10 @@ const LadakhTripHighlights = ({ content }: LadakhTripHighlightsProps) => {
               breakpoints={{
                 320: {
                   spaceBetween: 15,
-                    coverflowEffect: {
-                      rotate: 45,
-                      depth: 250,
-                      modifier: 1.2,
+                  coverflowEffect: {
+                    rotate: 45,
+                    depth: 250,
+                    modifier: 1.2,
                   }
                 },
                 640: {
@@ -188,9 +185,9 @@ const LadakhTripHighlights = ({ content }: LadakhTripHighlightsProps) => {
                   key={slide.id}
                   className="!w-[280px] !h-[380px] sm:!w-[320px] sm:!h-[420px] md:!w-[360px] md:!h-[460px] lg:!w-[400px] lg:!h-[500px]"
                 >
-                  <motion.div 
+                  <motion.div
                     className="relative w-full h-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-500 group"
-                    whileHover={{ 
+                    whileHover={{
                       y: -10,
                       transition: { duration: 0.3 }
                     }}
@@ -203,12 +200,12 @@ const LadakhTripHighlights = ({ content }: LadakhTripHighlightsProps) => {
                       sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 360px, 400px"
                       quality={95}
                       priority={index < 3}
-                      placeholder="blur"
+                      placeholder={typeof slide.src === 'string' ? undefined : 'blur'}
                     />
-                    
+
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300" />
-                    
+
                     {/* Content */}
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                       <motion.div
@@ -216,7 +213,8 @@ const LadakhTripHighlights = ({ content }: LadakhTripHighlightsProps) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 + index * 0.1 }}
                       >
-
+                        <h3 className="text-xl font-bold font-heading mb-1 text-shadow-sm">{slide.alt}</h3>
+                        <div className="h-1 w-12 bg-[#134956] rounded-full" />
                       </motion.div>
                     </div>
 
