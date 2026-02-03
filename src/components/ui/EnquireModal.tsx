@@ -11,9 +11,10 @@ import { EnquireFormData } from '@/types';
 interface EnquireModalProps {
   isOpen: boolean;
   onClose: () => void;
+  backgroundImageUrl?: string;
 }
 
-const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose }) => {
+const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroundImageUrl }) => {
   const [formData, setFormData] = useState<EnquireFormData>({
     name: '',
     phone: '',
@@ -48,7 +49,7 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose }) => {
     } else {
       document.body.style.overflow = 'unset';
     }
-    
+
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -65,7 +66,7 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       // Get destination from current URL path
       const getDestinationFromUrl = () => {
@@ -93,7 +94,7 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose }) => {
         throw new Error('Failed to submit')
       }
       setSubmitStatus('success')
-      
+
       // Close modal after success
       setTimeout(() => {
         onClose();
@@ -113,15 +114,15 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose }) => {
   };
 
   const modalVariants = {
-    hidden: { 
+    hidden: {
       opacity: 0,
       y: '100%'
     },
-    visible: { 
+    visible: {
       opacity: 1,
       y: 0
     },
-    exit: { 
+    exit: {
       opacity: 0,
       y: '100%'
     }
@@ -175,17 +176,17 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose }) => {
             {/* Kashmir Background Image */}
             <div className="relative h-20 flex-shrink-0 overflow-hidden rounded-t-2xl">
               <Image
-                src="/bgfrom.jpg"
-                alt="Kashmir landscape with Shikara boat"
+                src={backgroundImageUrl || "/bgfrom.jpg"}
+                alt="Enquiry form background"
                 fill
                 className="object-cover object-center"
                 sizes="(max-width: 400px) 100vw"
                 priority
               />
-              
+
               {/* Kashmir Text Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-         
+
             </div>
 
             {/* Modal Content */}
@@ -193,7 +194,7 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose }) => {
               {/* Header */}
               <div className="text-center mb-4">
                 <h2 className="text-xl font-extrabold text-black font-heading ml-3 mb-1 pt-1">
-                 Let&apos;s Make It Happen!
+                  Let&apos;s Make It Happen!
                 </h2>
                 <p className="text-gray-600 font-body text-xs">
                   We&apos;ll call you with a perfect plan.
@@ -327,7 +328,7 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose }) => {
                   className="w-full bg-gradient-to-r from-teal-800 to-teal-900 hover:from-teal-800 hover:to-teal-900 text-white font-bold py-2 px-6 rounded-lg text-sm transition-all duration-300 font-cta uppercase tracking-wide mt-auto"
                   size="lg"
                 >
-                   Get My Custom Plan
+                  Get My Custom Plan
                 </Button>
               </form>
 

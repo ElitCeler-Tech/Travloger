@@ -52,14 +52,14 @@ export default async function KeralaPage() {
       <KeralaHero content={content?.hero || undefined} />
       <KeralaTripOptions content={content?.tripOptions || undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
-      <Accommodation />
+      <Accommodation content={content?.accommodation || undefined} />
       <USP content={content?.usp || undefined} />
       <KeralaTripHighlights content={content?.tripHighlights || undefined} />
       <GroupCTA content={content?.groupCta || undefined} />
       <CompanyLogos content={content?.brands || undefined} />
       <KeralaFAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar />
-    </> 
+      <FloatingActionBar content={content?.contact || undefined} />
+    </>
   );
 }

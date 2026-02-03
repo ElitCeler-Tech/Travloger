@@ -50,14 +50,14 @@ export default async function GokarnaPage() {
       <GokarnaHero content={content?.hero || undefined} />
       <GokarnaTripOptions content={content?.tripOptions || undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
-      <Accommodation />
+      <Accommodation content={content?.accommodation || undefined} />
       <USP content={content?.usp || undefined} />
       <GokarnaTripHighlights content={content?.tripHighlights || undefined} />
       <GroupCTA content={content?.groupCta || undefined} />
       <CompanyLogos content={content?.brands || undefined} />
       <GokarnaFAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar />
-    </> 
+      <FloatingActionBar content={content?.contact || undefined} />
+    </>
   );
 } 

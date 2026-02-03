@@ -50,14 +50,14 @@ export default async function KashmirPage() {
       <LadakhHero content={content?.hero || undefined} />
       <TripOptions content={content?.tripOptions || undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
-      <Accommodation />
+      <Accommodation content={content?.accommodation || undefined} />
       <USP content={content?.usp || undefined} />
       <TripHighlights content={content?.tripHighlights || undefined} />
       <GroupCTA content={content?.groupCta || undefined} />
       <CompanyLogos content={content?.brands || undefined} />
       <FAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar />
+      <FloatingActionBar content={content?.contact || undefined} />
     </>
   );
 }

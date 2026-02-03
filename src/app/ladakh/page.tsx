@@ -50,14 +50,14 @@ export default async function LadakhPage() {
       <LadakhHero content={content?.hero || undefined} />
       <LadakhTripOptions content={content?.tripOptions || undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
-      <Accommodation />
+      <Accommodation content={content?.accommodation || undefined} />
       <USP content={content?.usp || undefined} />
       <LadakhTripHighlights content={content?.tripHighlights || undefined} />
       <GroupCTA content={content?.groupCta || undefined} />
       <CompanyLogos content={content?.brands || undefined} />
       <LadakhFAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar />
-    </> 
+      <FloatingActionBar content={content?.contact || undefined} />
+    </>
   );
 }
