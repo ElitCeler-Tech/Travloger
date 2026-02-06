@@ -11,6 +11,7 @@ import { useIntersectionObserver } from '@/lib/hooks';
 import LazyLoad from '@/components/ui/LazyLoad';
 import { mobileFirst } from '@/lib/mobile-first-patterns';
 import { HighlightedHeading } from '@/components/ui/HighlightedHeading';
+import { RouteBadge } from '../ui/RouteBadge';
 
 interface TripCard {
   id: string;
@@ -418,13 +419,7 @@ const MysoreTripOptions = React.memo(({ content }: MysoreTripOptionsProps) => {
         <div className="flex-1 flex flex-col">
           {/* Route */}
           {trip.route && (
-            <div className="mb-3">
-              <div className="inline-block bg-gray-100 rounded-lg px-3 py-1.5">
-                <span className="text-xs sm:text-sm font-medium text-gray-700 truncate block max-w-full">
-                  {trip.route}
-                </span>
-              </div>
-            </div>
+            <RouteBadge route={trip.route} />
           )}
 
           {/* Title */}
