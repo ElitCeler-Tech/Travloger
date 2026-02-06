@@ -26,6 +26,7 @@ interface TripCard {
   trending?: boolean;
   detailedItinerary?: {
     subtitle: string;
+    headerImage?: string;
     briefItinerary: Array<{
       day: number;
       title: string;

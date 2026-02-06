@@ -31,6 +31,17 @@ interface TripCard {
     icon?: 'default' | 'flights' | 'bus' | 'train';
     included: boolean;
   }[];
+  detailedItinerary?: {
+    subtitle: string;
+    headerImage?: string;
+    briefItinerary: Array<{
+      day: number;
+      title: string;
+      description: string;
+    }>;
+    keyAttractions: string[];
+    inclusions: string[];
+  };
 }
 
 interface TripOptionsContent {

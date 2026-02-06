@@ -18,6 +18,7 @@ interface ItineraryModalProps {
     price: number;
     detailedItinerary?: {
       subtitle: string;
+      headerImage?: string;
       briefItinerary: Array<{
         day: number;
         title: string;
@@ -161,11 +162,11 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
                 </svg>
               </button>
 
-              {/* Kashmir Background Image */}
+              {/* Header Image */}
               <div className="relative h-32 overflow-hidden rounded-t-2xl flex-shrink-0">
                 <Image
-                  src="/itenary.jpg"
-                  alt="Kashmir landscape"
+                  src={trip.detailedItinerary?.headerImage || "/itenary.jpg"}
+                  alt={trip.title}
                   fill
                   className="object-cover object-center"
                   sizes="100vw"
@@ -227,50 +228,54 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
                   </div>
 
                   {/* Key Attractions */}
-                  <div className="mb-5">
-                    <div className="mb-2">
-                      <h3 className="text-xl font-bold text-gray-900 font-heading">Key <span className='text-[#134956]'>Attractions</span></h3>
+                  {((trip.detailedItinerary?.keyAttractions && trip.detailedItinerary.keyAttractions.length > 0) || (!trip.detailedItinerary && true)) && (
+                    <div className="mb-5">
+                      <div className="mb-2">
+                        <h3 className="text-xl font-bold text-gray-900 font-heading">Key <span className='text-[#134956]'>Attractions</span></h3>
+                      </div>
+                      <div className="space-y-1.5">
+                        {(trip.detailedItinerary?.keyAttractions || [
+                          'Mughal Gardens, Dal Lake',
+                          'Thajiwas Glacier & Zojila Pass in Sonmarg',
+                          'Gondola ride at Gulmarg (Asia\'s highest cable car)',
+                          'Doodhpathri meadows & pine forests',
+                          'Aru, Betaab & Chandanwari valleys in Pahalgam',
+                          'Boutique houseboat stay in Srinagar'
+                        ]).map((attraction, index) => (
+                          <div key={index} className="flex items-start gap-3 py-1 hover:bg-gray-50 rounded-lg transition-colors duration-200">
+                            <div className="w-1.5 h-1.5 bg-[#134956] rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-gray-700 font-body leading-relaxed text-sm">{attraction}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="space-y-1.5">
-                      {(trip.detailedItinerary?.keyAttractions || [
-                        'Mughal Gardens, Dal Lake',
-                        'Thajiwas Glacier & Zojila Pass in Sonmarg',
-                        'Gondola ride at Gulmarg (Asia\'s highest cable car)',
-                        'Doodhpathri meadows & pine forests',
-                        'Aru, Betaab & Chandanwari valleys in Pahalgam',
-                        'Boutique houseboat stay in Srinagar'
-                      ]).map((attraction, index) => (
-                        <div key={index} className="flex items-start gap-3 py-1 hover:bg-gray-50 rounded-lg transition-colors duration-200">
-                          <div className="w-1.5 h-1.5 bg-[#134956] rounded-full mt-2 flex-shrink-0"></div>
-                          <span className="text-gray-700 font-body leading-relaxed text-sm">{attraction}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  )}
 
                   {/* Inclusions */}
-                  <div className="">
-                    <div className="mb-2">
-                      <h3 className="text-xl font-bold text-gray-900 font-heading">What&apos;s <span className='text-[#134956]'>Included</span></h3>
+                  {((trip.detailedItinerary?.inclusions && trip.detailedItinerary.inclusions.length > 0) || (!trip.detailedItinerary && true)) && (
+                    <div className="">
+                      <div className="mb-2">
+                        <h3 className="text-xl font-bold text-gray-900 font-heading">What&apos;s <span className='text-[#134956]'>Included</span></h3>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {(trip.detailedItinerary?.inclusions || [
+                          'Hotels/Stay',
+                          'Daily Breakfast',
+                          'Private Transport',
+                          'Sightseeing',
+                          'Trip Assistance',
+                          'All Taxes'
+                        ]).map((item, index) => (
+                          <div key={index} className="flex items-center gap-2 py-1 px-2 border border-gray-100 rounded-md bg-gray-50/50">
+                            <svg className="w-4 h-4 text-[#134956]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span className="text-gray-700 font-body text-xs font-medium">{item}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      {(trip.detailedItinerary?.inclusions || [
-                        'Hotels/Stay',
-                        'Daily Breakfast',
-                        'Private Transport',
-                        'Sightseeing',
-                        'Trip Assistance',
-                        'All Taxes'
-                      ]).map((item, index) => (
-                        <div key={index} className="flex items-center gap-2 py-1 px-2 border border-gray-100 rounded-md bg-gray-50/50">
-                          <svg className="w-4 h-4 text-[#134956]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span className="text-gray-700 font-body text-xs font-medium">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  )}
 
 
                 </div>
