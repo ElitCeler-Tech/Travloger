@@ -1,74 +1,26 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-
+import React from 'react';
 
 export const RouteBadge = ({ route }: { route: string }) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const textRef = useRef<HTMLDivElement>(null);
-    const [isOverflowing, setIsOverflowing] = useState(false);
-
-    useEffect(() => {
-        const checkOverflow = () => {
-            if (containerRef.current && textRef.current) {
-                // We use a temporary tolerance to avoid jitter
-                setIsOverflowing(textRef.current.scrollWidth > containerRef.current.clientWidth);
-            }
-        };
-
-        // Check immediately and after a short delay to ensure fonts loaded/layout settled
-        checkOverflow();
-        const timer = setTimeout(checkOverflow, 100);
-
-        window.addEventListener('resize', checkOverflow);
-        return () => {
-            window.removeEventListener('resize', checkOverflow);
-            clearTimeout(timer);
-        };
-    }, [route]);
-
     return (
         <div className="mb-3 max-w-full">
-            {/* Keyframes for the marquee animation */}
-            <style jsx global>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+            <style jsx>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
         }
-        .animate-marquee {
-          animation: marquee 15s linear infinite;
-        }
-        .animate-marquee:hover {
-          animation-play-state: paused;
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
 
-            <div
-                ref={containerRef}
-                className="inline-block bg-gray-100 rounded-lg px-3 py-1.5 max-w-full overflow-hidden relative align-top"
-            >
-                {isOverflowing ? (
-                    <div className="flex whitespace-nowrap animate-marquee w-fit">
-                        <span
-                            ref={textRef}
-                            className="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap block mr-8"
-                        >
-                            {route}
-                        </span>
-                        <span className="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap block mr-8">
-                            {route}
-                        </span>
-                    </div>
-                ) : (
-                    <div className="w-full">
-                        <span
-                            ref={textRef}
-                            className="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap block"
-                        >
-                            {route}
-                        </span>
-                    </div>
-                )}
+            <div className="inline-block bg-gray-100 rounded-lg px-3 py-1.5 max-w-full overflow-hidden align-top">
+                <div className="w-full overflow-x-auto no-scrollbar whitespace-nowrap">
+                    <span className="text-xs sm:text-sm font-medium text-gray-700 block">
+                        {route.replace(/(\s+-\s+|\s*->\s*|\s*>\s*)/g, ' → ')}
+                    </span>
+                </div>
             </div>
         </div>
     );

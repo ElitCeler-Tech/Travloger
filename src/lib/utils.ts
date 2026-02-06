@@ -21,7 +21,7 @@ export const formatDate = (date: Date) => {
 };
 
 export const debounce = <T extends (...args: unknown[]) => ReturnType<T>>(
-  func: T, 
+  func: T,
   delay: number
 ) => {
   let timeoutId: NodeJS.Timeout;
@@ -29,4 +29,10 @@ export const debounce = <T extends (...args: unknown[]) => ReturnType<T>>(
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => func(...args), delay);
   };
+};
+export const formatPrice = (price: string | number) => {
+  if (typeof price === 'number') {
+    return price.toLocaleString('en-IN');
+  }
+  return price;
 };

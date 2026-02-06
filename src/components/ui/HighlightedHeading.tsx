@@ -11,7 +11,7 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, cl
         const parts = text.split('Explore ');
         return (
             <span className={className}>
-                {parts[0]}Explore <span className="text-[#134956]">{parts[1]}</span>
+                {parts[0]}<span className="text-[#134956]">Explore {parts[1]}</span>
             </span>
         );
     }
