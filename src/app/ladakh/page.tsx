@@ -57,7 +57,7 @@ export default async function LadakhPage() {
       <CompanyLogos content={content?.brands || undefined} />
       <LadakhFAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar content={content?.contact || undefined} />
+      <FloatingActionBar content={content || undefined} />
     </>
   );
 }

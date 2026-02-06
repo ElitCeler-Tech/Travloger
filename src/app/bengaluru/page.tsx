@@ -59,7 +59,7 @@ export default async function BengaluruPage() {
       <CompanyLogos content={content?.brands || undefined} />
       <BengaluruFAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar />
-    </> 
+      <FloatingActionBar content={content || undefined} />
+    </>
   );
 }

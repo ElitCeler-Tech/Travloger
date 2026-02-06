@@ -57,7 +57,7 @@ export default async function SingaporePage() {
       <CompanyLogos content={content?.brands || undefined} />
       <SingaporeFAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar />
-    </> 
+      <FloatingActionBar content={content || undefined} />
+    </>
   );
 } 

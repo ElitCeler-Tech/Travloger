@@ -59,7 +59,7 @@ export default async function HyderabadPage() {
       <CompanyLogos content={content?.brands || undefined} />
       <HyderabadFAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar />
-    </> 
+      <FloatingActionBar content={content || undefined} />
+    </>
   );
 }

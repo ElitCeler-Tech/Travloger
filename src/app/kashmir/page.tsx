@@ -57,8 +57,7 @@ export default async function KashmirPage() {
       <CompanyLogos content={content?.brands || undefined} />
       <FAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar content={content?.contact || undefined} />
+      <FloatingActionBar content={content || undefined} />
     </>
   );
 }
-

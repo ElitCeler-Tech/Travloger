@@ -57,7 +57,7 @@ export default async function MysorePage() {
       <CompanyLogos content={content?.brands || undefined} />
       <MysoreFAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar />
-    </> 
+      <FloatingActionBar content={content || undefined} />
+    </>
   );
 } 

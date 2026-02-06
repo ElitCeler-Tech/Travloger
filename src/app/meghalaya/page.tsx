@@ -57,7 +57,7 @@ export default async function MeghalayaPage() {
       <CompanyLogos content={content?.brands || undefined} />
       <MeghalayaFAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar />
-    </> 
+      <FloatingActionBar content={content || undefined} />
+    </>
   );
 } 

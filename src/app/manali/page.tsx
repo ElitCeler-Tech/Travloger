@@ -59,7 +59,7 @@ export default async function ManaliPage() {
       <CompanyLogos content={content?.brands || undefined} />
       <ManaliFAQ content={content?.faq || undefined} />
       <Footer />
-      <FloatingActionBar />
-    </> 
+      <FloatingActionBar content={content || undefined} />
+    </>
   );
 }

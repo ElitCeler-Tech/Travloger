@@ -8,7 +8,11 @@ import Image from 'next/image';
 
 interface FloatingActionBarProps {
   content?: {
-    formBackgroundImageUrl?: string;
+    contact?: {
+      formBackgroundImageUrl?: string;
+      whatsapp?: string;
+      expertButtonText?: string;
+    };
   };
 }
 
@@ -44,8 +48,8 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
   }, [scrollY]);
 
   const handleWhatsApp = () => {
-    // Replace with your WhatsApp number
-    const phoneNumber = '+919876543210'; // Replace with actual number
+    // Use dynamic WhatsApp number or fallback
+    const phoneNumber = content?.contact?.whatsapp || '+919876543210';
     const message = encodeURIComponent('Hi! I am interested in tour packages. Can you help me plan my trip?');
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
@@ -187,7 +191,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
                   whileHover={prefersReducedMotion ? undefined : "hover"}
                   whileTap={prefersReducedMotion ? undefined : "tap"}
                 >
-                  Enquire Now
+                  {content?.contact?.expertButtonText || 'Talk to an Expert'}
                 </motion.button>
               </div>
             </div>
@@ -240,7 +244,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
                   whileHover={prefersReducedMotion ? undefined : "hover"}
                   whileTap={prefersReducedMotion ? undefined : "tap"}
                 >
-                  Talk to an Expert
+                  {content?.contact?.expertButtonText || 'Talk to an Expert'}
                 </motion.button>
               </div>
             </div>
@@ -252,7 +256,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
       <EnquireModal
         isOpen={isEnquireModalOpen}
         onClose={handleCloseEnquireModal}
-        backgroundImageUrl={content?.formBackgroundImageUrl}
+        backgroundImageUrl={content?.contact?.formBackgroundImageUrl}
       />
     </>
   );
