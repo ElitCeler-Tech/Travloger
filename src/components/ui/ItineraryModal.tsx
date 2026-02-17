@@ -252,20 +252,23 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
                   )}
 
                   {/* Inclusions */}
-                  {((trip.detailedItinerary?.inclusions && trip.detailedItinerary.inclusions.length > 0) || (!trip.detailedItinerary && true)) && (
+                  {(trip.detailedItinerary?.inclusions || !trip.detailedItinerary) && (
                     <div className="">
                       <div className="mb-2">
                         <h3 className="text-xl font-bold text-gray-900 font-heading">What&apos;s <span className='text-[#134956]'>Included</span></h3>
                       </div>
                       <div className="grid grid-cols-2 gap-2">
-                        {(trip.detailedItinerary?.inclusions || [
-                          'Hotels/Stay',
-                          'Daily Breakfast',
-                          'Private Transport',
-                          'Sightseeing',
-                          'Trip Assistance',
-                          'All Taxes'
-                        ]).map((item, index) => (
+                        {(trip.detailedItinerary?.inclusions && trip.detailedItinerary.inclusions.length > 0
+                          ? trip.detailedItinerary.inclusions
+                          : [
+                            'Hotels/Stay',
+                            'Daily Breakfast',
+                            'Private Transport',
+                            'Sightseeing',
+                            'Trip Assistance',
+                            'All Taxes'
+                          ]
+                        ).map((item, index) => (
                           <div key={index} className="flex items-center gap-2 py-1 px-2 border border-gray-100 rounded-md bg-gray-50/50">
                             <svg className="w-4 h-4 text-[#134956]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

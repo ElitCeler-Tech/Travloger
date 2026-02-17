@@ -74,10 +74,73 @@ const reviews: UnfilteredReview[] = [
 ];
 
 const UnfilteredReviews: React.FC<{ content?: ReviewsContent }> = ({ content }) => {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = React.useState(false);
+  const [startX, setStartX] = React.useState(0);
+  const [scrollLeft, setScrollLeft] = React.useState(0);
+  const [showLeftArrow, setShowLeftArrow] = React.useState(false);
+  const [showRightArrow, setShowRightArrow] = React.useState(true);
+
   // Use CMS content if available, otherwise fall back to default
   const heading = content?.heading || "Unfiltered Reviews";
   const subheading = content?.subheading || "Real experiences from real travelers - authentic stories from Kashmir";
   const displayReviews = content?.reviews || reviews;
+
+  const handleScroll = React.useCallback(() => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    setShowLeftArrow(scrollLeft > 10);
+    setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+  }, []);
+
+  React.useEffect(() => {
+    const el = scrollRef.current;
+    if (el) {
+      handleScroll();
+      el.addEventListener('scroll', handleScroll);
+      window.addEventListener('resize', handleScroll);
+      return () => {
+        el.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleScroll);
+      };
+    }
+  }, [handleScroll, displayReviews]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (!scrollRef.current) return;
+    const scrollAmount = scrollRef.current.clientWidth * 0.8;
+    scrollRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+    scrollRef.current.style.scrollBehavior = 'auto'; // Disable smooth scroll while dragging
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+    if (scrollRef.current) scrollRef.current.style.scrollBehavior = 'smooth';
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    if (scrollRef.current) scrollRef.current.style.scrollBehavior = 'smooth';
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
+
   return (
     <section className="bg-gray-50 py-12 md:py-16 overflow-hidden">
       <div className={mobileFirst.container('xl')}>
@@ -97,14 +160,58 @@ const UnfilteredReviews: React.FC<{ content?: ReviewsContent }> = ({ content }) 
           </p>
         </div>
 
-        <div className="relative">
+        <div className="relative group px-4 md:px-0">
+          {/* Navigation Arrows */}
+          <div className="block">
+            {showLeftArrow && (
+              <button
+                onClick={() => scroll('left')}
+                className={cn(
+                  "absolute top-1/2 transform -translate-y-1/2 z-30 bg-white/90 backdrop-blur-sm rounded-full p-2 md:p-3 shadow-lg hover:bg-white transition-all duration-300 hover:scale-110 border border-gray-100",
+                  "left-1 md:left-[-25px] md:group-hover:left-[-15px]",
+                  "opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                )}
+                aria-label="Previous reviews"
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6 text-[#134956]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
+
+            {showRightArrow && (
+              <button
+                onClick={() => scroll('right')}
+                className={cn(
+                  "absolute top-1/2 transform -translate-y-1/2 z-30 bg-white/90 backdrop-blur-sm rounded-full p-2 md:p-3 shadow-lg hover:bg-white transition-all duration-300 hover:scale-110 border border-gray-100",
+                  "right-1 md:right-[-25px] md:group-hover:right-[-15px]",
+                  "opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                )}
+                aria-label="Next reviews"
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6 text-[#134956]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
+          </div>
+
           {/* Scroll Container */}
           <div
-            className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide pb-4 pl-4 md:pl-6"
+            ref={scrollRef}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={handleMouseLeave}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleMouseMove}
+            className={cn(
+              "flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide pb-4",
+              "cursor-grab active:cursor-grabbing select-none"
+            )}
             style={{
-              scrollSnapType: 'x mandatory',
+              scrollSnapType: isDragging ? 'none' : 'x mandatory',
               scrollbarWidth: 'none',
-              msOverflowStyle: 'none'
+              msOverflowStyle: 'none',
+              scrollBehavior: 'smooth'
             }}
           >
             {displayReviews.map((review) => (
@@ -112,7 +219,7 @@ const UnfilteredReviews: React.FC<{ content?: ReviewsContent }> = ({ content }) 
                 key={review.id}
                 className={cn(
                   "flex-none overflow-hidden",
-                  "w-[70vw] sm:w-[60vw] md:w-[50vw] lg:w-[40vw] xl:w-[35vw]",
+                  "w-[85vw] sm:w-[60vw] md:w-[45vw] lg:w-[35vw] xl:w-[30vw]",
                   "scroll-snap-align-start"
                 )}
                 style={{ scrollSnapAlign: 'start' }}
@@ -122,38 +229,40 @@ const UnfilteredReviews: React.FC<{ content?: ReviewsContent }> = ({ content }) 
                   <div className="relative h-48 sm:h-56 md:h-64 flex items-center justify-center">
                     {/* Back image (portrait) - positioned behind */}
                     <div className="absolute w-28 h-36 sm:w-32 sm:h-44 md:w-36 md:h-48 rounded-lg shadow-lg overflow-hidden border-2 border-white top-2 left-2 md:top-4 md:left-4 transform rotate-[-8deg] z-10">
-                <Image
+                      <Image
                         src={review.images[0].src}
                         alt={review.images[0].alt}
-                  fill
+                        fill
                         className="object-cover"
                         sizes="(max-width: 768px) 40vw, 20vw"
-                />
+                        draggable={false}
+                      />
                     </div>
 
                     {/* Front image (landscape) - positioned in front */}
                     <div className="absolute w-40 h-28 sm:w-48 sm:h-32 md:w-56 md:h-36 rounded-lg shadow-xl overflow-hidden border-2 border-white top-8 left-16 sm:top-12 sm:left-20 md:top-16 md:left-24 transform rotate-[4deg] z-20">
-                <Image
+                      <Image
                         src={review.images[1].src}
                         alt={review.images[1].alt}
-                  fill
+                        fill
                         className="object-cover"
                         sizes="(max-width: 768px) 50vw, 25vw"
-                />
-                {/* Yellow tape */}
+                        draggable={false}
+                      />
+                      {/* Yellow tape */}
                       <div className="absolute top-1 right-[-12px] sm:top-2 sm:right-[-16px] md:top-2 md:right-[-20px] w-12 h-4 sm:w-16 sm:h-5 md:w-20 md:h-6 bg-yellow-300/90 transform rotate-45 z-30" />
                     </div>
                   </div>
-          </div>
+                </div>
 
                 {/* Review Text Section */}
-                <div className="px-4 md:px-6 pb-4 md:pb-6">
+                <div className="px-4 md:px-6 pb-4 md:pb-6 mt-4">
                   <blockquote className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed italic mb-3 md:mb-4 line-clamp-4">
                     &ldquo;{review.review}&rdquo;
-                </blockquote>
+                  </blockquote>
                   <p className="text-right text-sm sm:text-base font-bold font-price text-[#134956]">
                     - {review.name}
-                </p>
+                  </p>
                 </div>
               </div>
             ))}

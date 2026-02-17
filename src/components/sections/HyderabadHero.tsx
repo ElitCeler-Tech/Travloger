@@ -7,6 +7,7 @@ interface HeroContent {
   title?: string;
   subtitle?: string;
   backgroundImageUrl?: string;
+  mobileBackgroundImageUrl?: string;
   mobileVideoUrl?: string;
   desktopVideoUrl?: string;
   ctaText?: string;

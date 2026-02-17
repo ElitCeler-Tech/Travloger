@@ -55,7 +55,7 @@ export interface LocationAllTripsListingProps {
 const StampBorder = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
     <div
         className={cn(
-            'relative w-full min-h-[400px] bg-white rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] border border-gray-100',
+            'relative w-full h-full min-h-[400px] bg-white rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] border border-gray-100',
             'transition-all duration-300 hover:shadow-[0_14px_35px_rgba(0,0,0,0.12)]',
             className
         )}
@@ -99,7 +99,7 @@ const LocationAllTripsListing = ({ locationName, defaultTrips, content }: Locati
             className="transition-all duration-300 hover:scale-[1.02] hover:shadow-xl group"
         >
             <motion.div
-                className="relative"
+                className="relative h-full flex flex-col"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
@@ -213,7 +213,7 @@ const LocationAllTripsListing = ({ locationName, defaultTrips, content }: Locati
                     </div>
 
                     {/* Price and Action */}
-                    <div className="flex items-center justify-between ml-2">
+                    <div className="flex items-center justify-between ml-2 mt-auto pt-4">
                         <div>
                             <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Starting from</p>
                             <p className="text-2xl font-bold text-[#134956] font-price">

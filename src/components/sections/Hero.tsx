@@ -8,7 +8,8 @@ import { accessibility } from '@/lib/mobile-first-patterns';
 interface HeroContent {
   title?: string;
   subtitle?: string;
-  backgroundImageUrl?: string; // Mobile/Fallback image
+  backgroundImageUrl?: string; // Desktop/Fallback image
+  mobileBackgroundImageUrl?: string; // New: Mobile specific image
   mobileVideoUrl?: string;
   desktopVideoUrl?: string;    // New: Desktop specific video
   ctaText?: string;
@@ -105,14 +106,14 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
         {content?.mobileVideoUrl ? (
           <div className="relative w-full h-full">
             <Image
-              src={content?.backgroundImageUrl || heroBg}
+              src={content?.mobileBackgroundImageUrl || content?.backgroundImageUrl || heroBg}
               alt="Background"
               fill
               className="object-cover"
               style={{ objectPosition: '30% center' }}
               priority
               sizes="100vw"
-              {...(!content?.backgroundImageUrl && { placeholder: "blur" })}
+              {...(!(content?.mobileBackgroundImageUrl || content?.backgroundImageUrl) && { placeholder: "blur" })}
               quality={85}
             />
             <video
@@ -129,14 +130,14 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
           </div>
         ) : (
           <Image
-            src={content?.backgroundImageUrl || heroBg}
+            src={content?.mobileBackgroundImageUrl || content?.backgroundImageUrl || heroBg}
             alt="Background"
             fill
             className="object-cover"
             style={{ objectPosition: '30% center' }}
             priority
             sizes="100vw"
-            {...(!content?.backgroundImageUrl && { placeholder: "blur" })}
+            {...(!(content?.mobileBackgroundImageUrl || content?.backgroundImageUrl) && { placeholder: "blur" })}
             quality={85}
           />
         )}
