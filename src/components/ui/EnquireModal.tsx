@@ -12,9 +12,10 @@ interface EnquireModalProps {
   isOpen: boolean;
   onClose: () => void;
   backgroundImageUrl?: string;
+  backgroundImageUrlMobile?: string;
 }
 
-const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroundImageUrl }) => {
+const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroundImageUrl, backgroundImageUrlMobile }) => {
   const [formData, setFormData] = useState<EnquireFormData>({
     name: '',
     phone: '',
@@ -173,16 +174,37 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroun
               <XMarkIcon className="w-4 h-4 text-white" />
             </button>
 
-            {/* Kashmir Background Image */}
+            {/* Enquiry form header: mobile image on small viewports when set, else desktop image for all */}
             <div className="relative h-20 flex-shrink-0 overflow-hidden rounded-t-2xl">
-              <Image
-                src={backgroundImageUrl || "/bgfrom.jpg"}
-                alt="Enquiry form background"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 400px) 100vw"
-                priority
-              />
+              {backgroundImageUrlMobile ? (
+                <>
+                  <Image
+                    src={backgroundImageUrlMobile}
+                    alt="Enquiry form background"
+                    fill
+                    className="object-cover object-center md:hidden"
+                    sizes="100vw"
+                    priority
+                  />
+                  <Image
+                    src={backgroundImageUrl || "/bgfrom.jpg"}
+                    alt="Enquiry form background"
+                    fill
+                    className="object-cover object-center hidden md:block"
+                    sizes="400px"
+                    priority
+                  />
+                </>
+              ) : (
+                <Image
+                  src={backgroundImageUrl || "/bgfrom.jpg"}
+                  alt="Enquiry form background"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  priority
+                />
+              )}
 
               {/* Kashmir Text Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

@@ -10,6 +10,7 @@ interface FloatingActionBarProps {
   content?: {
     contact?: {
       formBackgroundImageUrl?: string;
+      formBackgroundImageUrlMobile?: string;
       whatsapp?: string;
       expertButtonText?: string;
     };
@@ -257,6 +258,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
         isOpen={isEnquireModalOpen}
         onClose={handleCloseEnquireModal}
         backgroundImageUrl={content?.contact?.formBackgroundImageUrl}
+        backgroundImageUrlMobile={content?.contact?.formBackgroundImageUrlMobile}
       />
     </>
   );

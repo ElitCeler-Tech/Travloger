@@ -54,6 +54,7 @@ const uspItems: USPItem[] = [
 type USPContent = {
   heading?: string
   subheading?: string
+  ctaText?: string
   items?: { id: string; icon?: any; iconUrl?: string; title: string; description: string }[]
 }
 
@@ -157,7 +158,7 @@ const USP: React.FC<{ content?: USPContent }> = ({ content }) => {
               className="text-gray-700 text-base md:text-lg font-medium"
               whileHover={{ scale: 1.02 }}
             >
-              Ready to experience Kashmir like never before?
+              {content?.ctaText || 'Ready to experience Kashmir like never before?'}
             </motion.p>
           </div>
         </LazyLoad>
