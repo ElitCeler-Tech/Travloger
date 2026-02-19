@@ -8,6 +8,7 @@ import ItineraryModal from '@/components/ui/ItineraryModal';
 import { Button } from '@/components/ui/Button';
 import { mobileFirst } from '@/lib/mobile-first-patterns';
 import FloatingActionBar from '@/components/ui/FloatingActionBar';
+import { RouteBadge } from '@/components/ui/RouteBadge';
 
 export interface TripCard {
     id: string;
@@ -55,12 +56,12 @@ export interface LocationAllTripsListingProps {
 const StampBorder = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
     <div
         className={cn(
-            'relative w-full h-full min-h-[400px] bg-white rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] border border-gray-100',
+            'relative w-full h-full min-h-[400px] sm:min-h-[450px] bg-white rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] border border-gray-100',
             'transition-all duration-300 hover:shadow-[0_14px_35px_rgba(0,0,0,0.12)]',
             className
         )}
     >
-        <div className="relative z-10 p-6 sm:p-6 md:p-7 lg:p-8 h-full w-full">
+        <div className="relative z-10 p-4 sm:p-6 md:p-7 lg:p-8 h-full w-full">
             {children}
         </div>
     </div>
@@ -105,7 +106,7 @@ const LocationAllTripsListing = ({ locationName, defaultTrips, content }: Locati
                 transition={{ duration: 0.3 }}
             >
                 {/* Trip Image */}
-                <div className="relative h-48 sm:h-52 md:h-56 m-1 overflow-hidden rounded-lg mb-4">
+                <div className="relative h-44 sm:h-52 md:h-56 m-0 sm:m-1 overflow-hidden rounded-lg mb-3 sm:mb-4">
                     <Image
                         src={trip.image}
                         alt={trip.title}
@@ -134,13 +135,7 @@ const LocationAllTripsListing = ({ locationName, defaultTrips, content }: Locati
                 <div className="flex-1 flex flex-col">
                     {/* Route */}
                     {trip.route && (
-                        <div className="mb-3">
-                            <div className="inline-block bg-gray-100 rounded-lg px-3 py-1.5">
-                                <span className="text-xs sm:text-sm font-medium text-gray-700 truncate block max-w-full">
-                                    {trip.route}
-                                </span>
-                            </div>
-                        </div>
+                        <RouteBadge route={trip.route} />
                     )}
 
                     {/* Title */}
@@ -152,9 +147,11 @@ const LocationAllTripsListing = ({ locationName, defaultTrips, content }: Locati
                     </h3>
 
                     {/* Description */}
-                    <p className="text-gray-600 text-sm sm:text-base mb-2 ml-1 line-clamp-2">
-                        {trip.description}
-                    </p>
+                    {trip.description && trip.description !== 'Custom trip description' && (
+                        <p className="text-gray-600 text-sm sm:text-base mb-2 ml-1 line-clamp-2">
+                            {trip.description}
+                        </p>
+                    )}
 
                     {/* Features */}
                     <div className="flex flex-wrap gap-2 mb-4 ml-1">
@@ -228,8 +225,8 @@ const LocationAllTripsListing = ({ locationName, defaultTrips, content }: Locati
                             }}
                             className={cn(
                                 "bg-[#134956] hover:bg-[#0f3b4c] text-white font-semibold",
-                                "rounded-full px-11 py-3 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl",
-                                "text-sm sm:text-base"
+                                "rounded-full px-6 sm:px-11 py-2.5 sm:py-3 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl",
+                                "text-xs sm:text-sm md:text-base"
                             )}
                         >
                             Explore
@@ -241,7 +238,7 @@ const LocationAllTripsListing = ({ locationName, defaultTrips, content }: Locati
     );
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 overflow-x-hidden">
             <div className={mobileFirst.container('xl')}>
                 {/* Page Header */}
                 <div className="py-16 md:py-20">
@@ -299,7 +296,7 @@ const LocationAllTripsListing = ({ locationName, defaultTrips, content }: Locati
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 w-full max-w-full">
                                 {currentTrips.map((trip: TripCard) => (
                                     <TripCardComponent key={trip.id} trip={trip} />
                                 ))}

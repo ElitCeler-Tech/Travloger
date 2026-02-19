@@ -15,6 +15,8 @@ interface CompareProps {
   showHandlebar?: boolean;
   autoplayDuration?: number;
   initialSliderPercentage?: number;
+  firstImageLabel?: string;
+  secondImageLabel?: string;
 }
 
 export const Compare = ({
@@ -27,6 +29,8 @@ export const Compare = ({
   showHandlebar = true,
   autoplayDuration = 0,
   initialSliderPercentage = 50,
+  firstImageLabel = "Stock",
+  secondImageLabel = "Real",
 }: CompareProps) => {
   const [sliderXPercent, setSliderXPercent] = useState(initialSliderPercentage);
   const [isDragging, setIsDragging] = useState(false);
@@ -208,9 +212,9 @@ export const Compare = ({
               draggable={false}
               priority
             />
-            {/* Stock Image Label */}
+            {/* First Image Label */}
             <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-red-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold font-heading z-30 shadow-lg">
-              Stock
+              {firstImageLabel}
             </div>
           </motion.div>
         </AnimatePresence>
@@ -228,9 +232,9 @@ export const Compare = ({
           draggable={false}
           priority
         />
-        {/* Real Image Label */}
+        {/* Second Image Label */}
         <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-green-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold font-heading z-30 shadow-lg">
-          Real
+          {secondImageLabel}
         </div>
       </div>
 

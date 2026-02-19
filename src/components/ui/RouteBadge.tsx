@@ -64,12 +64,17 @@ export const RouteBadge = ({ route }: { route: string }) => {
                     style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
-                        WebkitOverflowScrolling: 'touch'
+                        WebkitOverflowScrolling: 'touch',
+                        touchAction: 'pan-x'
                     }}
                     onMouseDown={handleMouseDown}
                     onMouseLeave={handleMouseLeave}
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
+                    onTouchStart={(e) => {
+                        // Stop event propagation to prevent page scroll
+                        e.stopPropagation();
+                    }}
                 >
                     <style jsx>{`
                         div::-webkit-scrollbar {

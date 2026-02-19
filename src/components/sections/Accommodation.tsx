@@ -15,6 +15,8 @@ interface AccommodationProps {
     heading: string;
     stockImage: string;
     realImage: string;
+    promiseText?: string;
+    getText?: string;
   };
 }
 
@@ -22,7 +24,8 @@ const Accommodation = React.memo(({ content }: AccommodationProps) => {
   const stockImage = content?.stockImage || stockImg;
   const realImage = content?.realImage || realImg;
   const heading = content?.heading || "What You See Is Where You'll Stay. Literally.";
-
+  const promiseText = content?.promiseText || 'What they promise';
+  const getText = content?.getText || 'What you get';
 
   const { setRef: setHeaderRef, isInView: isHeaderVisible } = useIntersectionObserver({
     threshold: 0.3,
@@ -62,6 +65,8 @@ const Accommodation = React.memo(({ content }: AccommodationProps) => {
             slideMode="drag"
             showHandlebar={true}
             initialSliderPercentage={50}
+            firstImageLabel={promiseText}
+            secondImageLabel={getText}
           />
         </div>
       </div>
