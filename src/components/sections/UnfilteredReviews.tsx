@@ -149,8 +149,12 @@ const UnfilteredReviews: React.FC<{ content?: ReviewsContent }> = ({ content }) 
             "font-bold text-gray-900 mb-4 font-heading",
             mobileFirst.text('h1')
           )}>
-            {heading.includes('Unfiltered') ? (
+            {heading.includes('<') ? (
               <span dangerouslySetInnerHTML={{ __html: heading }} />
+            ) : heading === 'Unfiltered Reviews' || (heading.includes('Unfiltered') && heading.includes('Reviews')) ? (
+              <>Unfiltered <span className='text-[#134956]'>Reviews</span></>
+            ) : heading.includes('Unfiltered') ? (
+              <>Unfiltered <span className='text-[#134956]'>{heading.replace(/^Unfiltered\s+/i, '').trim()}</span></>
             ) : (
               <>Unfiltered <span className='text-[#134956]'>{heading}</span></>
             )}
