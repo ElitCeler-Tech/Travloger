@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Urbanist } from "next/font/google";
 import "./globals.css";
+import EngagementTracker from "@/components/EngagementTracker";
 
 const urbanist = Urbanist({
   variable: "--font-urbanist",
@@ -58,6 +59,7 @@ export default function RootLayout({
       <body
         className={`${urbanist.variable} antialiased min-h-screen bg-background text-foreground`}
       >
+        <EngagementTracker />
         {children}
       </body>
     </html>

@@ -68,7 +68,7 @@ const CompanyLogos = React.memo(({ content }: { content?: BrandsContent }) => {
     return (
         <>
             {/* Title Section - White Background */}
-            <section className="py-10 bg-white" ref={titleRef}>
+            <section id="brands" className="py-10 bg-white" ref={titleRef}>
                 <div className="container mx-auto px-4">
                     <div className="text-center">
                         <LazyLoad

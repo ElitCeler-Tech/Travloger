@@ -76,8 +76,7 @@ const USP: React.FC<{ content?: USPContent }> = ({ content }) => {
   });
 
   return (
-    
-    <section className="relative py-12 md:py-16 bg-gradient-to-br from-teal-100 to-blue-100 overflow-hidden" ref={setRef}>
+    <section id="usp" className="relative py-12 md:py-16 bg-gradient-to-br from-teal-100 to-blue-100 overflow-hidden" ref={setRef}>
       {/* Top Wavy Design */}
       <div className="absolute top-0 left-0 w-full">
   <svg

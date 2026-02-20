@@ -36,6 +36,7 @@ const GroupCTA = React.memo(({ content }: { content?: GroupCTAContent }) => {
   return (
     <>
       <section 
+        id="group-cta"
         ref={setRef}
         className="md:py-6 bg-gray-50"
       >

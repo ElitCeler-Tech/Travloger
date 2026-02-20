@@ -142,7 +142,7 @@ const UnfilteredReviews: React.FC<{ content?: ReviewsContent }> = ({ content }) 
   };
 
   return (
-    <section className="bg-gray-50 py-12 md:py-16 overflow-hidden">
+    <section id="reviews" className="bg-gray-50 py-12 md:py-16 overflow-hidden">
       <div className={mobileFirst.container('xl')}>
         <div className="text-center mb-8 md:mb-12">
           <h2 className={cn(

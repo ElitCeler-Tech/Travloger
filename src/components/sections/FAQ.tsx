@@ -77,7 +77,7 @@ const FAQ = ({ content }: FAQProps) => {
   };
 
   return (
-    <section className="faq-section relative py-16 lg:py-24 overflow-hidden font-body">
+    <section id="faq" className="faq-section relative py-16 lg:py-24 overflow-hidden font-body">
       {/* Background Design Pattern */}
       <div className="faq-background-overlay absolute inset-0">
       </div>
