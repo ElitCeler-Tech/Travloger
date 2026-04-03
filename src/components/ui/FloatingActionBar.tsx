@@ -145,12 +145,12 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
             exit="exit"
           >
             {/* Desktop Layout */}
-            <div className="hidden md:flex flex-col pointer-events-auto">
+            <div className="hidden md:flex flex-col pointer-events-none">
               {/* Scroll to Top Button - Positioned on right */}
               <div className="flex justify-end px-6 pb-2">
                 <motion.button
                   onClick={handleScrollToTop}
-                  className="rounded-full shadow-lg transition-colors duration-200 mb-2"
+                  className="rounded-full shadow-lg transition-colors duration-200 mb-2 pointer-events-auto"
                   variants={prefersReducedMotion ? undefined : buttonVariants}
                   whileHover={prefersReducedMotion ? undefined : "hover"}
                   whileTap={prefersReducedMotion ? undefined : "tap"}
@@ -171,7 +171,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
               <div className="flex justify-end px-6 pb-2">
                 <motion.button
                   onClick={handleWhatsApp}
-                  className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-colors duration-200"
+                  className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-colors duration-200 pointer-events-auto"
                   variants={prefersReducedMotion ? undefined : buttonVariants}
                   whileHover={prefersReducedMotion ? undefined : "hover"}
                   whileTap={prefersReducedMotion ? undefined : "tap"}
@@ -184,7 +184,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
               </div>
 
               {/* Enquire Now Button - White container with padding */}
-              <div className="bg-white border-t-2 border-gray-200 px-6 py-4 shadow-sm">
+              <div className="bg-white border-t-2 border-gray-200 px-6 py-4 shadow-sm pointer-events-auto">
                 <motion.button
                   onClick={handleEnquire}
                   className="w-full bg-[#134956] hover:bg-[#0f3d47] text-white py-3 font-semibold text-lg rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
@@ -198,12 +198,12 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
             </div>
 
             {/* Mobile Layout */}
-            <div className="md:hidden flex flex-col pointer-events-auto">
+            <div className="md:hidden flex flex-col pointer-events-none">
               {/* Scroll to Top Button - Positioned on right */}
               <div className="flex justify-end px-4 pb-2">
                 <motion.button
                   onClick={handleScrollToTop}
-                  className=" rounded-full shadow-lg transition-colors duration-200 mb-2"
+                  className=" rounded-full shadow-lg transition-colors duration-200 mb-2 pointer-events-auto"
                   variants={prefersReducedMotion ? undefined : buttonVariants}
                   whileHover={prefersReducedMotion ? undefined : "hover"}
                   whileTap={prefersReducedMotion ? undefined : "tap"}
@@ -224,7 +224,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
               <div className="flex justify-end px-4 pb-2">
                 <motion.button
                   onClick={handleWhatsApp}
-                  className="bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg transition-colors duration-200"
+                  className="bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg transition-colors duration-200 pointer-events-auto"
                   variants={prefersReducedMotion ? undefined : buttonVariants}
                   whileHover={prefersReducedMotion ? undefined : "hover"}
                   whileTap={prefersReducedMotion ? undefined : "tap"}
@@ -237,7 +237,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
               </div>
 
               {/* Enquire Now Button - White container with padding */}
-              <div className="bg-white border-t-2 border-gray-200 px-4 py-3 shadow-sm">
+              <div className="bg-white border-t-2 border-gray-200 px-4 py-3 shadow-sm pointer-events-auto">
                 <motion.button
                   onClick={handleEnquire}
                   className="w-full bg-[#134956] hover:bg-[#0f3d47] text-white py-3 font-semibold font-cta text-base rounded-md transition-all duration-300 shadow-md hover:shadow-lg"

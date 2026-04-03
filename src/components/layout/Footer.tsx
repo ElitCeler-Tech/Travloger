@@ -25,11 +25,11 @@ interface FooterSection {
   links: { name: string; href: string; }[];
 }
 
-interface TripDestination {
-  name: string;
-  imageSrc: string;
-  href: string;
-}
+// interface TripDestination {
+//   name: string;
+//   imageSrc: string;
+//   href: string;
+// }
 
 interface SocialLink {
   name: string;
@@ -38,7 +38,7 @@ interface SocialLink {
 }
 
 const Footer: React.FC = React.memo(() => {
-  const [imageErrors, setImageErrors] = useState<{ [key: string]: boolean }>({});
+  // const [imageErrors, setImageErrors] = useState<{ [key: string]: boolean }>({});
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({});
   const { setRef: setFooterRef, isInView: isFooterVisible } = useIntersectionObserver({
     threshold: 0.1,
@@ -46,12 +46,12 @@ const Footer: React.FC = React.memo(() => {
   });
   const prefersReducedMotion = useReducedMotion();
 
-  const handleImageError = (imageName: string) => {
-    setImageErrors(prev => ({
-      ...prev,
-      [imageName]: true
-    }));
-  };
+  // const handleImageError = (imageName: string) => {
+  //   setImageErrors(prev => ({
+  //     ...prev,
+  //     [imageName]: true
+  //   }));
+  // };
 
   const toggleSection = (title: string) => {
     setOpenSections(prev => ({
@@ -113,25 +113,25 @@ const Footer: React.FC = React.memo(() => {
     }
   ];
 
-  const indianTrips: TripDestination[] = [
-    { name: 'HAMPI', imageSrc: '/footerImages/hampi.png', href: '/trips/hampi' },
-    { name: 'MANALI', imageSrc: '/footerImages/manali.png', href: '/trips/manali' },
-    { name: 'GOA', imageSrc: '/footerImages/goa.png', href: '/trips/goa' },
-    { name: 'KASHMIR', imageSrc: '/footerImages/kashmir.png', href: '/trips/kashmir' },
-    { name: 'RAJASTHAN', imageSrc: '/footerImages/rajasthan.png', href: '/trips/rajasthan' },
-    { name: 'SIKKIM', imageSrc: '/footerImages/sikkim.png', href: '/trips/sikkim' },
-    { name: 'GUJRAT', imageSrc: '/footerImages/gujrat.png', href: '/trips/gujrat' },
-  ];
+  // const indianTrips: TripDestination[] = [
+  //   { name: 'HAMPI', imageSrc: '/footerImages/hampi.png', href: '/trips/hampi' },
+  //   { name: 'MANALI', imageSrc: '/footerImages/manali.png', href: '/trips/manali' },
+  //   { name: 'GOA', imageSrc: '/footerImages/goa.png', href: '/trips/goa' },
+  //   { name: 'KASHMIR', imageSrc: '/footerImages/kashmir.png', href: '/trips/kashmir' },
+  //   { name: 'RAJASTHAN', imageSrc: '/footerImages/rajasthan.png', href: '/trips/rajasthan' },
+  //   { name: 'SIKKIM', imageSrc: '/footerImages/sikkim.png', href: '/trips/sikkim' },
+  //   { name: 'GUJRAT', imageSrc: '/footerImages/gujrat.png', href: '/trips/gujrat' },
+  // ];
 
-  const internationalTrips: TripDestination[] = [
-    { name: 'THAILAND', imageSrc: '/footerImages/thailand.png', href: '/trips/thailand' },
-    { name: 'JAPAN', imageSrc: '/footerImages/japan.png', href: '/trips/japan' },
-    { name: 'CHINA', imageSrc: '/footerImages/china.png', href: '/trips/china' },
-    { name: 'BAKU', imageSrc: '/footerImages/baku.png', href: '/trips/baku' },
-    { name: 'PERU', imageSrc: '/footerImages/peru.png', href: '/trips/peru' },
-    { name: 'KOREA', imageSrc: '/footerImages/korea.png', href: '/trips/korea' },
-    { name: 'VIETNAM', imageSrc: '/footerImages/vietnam.png', href: '/trips/vietnam' },
-  ];
+  // const internationalTrips: TripDestination[] = [
+  //   { name: 'THAILAND', imageSrc: '/footerImages/thailand.png', href: '/trips/thailand' },
+  //   { name: 'JAPAN', imageSrc: '/footerImages/japan.png', href: '/trips/japan' },
+  //   { name: 'CHINA', imageSrc: '/footerImages/china.png', href: '/trips/china' },
+  //   { name: 'BAKU', imageSrc: '/footerImages/baku.png', href: '/trips/baku' },
+  //   { name: 'PERU', imageSrc: '/footerImages/peru.png', href: '/trips/peru' },
+  //   { name: 'KOREA', imageSrc: '/footerImages/korea.png', href: '/trips/korea' },
+  //   { name: 'VIETNAM', imageSrc: '/footerImages/vietnam.png', href: '/trips/vietnam' },
+  // ];
 
   const socialLinks: SocialLink[] = [
     { name: 'Twitter', href: 'https://twitter.com/travloger', icon: twitterIcon },
@@ -161,35 +161,35 @@ const Footer: React.FC = React.memo(() => {
     })
   };
 
-  const renderTripCard = (trip: TripDestination) => (
-    <a
-      key={trip.name}
-      href={trip.href}
-      className="group relative overflow-hidden rounded-lg aspect-square bg-gray-800"
-    >
-      {!imageErrors[trip.name] ? (
-        <Image
-          src={trip.imageSrc}
-          alt={trip.name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 14vw"
-          onError={() => handleImageError(trip.name)}
-          priority={false}
-        />
-      ) : (
-        <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
-          <span className="text-white text-lg font-semibold">{trip.name}</span>
-        </div>
-      )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/38 via-gray-600/38 to-transparent transition-all duration-300" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <p className="text-white font-black text-[15px] leading-[22px] text-center px-2 py-1">
-          {trip.name}
-        </p>
-      </div>
-    </a>
-  );
+  // const renderTripCard = (trip: TripDestination) => (
+  //   <a
+  //     key={trip.name}
+  //     href={trip.href}
+  //     className="group relative overflow-hidden rounded-lg aspect-square bg-gray-800"
+  //   >
+  //     {!imageErrors[trip.name] ? (
+  //       <Image
+  //         src={trip.imageSrc}
+  //         alt={trip.name}
+  //         fill
+  //         className="object-cover group-hover:scale-105 transition-transform duration-300"
+  //         sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 14vw"
+  //         onError={() => handleImageError(trip.name)}
+  //         priority={false}
+  //       />
+  //     ) : (
+  //       <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+  //         <span className="text-white text-lg font-semibold">{trip.name}</span>
+  //       </div>
+  //     )}
+  //     <div className="absolute inset-0 bg-gradient-to-t from-black/38 via-gray-600/38 to-transparent transition-all duration-300" />
+  //     <div className="absolute inset-0 flex items-center justify-center">
+  //       <p className="text-white font-black text-[15px] leading-[22px] text-center px-2 py-1">
+  //         {trip.name}
+  //       </p>
+  //     </div>
+  //   </a>
+  // );
 
   return (
     <footer 
