@@ -200,14 +200,13 @@ const Footer: React.FC = React.memo(() => {
       <div className="container mx-auto px-4 py-8 md:py-12">
         
         {/* Trip Destinations Section - Now First */}
-        <motion.div
+        {/* <motion.div
           variants={prefersReducedMotion ? undefined : sectionVariants}
           initial={prefersReducedMotion ? { opacity: 1, y: 0 } : "hidden"}
           animate={isFooterVisible ? "visible" : "hidden"}
           custom={0}
           className="space-y-8 mb-12"
         >
-          {/* Indian Trips */}
           <div className="space-y-4">
             <h3 className="text-[13px] font-medium text-white uppercase tracking-[1px] leading-[18px] font-subheading">Indian Trips</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
@@ -215,14 +214,13 @@ const Footer: React.FC = React.memo(() => {
             </div>
           </div>
 
-          {/* International Trips */}
           <div className="space-y-4">
             <h3 className="text-[13px] font-medium text-white uppercase tracking-[1px] leading-[18px] font-subheading">International Trips</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
               {internationalTrips.map(renderTripCard)}
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Bottom Section - Branding, About, Collab, Contact, Specials, Creators, Gift */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-6">
