@@ -4,6 +4,8 @@ import React from 'react';
 import Image from 'next/image';
 import heroBg from '../../../public/hero-bg.png';
 import { accessibility } from '@/lib/mobile-first-patterns';
+// trackEvent imported for CTA tracking — uncomment when blackout test ends
+// import { trackEvent } from '@/lib/engagement';
 
 interface HeroContent {
   title?: string;
@@ -35,6 +37,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
 
   /* Commented out for blackout test
   const handleWhatsAppClick = () => {
+    trackEvent('whatsapp_click', { cta_position: 'hero' });
     const phoneNumber = (content?.whatsappPhone || defaultContent?.whatsappPhone || '+919876543210').replace(/\s+/g, '');
     const message = encodeURIComponent(content?.whatsappMessage || defaultContent?.whatsappMessage || 'Hi! I am interested in planning a trip. Can you help me?');
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
@@ -42,6 +45,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
   };
 
   const handleItineraryClick = () => {
+    trackEvent('cta_click', { cta_position: 'hero' });
     const packagesSection = document.querySelector('#packages');
     if (packagesSection) {
       packagesSection.scrollIntoView({ behavior: 'smooth' });

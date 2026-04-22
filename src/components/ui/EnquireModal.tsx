@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { useReducedMotion } from '@/lib/hooks';
 import { EnquireFormData } from '@/types';
+import { trackEvent } from '@/lib/engagement';
 
 interface EnquireModalProps {
   isOpen: boolean;
@@ -248,7 +249,12 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroun
               )}
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col">
+              <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col" onFocus={() => {
+                if (!(window as unknown as Record<string, boolean>).__enquireFormStarted) {
+                  (window as unknown as Record<string, boolean>).__enquireFormStarted = true;
+                  trackEvent('form_start', { form_status: 'start', cta_position: 'enquire-modal' });
+                }
+              }}>
                 <div className="relative">
                   <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input

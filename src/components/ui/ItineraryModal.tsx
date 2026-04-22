@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/lib/hooks';
 import { cn } from '@/lib/utils';
 import EnquireModal from './EnquireModal';
+import { trackEvent } from '@/lib/engagement';
 
 interface ItineraryModalProps {
   isOpen: boolean;
@@ -53,6 +54,7 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
   }, [isOpen, onClose]);
 
   const handleTalkToExpert = () => {
+    trackEvent('cta_click', { cta_position: 'itinerary-modal' });
     setIsEnquireModalOpen(true);
   };
 

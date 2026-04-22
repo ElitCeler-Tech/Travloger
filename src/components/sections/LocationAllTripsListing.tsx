@@ -8,6 +8,7 @@ import ItineraryModal from '@/components/ui/ItineraryModal';
 import { Button } from '@/components/ui/Button';
 import { mobileFirst } from '@/lib/mobile-first-patterns';
 import FloatingActionBar from '@/components/ui/FloatingActionBar';
+import { trackEvent } from '@/lib/engagement';
 import { RouteBadge } from '@/components/ui/RouteBadge';
 
 export interface TripCard {
@@ -220,6 +221,7 @@ const LocationAllTripsListing = ({ locationName, defaultTrips, content }: Locati
 
                         <Button
                             onClick={() => {
+                                trackEvent('package_click', { package_id: trip.id, package_name: trip.title });
                                 setSelectedTrip(trip);
                                 setIsModalOpen(true);
                             }}

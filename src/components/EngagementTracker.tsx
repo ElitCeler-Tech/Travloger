@@ -3,9 +3,11 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
 import {
-  getSessionId,
   sendEngagementEvents,
   getLandingPageFromPath,
+  getUtmParams,
+  getScrollDepth,
+  buildEvent,
   SECTION_IDS
 } from '@/lib/engagement'
 
@@ -31,16 +33,13 @@ export default function EngagementTracker() {
         delete sectionTimersRef.current[sectionId]
       }
       if (seconds < MIN_VISIBLE_SECONDS) return
-      const sessionId = getSessionId()
-      const landing = landingPageRef.current || getLandingPageFromPath(window.location.pathname)
       sendEngagementEvents([
-        {
-          session_id: sessionId,
-          landing_page: landing,
-          section_id: sectionId,
+        buildEvent({
           event_type: 'section_view',
-          seconds_visible: Math.round(seconds * 10) / 10
-        }
+          section_id: sectionId,
+          seconds_visible: Math.round(seconds * 10) / 10,
+          scroll_depth: getScrollDepth(),
+        })
       ])
     },
     []
@@ -52,13 +51,12 @@ export default function EngagementTracker() {
     const landing = getLandingPageFromPath(path)
     landingPageRef.current = landing
 
-    const sessionId = getSessionId()
+    // Capture UTM params on first load (persists to sessionStorage)
+    getUtmParams()
+
+    // Send page_view with full context
     sendEngagementEvents([
-      {
-        session_id: sessionId,
-        landing_page: landing,
-        event_type: 'page_view'
-      }
+      buildEvent({ event_type: 'page_view' })
     ])
 
     const observers: Array<{ sectionId: string; el: Element }> = []

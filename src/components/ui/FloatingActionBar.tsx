@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollPosition, useReducedMotion } from '@/lib/hooks';
 import EnquireModal from './EnquireModal';
 import Image from 'next/image';
+import { trackEvent } from '@/lib/engagement';
 
 interface FloatingActionBarProps {
   content?: {
@@ -49,6 +50,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
   }, [scrollY]);
 
   const handleWhatsApp = () => {
+    trackEvent('whatsapp_click', { cta_position: 'floating-bar' });
     // Use dynamic WhatsApp number or fallback
     const phoneNumber = content?.contact?.whatsapp || '+919876543210';
     const message = encodeURIComponent('Hi! I am interested in tour packages. Can you help me plan my trip?');
@@ -57,6 +59,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
   };
 
   const handleEnquire = () => {
+    trackEvent('cta_click', { cta_position: 'floating-bar' });
     setIsEnquireModalOpen(true);
   };
 

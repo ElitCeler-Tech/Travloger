@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { useReducedMotion } from '@/lib/hooks';
 import { GroupFormData } from '@/types';
+import { trackEvent } from '@/lib/engagement';
 
 interface GroupFormModalProps {
   isOpen: boolean;
@@ -201,7 +202,12 @@ const GroupFormModal = React.memo<GroupFormModalProps>(({ isOpen, onClose }) => 
               )}
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-5 flex-1 flex flex-col">
+              <form onSubmit={handleSubmit} className="space-y-5 flex-1 flex flex-col" onFocus={() => {
+                if (!(window as unknown as Record<string, boolean>).__groupFormStarted) {
+                  (window as unknown as Record<string, boolean>).__groupFormStarted = true;
+                  trackEvent('form_start', { form_status: 'start', cta_position: 'group-cta' });
+                }
+              }}>
                 <div className="relative">
                   <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input

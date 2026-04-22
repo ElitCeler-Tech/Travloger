@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import useEmblaCarousel from 'embla-carousel-react';
 import ItineraryModal from '../ui/ItineraryModal';
+import { trackEvent } from '@/lib/engagement';
 import { Button } from '../ui/Button';
 import { useIntersectionObserver } from '@/lib/hooks';
 import LazyLoad from '@/components/ui/LazyLoad';
@@ -520,7 +521,7 @@ const KeralaTripOptions = React.memo(({ content }: { content?: TripOptionsConten
 
             <Button
               onClick={() => {
-                setSelectedTrip(trip);
+                trackEvent('package_click', { package_id: trip.id, package_name: trip.title }); setSelectedTrip(trip);
                 setIsModalOpen(true);
               }}
               className={cn(

@@ -1,4 +1,5 @@
 const SESSION_KEY = 'travloger_engagement_session'
+const UTM_KEY = 'travloger_utm_params'
 
 export function getSessionId(): string {
   if (typeof window === 'undefined') return ''
@@ -21,12 +22,91 @@ export const SECTION_IDS = [
   'group-cta'
 ] as const
 
+export type EventType =
+  | 'page_view'
+  | 'section_view'
+  | 'cta_click'
+  | 'whatsapp_click'
+  | 'call_click'
+  | 'form_start'
+  | 'package_click'
+
 export type EngagementEvent = {
   session_id: string
   landing_page: string
   section_id?: string | null
-  event_type: 'page_view' | 'section_view'
+  event_type: EventType
   seconds_visible?: number | null
+  package_id?: string | null
+  package_name?: string | null
+  utm_source?: string | null
+  utm_medium?: string | null
+  utm_campaign?: string | null
+  gclid?: string | null
+  fbclid?: string | null
+  device_type?: string | null
+  browser?: string | null
+  scroll_depth?: number | null
+  cta_position?: string | null
+  form_status?: string | null
+}
+
+export function getUtmParams(): Record<string, string | null> {
+  if (typeof window === 'undefined') return {}
+  // Check sessionStorage first (persisted from initial landing)
+  const cached = sessionStorage.getItem(UTM_KEY)
+  if (cached) return JSON.parse(cached)
+  // Parse from URL on first visit
+  const params = new URLSearchParams(window.location.search)
+  const utm = {
+    utm_source: params.get('utm_source'),
+    utm_medium: params.get('utm_medium'),
+    utm_campaign: params.get('utm_campaign'),
+    gclid: params.get('gclid'),
+    fbclid: params.get('fbclid'),
+  }
+  // Persist so subsequent page navigations keep the UTM data
+  if (Object.values(utm).some(Boolean)) {
+    sessionStorage.setItem(UTM_KEY, JSON.stringify(utm))
+  }
+  return utm
+}
+
+export function getDeviceInfo(): { device_type: string; browser: string } {
+  if (typeof window === 'undefined') return { device_type: 'unknown', browser: 'unknown' }
+  const ua = navigator.userAgent
+  const device_type = /Mobi|Android/i.test(ua) ? 'mobile' : /Tablet|iPad/i.test(ua) ? 'tablet' : 'desktop'
+  let browser = 'other'
+  if (ua.includes('Chrome') && !ua.includes('Edg')) browser = 'chrome'
+  else if (ua.includes('Safari') && !ua.includes('Chrome')) browser = 'safari'
+  else if (ua.includes('Firefox')) browser = 'firefox'
+  else if (ua.includes('Edg')) browser = 'edge'
+  return { device_type, browser }
+}
+
+export function getScrollDepth(): number {
+  if (typeof window === 'undefined') return 0
+  const scrollTop = window.scrollY || document.documentElement.scrollTop
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight
+  return docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0
+}
+
+/** Build a base event with session, landing page, UTM, and device info pre-filled */
+export function buildEvent(overrides: Partial<EngagementEvent> & { event_type: EventType }): EngagementEvent {
+  const utm = getUtmParams()
+  const { device_type, browser } = getDeviceInfo()
+  return {
+    session_id: getSessionId(),
+    landing_page: getLandingPageFromPath(typeof window !== 'undefined' ? window.location.pathname : ''),
+    utm_source: utm.utm_source || null,
+    utm_medium: utm.utm_medium || null,
+    utm_campaign: utm.utm_campaign || null,
+    gclid: utm.gclid || null,
+    fbclid: utm.fbclid || null,
+    device_type,
+    browser,
+    ...overrides,
+  }
 }
 
 export async function sendEngagementEvents(events: EngagementEvent[]): Promise<boolean> {
@@ -49,4 +129,9 @@ export function getLandingPageFromPath(pathname: string): string {
   if (!path || path === '') return 'home'
   const segment = path.split('/')[0]
   return segment || 'home'
+}
+
+/** Fire-and-forget single event helper */
+export function trackEvent(event_type: EventType, extra?: Partial<EngagementEvent>): void {
+  sendEngagementEvents([buildEvent({ event_type, ...extra })])
 }

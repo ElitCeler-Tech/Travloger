@@ -7,6 +7,7 @@ import { useIntersectionObserver, useReducedMotion } from '@/lib/hooks';
 import { useDebounce } from '@/lib/performance';
 import { cn } from '@/lib/utils';
 import { mobileFirst } from '@/lib/mobile-first-patterns';
+import { trackEvent } from '@/lib/engagement';
 
 // Memoized form validation functions
 const validateEmail = (email: string): boolean => {
@@ -338,7 +339,12 @@ const Contact: React.FC = React.memo(() => {
                   {submitStatus === 'success' && <SuccessMessage />}
                   {submitStatus === 'error' && <ErrorMessage />}
 
-                  <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+                  <form onSubmit={handleSubmit} className="space-y-6" noValidate onFocus={() => {
+                    if (!(window as unknown as Record<string, boolean>).__contactFormStarted) {
+                      (window as unknown as Record<string, boolean>).__contactFormStarted = true;
+                      trackEvent('form_start', { form_status: 'start', cta_position: 'contact' });
+                    }
+                  }}>
                     {/* Name and Email Row */}
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>

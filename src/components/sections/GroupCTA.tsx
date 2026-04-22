@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import LazyLoad from '@/components/ui/LazyLoad';
 import GroupFormModal from './GroupFormModal';
 import groupBg from '../../../public/group.jpg';
+import { trackEvent } from '@/lib/engagement';
 
 type GroupCTAContent = {
   heading?: string
@@ -26,6 +27,7 @@ const GroupCTA = React.memo(({ content }: { content?: GroupCTAContent }) => {
   });
 
   const handleOpenModal = () => {
+    trackEvent('cta_click', { cta_position: 'group-cta' });
     setIsModalOpen(true);
   };
 

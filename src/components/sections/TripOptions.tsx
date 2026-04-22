@@ -10,6 +10,7 @@ import LazyLoad from '@/components/ui/LazyLoad';
 import { mobileFirst } from '@/lib/mobile-first-patterns';
 import { usePackages } from '@/lib/usePackages';
 import { RouteBadge } from '../ui/RouteBadge';
+import { trackEvent } from '@/lib/engagement';
 
 // Use the Package interface from usePackages instead of TripCard
 // Use the Package interface from usePackages as base, but ensure features property uses our strict type
@@ -241,6 +242,7 @@ const TripCard = ({ trip, setSelectedTrip, setIsModalOpen }: {
 
             <Button
               onClick={() => {
+                trackEvent('package_click', { package_id: trip.id, package_name: trip.title });
                 setSelectedTrip(trip);
                 setIsModalOpen(true);
               }}

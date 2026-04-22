@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useReducedMotion } from '@/lib/hooks';
+import { trackEvent } from '@/lib/engagement';
 
 interface NavItem {
   label: string;
@@ -63,6 +64,7 @@ const Header = React.memo(({ content }: { content?: HeaderContent | null }) => {
   };
 
   const handleEnquireClick = () => {
+    trackEvent('cta_click', { cta_position: 'header' });
     setIsMobileMenuOpen(false);
     // Scroll to contact section
     const contactSection = document.querySelector('#contact');
@@ -155,7 +157,7 @@ const Header = React.memo(({ content }: { content?: HeaderContent | null }) => {
 
             {/* Call Button - Right side */}
             <button
-              onClick={() => window.location.href = `tel:${content?.callNumber || '+919876543210'}`}
+              onClick={() => { trackEvent('call_click', { cta_position: 'header' }); window.location.href = `tel:${content?.callNumber || '+919876543210'}` }}
               className="p-2 text-white hover:text-white/80 transition-colors"
               aria-label="Call us"
             >
