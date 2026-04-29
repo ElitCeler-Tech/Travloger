@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
@@ -670,12 +671,12 @@ const BengaluruTripOptions = React.memo(({ content }: { content?: TripOptionsCon
 
               {currentTrips.length > 4 && (
                 <div className="text-center mt-8">
-                  <a
+                  <Link
                     href="/bengaluru/all-trips"
                     className="inline-block bg-[#134956] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#0f3b4c] transition-all duration-300 hover:scale-105 shadow-lg"
                   >
                     View All {currentTrips.length} Trips
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
