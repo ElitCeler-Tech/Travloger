@@ -37,8 +37,8 @@ export const dynamic = 'force-dynamic';
 // Hardcoded city routes take priority in Next.js, so this only catches new/unknown slugs
 const KNOWN_CITIES = ['kashmir', 'ladakh', 'gokarna', 'kerala', 'meghalaya', 'mysore', 'singapore', 'hyderabad', 'bengaluru', 'manali'];
 
-export default async function DynamicCityPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function DynamicCityPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
 
   // Skip known cities (they have their own routes with city-specific components)
   if (KNOWN_CITIES.includes(slug)) {
