@@ -84,6 +84,7 @@ const GroupFormModal = React.memo<GroupFormModalProps>(({ isOpen, onClose }) => 
         })
       });
       if (!res.ok) throw new Error('Failed to submit');
+      trackEvent('form_submit', { form_status: 'submit', cta_position: 'group-cta' });
       
       setSubmitStatus('success');
       

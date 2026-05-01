@@ -97,6 +97,7 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroun
       if (!res.ok) {
         throw new Error('Failed to submit')
       }
+      trackEvent('form_submit', { form_status: 'submit', cta_position: 'enquire-modal' });
       setSubmitStatus('success')
 
       // Close modal after success

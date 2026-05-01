@@ -29,6 +29,7 @@ export type EventType =
   | 'whatsapp_click'
   | 'call_click'
   | 'form_start'
+  | 'form_submit'
   | 'package_click'
   | 'package_view'
 

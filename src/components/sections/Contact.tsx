@@ -250,6 +250,8 @@ const Contact: React.FC = React.memo(() => {
         throw new Error('Failed to submit');
       }
 
+      trackEvent('form_submit', { form_status: 'submit', cta_position: 'contact' });
+
       // Reset form on success
       setFormData({
         name: '',
