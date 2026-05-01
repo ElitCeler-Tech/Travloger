@@ -47,7 +47,7 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
         const seconds = Math.round((Date.now() - openTimeRef.current) / 100) / 10;
         if (seconds >= 1) {
           trackEvent('package_view', {
-            package_id: (trip as any).id || null,
+            package_id: (trip as Record<string, unknown>).id as string || null,
             package_name: trip.title,
             seconds_visible: seconds,
           });
