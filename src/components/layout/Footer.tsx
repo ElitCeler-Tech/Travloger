@@ -261,7 +261,7 @@ const Footer: React.FC = React.memo(() => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center hover:opacity-80 transition-opacity duration-200 group"
+                  className="flex items-center justify-center p-2 hover:opacity-80 transition-opacity duration-200 group"
                   aria-label={`Follow us on ${link.name}`}
                 >
                   <Image

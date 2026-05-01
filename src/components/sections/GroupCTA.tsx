@@ -40,7 +40,7 @@ const GroupCTA = React.memo(({ content }: { content?: GroupCTAContent }) => {
       <section 
         id="group-cta"
         ref={setRef}
-        className="md:py-6 bg-gray-50"
+        className="py-4 md:py-6 bg-gray-50"
       >
         <div className={cn(mobileFirst.container('xl'))}>
           <LazyLoad animationType="fade" delay={0.2}>

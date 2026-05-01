@@ -134,6 +134,7 @@ const FAQ = ({ content }: FAQProps) => {
                   onClick={() => toggleFAQ(faq.id)}
                   className="w-full text-left p-4 sm:p-6 lg:p-8 flex items-center justify-between group focus:outline-none transition-all duration-300 hover:bg-black/5"
                   data-expanded={isOpen}
+                  aria-expanded={isOpen}
                   aria-controls={`faq-answer-${faq.id}`}
                 >
                   <h3

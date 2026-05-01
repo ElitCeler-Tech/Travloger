@@ -190,7 +190,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
               <div className="bg-white border-t-2 border-gray-200 px-6 py-4 shadow-sm pointer-events-auto">
                 <motion.button
                   onClick={handleEnquire}
-                  className="w-full bg-[#134956] hover:bg-[#0f3d47] text-white py-3 font-semibold text-lg rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
+                  className="w-full max-w-md mx-auto bg-[#134956] hover:bg-[#0f3d47] text-white py-3 font-semibold text-lg rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
                   variants={prefersReducedMotion ? undefined : buttonVariants}
                   whileHover={prefersReducedMotion ? undefined : "hover"}
                   whileTap={prefersReducedMotion ? undefined : "tap"}

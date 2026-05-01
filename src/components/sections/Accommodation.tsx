@@ -61,7 +61,7 @@ const Accommodation = React.memo(({ content }: AccommodationProps) => {
           <Compare
             firstImage={stockImage}
             secondImage={realImage}
-            className="h-[210px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] w-full rounded-md md:rounded-2xl shadow-lg"
+            className="h-[280px] sm:h-[350px] md:h-[400px] lg:h-[500px] xl:h-[600px] w-full rounded-md md:rounded-2xl shadow-lg"
             slideMode="drag"
             showHandlebar={true}
             initialSliderPercentage={50}

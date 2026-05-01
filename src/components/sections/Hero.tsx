@@ -125,6 +125,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
               muted
               loop
               playsInline
+              aria-hidden="true"
               className="absolute inset-0 w-full h-full object-cover z-10"
               style={{ objectPosition: '30% center' }}
               key={content.mobileVideoUrl}
@@ -168,6 +169,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
               muted
               loop
               playsInline
+              aria-hidden="true"
               className="absolute inset-0 w-full h-full object-cover z-10"
               style={{ objectPosition: 'center center' }}
               key={content.desktopVideoUrl} // Force re-render if URL changes
@@ -238,7 +240,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
       <div className="absolute bottom-0 left-0 right-0 z-30">
         <div className="bg-white/20 backdrop-blur-sm ">
           <div className="container mx-auto px-4 py-2">
-            <div className="flex justify-center items-center space-x-10 md:space-x-12 lg:space-x-16">
+            <div className="flex justify-center items-center space-x-4 sm:space-x-8 md:space-x-12 lg:space-x-16">
               {trustIndicators.map((indicator, index) => {
                 const innerContent = (
                   <div key={index} className="flex items-center gap-2">

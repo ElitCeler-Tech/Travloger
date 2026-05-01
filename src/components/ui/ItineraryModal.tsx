@@ -186,7 +186,7 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
 
             {/* Modal */}
             <motion.div
-              className="relative bg-white rounded-t-2xl shadow-2xl w-full h-[70vh] flex flex-col"
+              className="relative bg-white rounded-t-2xl shadow-2xl w-full max-h-[85vh] flex flex-col"
               variants={prefersReducedMotion ? undefined : modalVariants}
               initial={prefersReducedMotion ? { opacity: 1, y: 0 } : "hidden"}
               animate="visible"
@@ -238,7 +238,6 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
                 style={{
                   scrollbarWidth: 'thin',
                   scrollbarColor: '#134956 #e5e7eb',
-                  height: 'calc(65vh - 128px)', // 65vh minus header height
                   minHeight: '0',
                 }}
               >

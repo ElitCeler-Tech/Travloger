@@ -29,17 +29,10 @@ const Header = React.memo(({ content }: { content?: HeaderContent | null }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
-  // Debug logging to see what content we're receiving
-  console.log('Header - Content received:', content);
-
-  // Use CMS data or fallback to defaults
   const getValidNavItems = () => {
     if (!content || !content.navItems || content.navItems.length === 0) {
-      console.log('Header - No CMS nav items, using defaults');
       return defaultNavItems;
     }
-    
-    console.log('Header - Using CMS nav items:', content.navItems);
     return content.navItems;
   };
 

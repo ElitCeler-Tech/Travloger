@@ -113,15 +113,14 @@ const CompanyLogos = React.memo(({ content }: { content?: BrandsContent }) => {
                                 animate={{ translateX: prefersReducedMotion ? 0 : '-50%' }}
                                 className="flex flex-none gap-10 md:gap-12 lg:gap-16 pr-10 md:pr-12 lg:pr-16"
                             >
-                                {displayBrands
+                                {[...displayBrands, ...displayBrands]
                                     .filter((company) => {
-                                        // Filter out companies with empty logoUrl
                                         const logoSource = 'logoUrl' in company ? company.logoUrl : company.logo;
                                         return logoSource && typeof logoSource === 'string' && logoSource.trim() !== '';
                                     })
-                                    .map((company) => (
+                                    .map((company, i) => (
                                         <motion.div
-                                            key={company.name}
+                                            key={`${company.name}-${i}`}
                                             className="flex-shrink-0 flex items-center justify-center group"
                                             whileHover={{
                                                 scale: 1.05,

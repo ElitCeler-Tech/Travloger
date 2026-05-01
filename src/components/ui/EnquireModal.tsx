@@ -154,7 +154,7 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroun
 
           {/* Modal */}
           <motion.div
-            className="relative bg-white rounded-t-2xl shadow-2xl w-full max-h-[85vh] min-h-[60vh] overflow-hidden flex flex-col"
+            className="relative bg-white rounded-t-2xl md:rounded-2xl shadow-2xl w-full md:max-w-lg max-h-[85vh] min-h-[60vh] overflow-hidden flex flex-col"
             variants={prefersReducedMotion ? undefined : modalVariants}
             initial={prefersReducedMotion ? { opacity: 1, y: 0 } : "hidden"}
             animate="visible"
