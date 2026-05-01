@@ -30,6 +30,7 @@ export type EventType =
   | 'call_click'
   | 'form_start'
   | 'package_click'
+  | 'package_view'
 
 export type EngagementEvent = {
   session_id: string

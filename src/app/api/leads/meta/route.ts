@@ -25,6 +25,10 @@ export async function POST(req: Request) {
           name,
           phone,
           email,
+          utm_source: 'meta',
+          utm_medium: 'paid',
+          utm_campaign: payload?.leadgen?.campaign_name || payload?.campaign_name || payload?.utm_campaign || null,
+          fbclid: payload?.fbclid || null,
           raw: payload
         }
       ])

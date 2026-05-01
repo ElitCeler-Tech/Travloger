@@ -37,6 +37,10 @@ export async function POST(req: Request) {
           travel_dates: normalized.travelDates,
           custom_notes: normalized.customNotes,
           destination: normalized.destination,
+          utm_source: 'google',
+          utm_medium: 'cpc',
+          utm_campaign: payload.campaign_name || payload.utm_campaign || null,
+          gclid: payload.gclid || null,
           raw: normalized.raw
         }
       ])

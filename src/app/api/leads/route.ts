@@ -93,18 +93,37 @@ export async function POST(req: Request) {
       travelDates,
       customNotes,
       destination,
-      raw
+      raw,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      gclid,
+      fbclid,
+      landing_page_slug,
     } = body || {}
 
     if (!phone && !email) {
       return NextResponse.json({ error: 'phone or email is required' }, { status: 400 })
     }
 
+    // Auto-detect lead source from UTM params
+    let detectedSource = source
+    if (utm_source) {
+      const s = utm_source.toLowerCase()
+      if (s.includes('meta') || s.includes('facebook') || s.includes('instagram') || s.includes('fb') || s.includes('ig') || fbclid) detectedSource = 'Meta Ads'
+      else if (s.includes('google') || s.includes('gads') || s === 'cpc' || gclid) detectedSource = 'Google Ads'
+      else if (s.includes('organic')) detectedSource = 'Organic'
+    } else if (fbclid) {
+      detectedSource = 'Meta Ads'
+    } else if (gclid) {
+      detectedSource = 'Google Ads'
+    }
+
     const { data, error } = await supabaseAdmin
       .from('leads')
       .insert([
         {
-          source,
+          source: detectedSource,
           name,
           phone,
           email,
@@ -112,7 +131,13 @@ export async function POST(req: Request) {
           travel_dates: travelDates ?? null,
           custom_notes: customNotes ?? null,
           destination: destination ?? null,
-          raw: raw ?? null
+          raw: raw ?? null,
+          utm_source: utm_source ?? null,
+          utm_medium: utm_medium ?? null,
+          utm_campaign: utm_campaign ?? null,
+          gclid: gclid ?? null,
+          fbclid: fbclid ?? null,
+          landing_page_slug: landing_page_slug ?? null,
         }
       ])
       .select('*')

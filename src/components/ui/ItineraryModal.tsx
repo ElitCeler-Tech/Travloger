@@ -36,6 +36,27 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
   const prefersReducedMotion = useReducedMotion();
   const [isEnquireModalOpen, setIsEnquireModalOpen] = useState(false);
 
+  // Track time spent viewing this package
+  const openTimeRef = React.useRef<number>(0);
+  useEffect(() => {
+    if (isOpen && trip) {
+      openTimeRef.current = Date.now();
+    }
+    return () => {
+      if (openTimeRef.current && trip) {
+        const seconds = Math.round((Date.now() - openTimeRef.current) / 100) / 10;
+        if (seconds >= 1) {
+          trackEvent('package_view', {
+            package_id: (trip as any).id || null,
+            package_name: trip.title,
+            seconds_visible: seconds,
+          });
+        }
+        openTimeRef.current = 0;
+      }
+    };
+  }, [isOpen, trip]);
+
   // Handle escape key press
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {

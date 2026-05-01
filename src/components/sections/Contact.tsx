@@ -240,7 +240,9 @@ const Contact: React.FC = React.memo(() => {
           email: formData.email,
           phone: formData.phone,
           customNotes: formData.message,
-          destination: formData.tripType // Using tripType as destination context
+          destination: formData.tripType,
+          ...(() => { try { const u = JSON.parse(sessionStorage.getItem('travloger_utm_params') || '{}'); return { utm_source: u.utm_source || null, utm_medium: u.utm_medium || null, utm_campaign: u.utm_campaign || null, gclid: u.gclid || null, fbclid: u.fbclid || null } } catch { return {} } })(),
+          landing_page_slug: window.location.pathname.replace(/^\//, '').split('/')[0] || 'home',
         }),
       });
 

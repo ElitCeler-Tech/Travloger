@@ -89,7 +89,9 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroun
         body: JSON.stringify({
           source: 'enquiry',
           destination: getDestinationFromUrl(),
-          ...formData
+          ...formData,
+          ...(() => { try { const u = JSON.parse(sessionStorage.getItem('travloger_utm_params') || '{}'); return { utm_source: u.utm_source || null, utm_medium: u.utm_medium || null, utm_campaign: u.utm_campaign || null, gclid: u.gclid || null, fbclid: u.fbclid || null } } catch { return {} } })(),
+          landing_page_slug: window.location.pathname.replace(/^\//, '').split('/')[0] || 'home',
         })
       })
       if (!res.ok) {
