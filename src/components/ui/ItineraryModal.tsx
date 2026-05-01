@@ -36,23 +36,47 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, trip }
   const prefersReducedMotion = useReducedMotion();
   const [isEnquireModalOpen, setIsEnquireModalOpen] = useState(false);
 
-  // Track time spent viewing this package
-  const openTimeRef = React.useRef<number>(0);
+  // Track active time spent viewing this package (pauses on tab hidden / 30s idle)
+  const pkgAccumRef = React.useRef(0);
+  const pkgResumedRef = React.useRef<number | null>(null);
+  const pkgIdleRef = React.useRef<number>(0);
+
   useEffect(() => {
-    if (isOpen && trip) {
-      openTimeRef.current = Date.now();
-    }
+    if (!isOpen || !trip) return;
+    pkgAccumRef.current = 0;
+    pkgResumedRef.current = Date.now();
+
+    const pause = () => {
+      if (pkgResumedRef.current != null) {
+        pkgAccumRef.current += (Date.now() - pkgResumedRef.current) / 1000;
+        pkgResumedRef.current = null;
+      }
+    };
+    const resume = () => { if (pkgResumedRef.current == null) pkgResumedRef.current = Date.now(); };
+    const resetIdle = () => {
+      if (pkgResumedRef.current == null && document.visibilityState === 'visible') resume();
+      clearTimeout(pkgIdleRef.current);
+      pkgIdleRef.current = window.setTimeout(pause, 30_000);
+    };
+
+    const onVis = () => { if (document.visibilityState === 'visible') resume(); else pause(); };
+    document.addEventListener('visibilitychange', onVis);
+    const evts = ['mousemove', 'keydown', 'scroll', 'touchstart', 'click'] as const;
+    evts.forEach(e => document.addEventListener(e, resetIdle, { passive: true }));
+    resetIdle();
+
     return () => {
-      if (openTimeRef.current && trip) {
-        const seconds = Math.round((Date.now() - openTimeRef.current) / 100) / 10;
-        if (seconds >= 1) {
-          trackEvent('package_view', {
-            package_id: (trip as Record<string, unknown>).id as string || null,
-            package_name: trip.title,
-            seconds_visible: seconds,
-          });
-        }
-        openTimeRef.current = 0;
+      pause();
+      document.removeEventListener('visibilitychange', onVis);
+      evts.forEach(e => document.removeEventListener(e, resetIdle));
+      clearTimeout(pkgIdleRef.current);
+      const seconds = Math.round(pkgAccumRef.current * 10) / 10;
+      if (seconds >= 1) {
+        trackEvent('package_view', {
+          package_id: (trip as Record<string, unknown>).id as string || null,
+          package_name: trip.title,
+          seconds_visible: seconds,
+        });
       }
     };
   }, [isOpen, trip]);
