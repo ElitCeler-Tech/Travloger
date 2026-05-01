@@ -119,29 +119,48 @@ export async function POST(req: Request) {
       detectedSource = 'Google Ads'
     }
 
-    const { data, error } = await supabaseAdmin
+    let data, error;
+    // Try insert with UTM fields first
+    const fullInsert = await supabaseAdmin
       .from('leads')
-      .insert([
-        {
-          source: detectedSource,
-          name,
-          phone,
-          email,
+      .insert([{
+        source: detectedSource, name, phone, email,
+        number_of_travelers: numberOfTravelers ?? null,
+        travel_dates: travelDates ?? null,
+        custom_notes: customNotes ?? null,
+        destination: destination ?? null,
+        raw: raw ?? null,
+        utm_source: utm_source ?? null,
+        utm_medium: utm_medium ?? null,
+        utm_campaign: utm_campaign ?? null,
+        gclid: gclid ?? null,
+        fbclid: fbclid ?? null,
+        landing_page_slug: landing_page_slug ?? null,
+      }])
+      .select('*')
+      .single()
+
+    data = fullInsert.data
+    error = fullInsert.error
+
+    // Fallback: if UTM columns don't exist yet, retry without them
+    if (error && /column.*does not exist/i.test(error.message)) {
+      console.warn('UTM columns missing, inserting without them:', error.message)
+      const fallback = await supabaseAdmin
+        .from('leads')
+        .insert([{
+          source: detectedSource, name, phone, email,
           number_of_travelers: numberOfTravelers ?? null,
           travel_dates: travelDates ?? null,
           custom_notes: customNotes ?? null,
           destination: destination ?? null,
           raw: raw ?? null,
-          utm_source: utm_source ?? null,
-          utm_medium: utm_medium ?? null,
-          utm_campaign: utm_campaign ?? null,
-          gclid: gclid ?? null,
-          fbclid: fbclid ?? null,
-          landing_page_slug: landing_page_slug ?? null,
-        }
-      ])
-      .select('*')
-      .single()
+        }])
+        .select('*')
+        .single()
+      data = fallback.data
+      error = fallback.error
+    }
 
     if (error) {
       const message = /relation \"leads\" does not exist/i.test(error.message)

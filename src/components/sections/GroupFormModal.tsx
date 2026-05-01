@@ -64,11 +64,26 @@ const GroupFormModal = React.memo<GroupFormModalProps>(({ isOpen, onClose }) => 
     setIsSubmitting(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Log form data (replace with actual API call)
-      console.log('Group Form Submitted:', formData);
+      const utm = (() => { try { return JSON.parse(sessionStorage.getItem('travloger_utm_params') || '{}') } catch { return {} } })();
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: 'group_enquiry',
+          name: formData.name,
+          phone: formData.whatsappNumber,
+          email: formData.email,
+          numberOfTravelers: formData.groupSize,
+          destination: window.location.pathname.replace(/^\//, '').split('/')[0] || 'home',
+          utm_source: utm.utm_source || null,
+          utm_medium: utm.utm_medium || null,
+          utm_campaign: utm.utm_campaign || null,
+          gclid: utm.gclid || null,
+          fbclid: utm.fbclid || null,
+          landing_page_slug: window.location.pathname.replace(/^\//, '').split('/')[0] || 'home',
+        })
+      });
+      if (!res.ok) throw new Error('Failed to submit');
       
       setSubmitStatus('success');
       
