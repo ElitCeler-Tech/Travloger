@@ -71,15 +71,6 @@ async function sendLeadEmail(leadData: LeadEmailData) {
 
 export async function POST(req: Request) {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    if (!supabaseUrl || !serviceKey ||
-      supabaseUrl === 'https://your-project.supabase.co' ||
-      serviceKey === 'your-service-role-key') {
-      return NextResponse.json({
-        error: 'Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.'
-      }, { status: 500 })
-    }
     const contentType = req.headers.get('content-type') || ''
     const isJson = contentType.includes('application/json')
     const body = isJson ? await req.json() : {}
@@ -119,34 +110,18 @@ export async function POST(req: Request) {
       detectedSource = 'Google Ads'
     }
 
-    let data, error;
-    // Try insert with UTM fields first
-    const fullInsert = await supabaseAdmin
-      .from('leads')
-      .insert([{
-        source: detectedSource, name, phone, email,
-        number_of_travelers: numberOfTravelers ?? null,
-        travel_dates: travelDates ?? null,
-        custom_notes: customNotes ?? null,
-        destination: destination ?? null,
-        raw: raw ?? null,
-        utm_source: utm_source ?? null,
-        utm_medium: utm_medium ?? null,
-        utm_campaign: utm_campaign ?? null,
-        gclid: gclid ?? null,
-        fbclid: fbclid ?? null,
-        landing_page_slug: landing_page_slug ?? null,
-      }])
-      .select('*')
-      .single()
+    const leadData = { name, email, phone, numberOfTravelers, travelDates, customNotes, destination }
 
-    data = fullInsert.data
-    error = fullInsert.error
+    // Try Supabase — but don't fail the whole request if it's not configured
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    const supabaseConfigured = supabaseUrl && serviceKey &&
+      supabaseUrl !== 'https://your-project.supabase.co' &&
+      serviceKey !== 'your-service-role-key'
 
-    // Fallback: if UTM columns don't exist yet, retry without them
-    if (error && /column.*does not exist/i.test(error.message)) {
-      console.warn('UTM columns missing, inserting without them:', error.message)
-      const fallback = await supabaseAdmin
+    let savedLead = null
+    if (supabaseConfigured) {
+      const fullInsert = await supabaseAdmin
         .from('leads')
         .insert([{
           source: detectedSource, name, phone, email,
@@ -155,38 +130,41 @@ export async function POST(req: Request) {
           custom_notes: customNotes ?? null,
           destination: destination ?? null,
           raw: raw ?? null,
+          utm_source: utm_source ?? null,
+          utm_medium: utm_medium ?? null,
+          utm_campaign: utm_campaign ?? null,
+          gclid: gclid ?? null,
+          fbclid: fbclid ?? null,
+          landing_page_slug: landing_page_slug ?? null,
         }])
         .select('*')
         .single()
-      data = fallback.data
-      error = fallback.error
+
+      if (fullInsert.error && /column.*does not exist/i.test(fullInsert.error.message)) {
+        const fallback = await supabaseAdmin
+          .from('leads')
+          .insert([{
+            source: detectedSource, name, phone, email,
+            number_of_travelers: numberOfTravelers ?? null,
+            travel_dates: travelDates ?? null,
+            custom_notes: customNotes ?? null,
+            destination: destination ?? null,
+            raw: raw ?? null,
+          }])
+          .select('*')
+          .single()
+        savedLead = fallback.data
+      } else {
+        savedLead = fullInsert.data
+      }
+    } else {
+      console.warn('Supabase not configured — lead will only be sent via email')
     }
 
-    if (error) {
-      const message = /relation \"leads\" does not exist/i.test(error.message)
-        ? 'Leads table missing. Run POST /api/setup-leads or create it in Supabase.'
-        : error.message
-      console.error('Insert lead failed:', message)
-      return NextResponse.json({ error: message }, { status: 500 })
-    }
-
-    // Attempt to send email notification asynchronously
-    // In a production Next.js environment, consider using a background job if this is slow
-    const leadData = {
-      name,
-      email,
-      phone,
-      numberOfTravelers,
-      travelDates,
-      customNotes,
-      destination
-    }
-
-    // We don't await here to keep response fast, but in Next.js/Vercel functions 
-    // it might get terminated, so for reliability we'll await or use waitUntil
+    // Always send email regardless of Supabase status
     await sendLeadEmail(leadData)
 
-    return NextResponse.json({ lead: data }, { status: 201 })
+    return NextResponse.json({ lead: savedLead, ok: true }, { status: 201 })
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : 'Internal server error'
     console.error('POST /api/leads error:', errorMessage)
