@@ -333,8 +333,8 @@ const BengaluruTripOptions = React.memo(({ content }: { content?: TripOptionsCon
   });
 
   // Get current trips based on active tab
-  const { packages: customTrips, loading: customLoading } = usePackages({ tripType: 'custom', destination: 'Bengaluru' });
-  const { packages: groupTrips, loading: groupLoading } = usePackages({ tripType: 'group', destination: 'Bengaluru' });
+  const { packages: customTrips } = usePackages({ tripType: 'custom', destination: 'Bengaluru' });
+  const { packages: groupTrips } = usePackages({ tripType: 'group', destination: 'Bengaluru' });
   const currentTrips = activeTab === 'custom' ? (content?.customTrips?.length ? content.customTrips : customTrips) : (content?.groupTrips?.length ? content.groupTrips : groupTrips);
 
   // Carousel navigation functions

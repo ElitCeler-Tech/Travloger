@@ -338,8 +338,8 @@ const KeralaTripOptions = React.memo(({ content }: { content?: TripOptionsConten
   });
 
   // Get current trips based on active tab
-  const { packages: customTrips, loading: customLoading } = usePackages({ tripType: 'custom', destination: 'Kerala' });
-  const { packages: groupTrips, loading: groupLoading } = usePackages({ tripType: 'group', destination: 'Kerala' });
+  const { packages: customTrips } = usePackages({ tripType: 'custom', destination: 'Kerala' });
+  const { packages: groupTrips } = usePackages({ tripType: 'group', destination: 'Kerala' });
   const currentTrips = activeTab === 'custom' ? (content?.customTrips?.length ? content.customTrips : customTrips) : (content?.groupTrips?.length ? content.groupTrips : groupTrips);
 
   // Carousel navigation functions
