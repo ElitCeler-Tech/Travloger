@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import useEmblaCarousel from 'embla-carousel-react';
 import ItineraryModal from '../ui/ItineraryModal';
 import { trackEvent } from '@/lib/engagement';
+import { usePackages } from '@/lib/usePackages';
 import { Button } from '../ui/Button';
 import { useIntersectionObserver } from '@/lib/hooks';
 import LazyLoad from '@/components/ui/LazyLoad';
@@ -292,42 +293,13 @@ const GokarnaTripOptions = React.memo(({ content }: GokarnaTripOptionsProps) => 
   const [selectedTrip, setSelectedTrip] = useState<TripCard | null>(null);
 
   // Merge CMS content with defaults
+  const { packages: customPkgs, loading: customLoading } = usePackages({ tripType: 'custom', destination: 'Gokarna' });
+  const { packages: groupPkgs, loading: groupLoading } = usePackages({ tripType: 'group', destination: 'Gokarna' });
   const tripsData = React.useMemo(() => {
-    // Debug logging to see what content we're receiving
-    console.log('GokarnaTripOptions - Content received:', content);
-
-    // If no content at all, use defaults
-    if (!content) {
-      console.log('GokarnaTripOptions - No content, using defaults');
-      return defaultGokarnaTrips;
-    }
-
-    // Extract trips from the nested tripOptions structure
-    const customTrips = content.customTrips;
-    const groupTrips = content.groupTrips;
-
-    // Check if we have valid custom trips from CMS
-    const hasCustomTrips = customTrips && Array.isArray(customTrips) && customTrips.length > 0;
-    // Check if we have valid group trips from CMS  
-    const hasGroupTrips = groupTrips && Array.isArray(groupTrips) && groupTrips.length > 0;
-
-    console.log('GokarnaTripOptions - Has custom trips:', hasCustomTrips, 'Has group trips:', hasGroupTrips);
-
-    // If neither custom nor group trips exist in CMS, use defaults
-    if (!hasCustomTrips && !hasGroupTrips) {
-      console.log('GokarnaTripOptions - No valid trips in CMS, using defaults');
-      return defaultGokarnaTrips;
-    }
-
-    // Combine custom and group trips from CMS, or use defaults for missing ones
-    const finalCustomTrips = hasCustomTrips ? customTrips : defaultGokarnaTrips.filter(trip => trip.category === 'custom');
-    const finalGroupTrips = hasGroupTrips ? groupTrips : defaultGokarnaTrips.filter(trip => trip.category === 'group');
-
-    const combinedTrips = [...finalCustomTrips, ...finalGroupTrips];
-    console.log('GokarnaTripOptions - Final trips count:', combinedTrips.length);
-
-    return combinedTrips;
-  }, [content]);
+    const custom = content?.customTrips?.length ? content.customTrips : customPkgs;
+    const group = content?.groupTrips?.length ? content.groupTrips : groupPkgs;
+    return [...custom, ...group];
+  }, [content, customPkgs, groupPkgs]);
 
   // Unified carousel for both types
   const [emblaRef, emblaApi] = useEmblaCarousel({

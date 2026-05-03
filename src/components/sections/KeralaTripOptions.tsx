@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import useEmblaCarousel from 'embla-carousel-react';
 import ItineraryModal from '../ui/ItineraryModal';
 import { trackEvent } from '@/lib/engagement';
+import { usePackages } from '@/lib/usePackages';
 import { Button } from '../ui/Button';
 import { useIntersectionObserver } from '@/lib/hooks';
 import LazyLoad from '@/components/ui/LazyLoad';
@@ -336,9 +337,10 @@ const KeralaTripOptions = React.memo(({ content }: { content?: TripOptionsConten
   });
 
   // Get current trips based on active tab
-  const customTrips = content?.customTrips || keralaTrips.filter(trip => trip.category === 'custom');
-  const groupTrips = content?.groupTrips || keralaTrips.filter(trip => trip.category === 'group');
-  const currentTrips = activeTab === 'custom' ? customTrips : groupTrips;
+  const { packages: customTrips, loading: customLoading } = usePackages({ tripType: 'custom', destination: 'Kerala' });
+  const { packages: groupTrips, loading: groupLoading } = usePackages({ tripType: 'group', destination: 'Kerala' });
+  const currentTrips = activeTab === 'custom' ? (content?.customTrips?.length ? content.customTrips : customTrips) : (content?.groupTrips?.length ? content.groupTrips : groupTrips);
+  const isLoading = activeTab === 'custom' ? customLoading : groupLoading;
 
   // Carousel navigation functions
   const scrollPrev = useCallback(() => {

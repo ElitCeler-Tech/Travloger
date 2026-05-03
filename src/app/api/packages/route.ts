@@ -98,6 +98,7 @@ export async function GET(request: Request) {
     const tripType = searchParams.get('trip_type')
     const featured = searchParams.get('featured')
     const category = searchParams.get('category')
+    const destination = searchParams.get('destination')
     
     // Check if Supabase is properly configured
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -155,17 +156,10 @@ export async function GET(request: Request) {
       .order('created_at', { ascending: false })
 
     // Apply filters
-    if (tripType) {
-      query = query.eq('trip_type', tripType)
-    }
-    
-    if (featured === 'true') {
-      query = query.eq('featured', true)
-    }
-    
-    if (category) {
-      query = query.eq('category', category)
-    }
+    if (tripType) query = query.eq('trip_type', tripType)
+    if (featured === 'true') query = query.eq('featured', true)
+    if (category) query = query.eq('category', category)
+    if (destination) query = query.ilike('destination', `%${destination}%`)
 
     const { data, error } = await query
 

@@ -29,6 +29,7 @@ interface UsePackagesOptions {
   tripType?: 'custom' | 'group'
   featured?: boolean
   category?: string
+  destination?: string
 }
 
 export const usePackages = (options: UsePackagesOptions = {}) => {
@@ -45,6 +46,7 @@ export const usePackages = (options: UsePackagesOptions = {}) => {
       if (options.tripType) params.append('trip_type', options.tripType)
       if (options.featured) params.append('featured', 'true')
       if (options.category) params.append('category', options.category)
+      if (options.destination) params.append('destination', options.destination)
 
       const response = await fetch(`/api/packages?${params.toString()}`)
       const data = await response.json()
@@ -60,7 +62,7 @@ export const usePackages = (options: UsePackagesOptions = {}) => {
     } finally {
       setLoading(false)
     }
-  }, [options.tripType, options.featured, options.category])
+  }, [options.tripType, options.featured, options.category, options.destination])
 
   useEffect(() => {
     fetchPackages()
