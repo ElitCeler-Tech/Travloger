@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic'
 
 const BACKEND_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://travelogerapi.travloger.in').replace(/\/$/, '')
 
-async function sendLeadEmail(body: any) {
+async function sendLeadEmail(body: Record<string, string | undefined>) {
   const { name, email, phone, numberOfTravelers, travelDates, customNotes, destination } = body
   if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) return
   const transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD } })
@@ -40,10 +40,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: true, warning: 'saved via email only' }, { status: 201 })
     }
 
-    const data = await backendRes.json()
+    const data = await backendRes.json() as Record<string, unknown>
     return NextResponse.json(data, { status: 201 })
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Internal server error'
     console.error('POST /api/leads error:', err)
-    return NextResponse.json({ error: err.message || 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

@@ -56,6 +56,7 @@ interface MeghalayaTripOptionsProps {
   content?: TripOptionsContent;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const meghalayaTrips: TripCard[] = [
   // Custom Trips (10)
   {
@@ -281,8 +282,8 @@ const MeghalayaTripOptions = React.memo(({ content }: MeghalayaTripOptionsProps)
   const [selectedTrip, setSelectedTrip] = useState<TripCard | null>(null);
 
   // Merge CMS content with defaults
-  const { packages: customPkgs, loading: customLoading } = usePackages({ tripType: 'custom', destination: 'Meghalaya' });
-  const { packages: groupPkgs, loading: groupLoading } = usePackages({ tripType: 'group', destination: 'Meghalaya' });
+  const { packages: customPkgs } = usePackages({ tripType: 'custom', destination: 'Meghalaya' });
+  const { packages: groupPkgs } = usePackages({ tripType: 'group', destination: 'Meghalaya' });
   const tripsData = React.useMemo(() => {
     const custom = content?.customTrips?.length ? content.customTrips : customPkgs;
     const group = content?.groupTrips?.length ? content.groupTrips : groupPkgs;

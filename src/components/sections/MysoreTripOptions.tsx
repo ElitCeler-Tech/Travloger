@@ -56,6 +56,7 @@ interface MysoreTripOptionsProps {
   content?: TripOptionsContent;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mysoreTrips: TripCard[] = [
   // Custom Trips (10)
   {
@@ -281,8 +282,8 @@ const MysoreTripOptions = React.memo(({ content }: MysoreTripOptionsProps) => {
   const [selectedTrip, setSelectedTrip] = useState<TripCard | null>(null);
 
   // Merge CMS content with defaults
-  const { packages: customPkgs, loading: customLoading } = usePackages({ tripType: 'custom', destination: 'Mysore' });
-  const { packages: groupPkgs, loading: groupLoading } = usePackages({ tripType: 'group', destination: 'Mysore' });
+  const { packages: customPkgs } = usePackages({ tripType: 'custom', destination: 'Mysore' });
+  const { packages: groupPkgs } = usePackages({ tripType: 'group', destination: 'Mysore' });
   const tripsData = React.useMemo(() => {
     const custom = content?.customTrips?.length ? content.customTrips : customPkgs;
     const group = content?.groupTrips?.length ? content.groupTrips : groupPkgs;

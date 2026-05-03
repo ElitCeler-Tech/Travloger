@@ -58,6 +58,7 @@ interface GokarnaTripOptionsProps {
   content?: TripOptionsContent;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const defaultGokarnaTrips: TripCard[] = [
   // Custom Trips
   {
@@ -293,8 +294,8 @@ const GokarnaTripOptions = React.memo(({ content }: GokarnaTripOptionsProps) => 
   const [selectedTrip, setSelectedTrip] = useState<TripCard | null>(null);
 
   // Merge CMS content with defaults
-  const { packages: customPkgs, loading: customLoading } = usePackages({ tripType: 'custom', destination: 'Gokarna' });
-  const { packages: groupPkgs, loading: groupLoading } = usePackages({ tripType: 'group', destination: 'Gokarna' });
+  const { packages: customPkgs } = usePackages({ tripType: 'custom', destination: 'Gokarna' });
+  const { packages: groupPkgs } = usePackages({ tripType: 'group', destination: 'Gokarna' });
   const tripsData = React.useMemo(() => {
     const custom = content?.customTrips?.length ? content.customTrips : customPkgs;
     const group = content?.groupTrips?.length ? content.groupTrips : groupPkgs;

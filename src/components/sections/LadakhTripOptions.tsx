@@ -56,6 +56,7 @@ interface LadakhTripOptionsProps {
   content?: TripOptionsContent;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const defaultLadakhTrips: TripCard[] = [
   // Custom Trips (10)
   {
@@ -281,8 +282,8 @@ const LadakhTripOptions = React.memo(({ content }: LadakhTripOptionsProps) => {
   const [selectedTrip, setSelectedTrip] = useState<TripCard | null>(null);
 
   // Merge CMS content with defaults
-  const { packages: customPkgs, loading: customLoading } = usePackages({ tripType: 'custom', destination: 'Ladakh' });
-  const { packages: groupPkgs, loading: groupLoading } = usePackages({ tripType: 'group', destination: 'Ladakh' });
+  const { packages: customPkgs } = usePackages({ tripType: 'custom', destination: 'Ladakh' });
+  const { packages: groupPkgs } = usePackages({ tripType: 'group', destination: 'Ladakh' });
   const tripsData = React.useMemo(() => {
     const custom = content?.customTrips?.length ? content.customTrips : customPkgs;
     const group = content?.groupTrips?.length ? content.groupTrips : groupPkgs;

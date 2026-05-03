@@ -45,6 +45,7 @@ interface TripCard {
   }[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const keralaTrips: TripCard[] = [
   // Custom Trips (10)
   {
@@ -340,7 +341,6 @@ const KeralaTripOptions = React.memo(({ content }: { content?: TripOptionsConten
   const { packages: customTrips, loading: customLoading } = usePackages({ tripType: 'custom', destination: 'Kerala' });
   const { packages: groupTrips, loading: groupLoading } = usePackages({ tripType: 'group', destination: 'Kerala' });
   const currentTrips = activeTab === 'custom' ? (content?.customTrips?.length ? content.customTrips : customTrips) : (content?.groupTrips?.length ? content.groupTrips : groupTrips);
-  const isLoading = activeTab === 'custom' ? customLoading : groupLoading;
 
   // Carousel navigation functions
   const scrollPrev = useCallback(() => {
