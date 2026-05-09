@@ -39,7 +39,6 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
   const handleWhatsAppClick = () => {
     trackEvent('whatsapp_click', { cta_position: 'hero' });
     const phoneNumber = (content?.whatsappPhone || defaultContent?.whatsappPhone || '+919876543210').replace(/[^0-9]/g, '');
-    // Build source tag from UTM params and landing page
     const params = new URLSearchParams(window.location.search);
     const source = params.get('utm_source') || 'direct';
     const campaign = params.get('utm_campaign') || '';
@@ -49,6 +48,9 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
     const message = encodeURIComponent(`${tag} ${baseMessage}`);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
+    // Create lead in CRM
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://travelogerapi.travloger.in';
+    fetch(`${apiUrl}/api/public/leads/cta`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'whatsapp', landing_page_slug: page, destination: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) }).catch(() => {});
   };
 
   const handleItineraryClick = () => {

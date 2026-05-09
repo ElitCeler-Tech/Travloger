@@ -51,7 +51,6 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
 
   const handleWhatsApp = () => {
     trackEvent('whatsapp_click', { cta_position: 'floating-bar' });
-    // Use dynamic WhatsApp number or fallback — strip non-digits
     const rawNumber = content?.contact?.whatsapp || '+919876543210';
     const phoneNumber = rawNumber.replace(/[^0-9]/g, '');
     const params = new URLSearchParams(window.location.search);
@@ -62,6 +61,9 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
     const message = encodeURIComponent(`${tag} Hi! I am interested in tour packages. Can you help me plan my trip?`);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
+    // Create lead in CRM
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://travelogerapi.travloger.in';
+    fetch(`${apiUrl}/api/public/leads/cta`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'whatsapp', landing_page_slug: page, destination: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) }).catch(() => {});
   };
 
   const handleEnquire = () => {
