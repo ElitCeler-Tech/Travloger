@@ -49,7 +49,16 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
     }
   }, [scrollY]);
 
+  const [showWaPopup, setShowWaPopup] = useState(false);
+  const [waName, setWaName] = useState('');
+  const [waPhone, setWaPhone] = useState('');
+
   const handleWhatsApp = () => {
+    setShowWaPopup(true);
+  };
+
+  const submitWhatsApp = () => {
+    if (!waName || waPhone.length < 10) { alert('Please enter name and 10-digit phone'); return; }
     trackEvent('whatsapp_click', { cta_position: 'floating-bar' });
     const rawNumber = content?.contact?.whatsapp || '+919876543210';
     const phoneNumber = rawNumber.replace(/[^0-9]/g, '');
@@ -60,11 +69,11 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
     const pageName = page.charAt(0).toUpperCase() + page.slice(1);
     const tag = `#Ad${srcCode}${pageName}`;
     const message = encodeURIComponent(`${tag} Hi! I am interested in tour packages. Can you help me plan my trip?`);
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-    window.open(whatsappUrl, '_blank');
-    // Create lead in CRM
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+    setShowWaPopup(false);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://travelogerapi.travloger.in';
-    fetch(`${apiUrl}/api/public/leads/cta`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'whatsapp', landing_page_slug: page, destination: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) }).catch(() => {});
+    fetch(`${apiUrl}/api/public/leads`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: waName, phone: waPhone, source: 'WhatsApp', destination: pageName, landing_page_slug: page, landing_page: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) }).catch(() => {});
+    setWaName(''); setWaPhone('');
   };
 
   const handleEnquire = () => {
@@ -272,6 +281,18 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
         backgroundImageUrl={content?.contact?.formBackgroundImageUrl}
         backgroundImageUrlMobile={content?.contact?.formBackgroundImageUrlMobile}
       />
+      {showWaPopup && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowWaPopup(false)}>
+          <div className="bg-white rounded-2xl p-6 w-[90%] max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-gray-900 mb-1">Connect on WhatsApp</h3>
+            <p className="text-sm text-gray-500 mb-4">Enter your details to get instant help</p>
+            <input type="text" placeholder="Your Name" value={waName} onChange={e => setWaName(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <input type="tel" placeholder="Phone Number" value={waPhone} onChange={e => setWaPhone(e.target.value.replace(/[^0-9]/g, ''))} maxLength={10} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-4 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <button onClick={submitWhatsApp} className="w-full py-3 bg-[#25D366] hover:bg-[#1fb855] text-white font-semibold rounded-lg transition-all">Open WhatsApp</button>
+            <button onClick={() => setShowWaPopup(false)} className="w-full mt-2 text-sm text-gray-400 hover:text-gray-600">Cancel</button>
+          </div>
+        </div>
+      )}
     </>
   );
 });
