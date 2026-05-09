@@ -51,8 +51,9 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
 
   const handleWhatsApp = () => {
     trackEvent('whatsapp_click', { cta_position: 'floating-bar' });
-    // Use dynamic WhatsApp number or fallback
-    const phoneNumber = content?.contact?.whatsapp || '+919876543210';
+    // Use dynamic WhatsApp number or fallback — strip non-digits
+    const rawNumber = content?.contact?.whatsapp || '+919876543210';
+    const phoneNumber = rawNumber.replace(/[^0-9]/g, '');
     const message = encodeURIComponent('Hi! I am interested in tour packages. Can you help me plan my trip?');
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');

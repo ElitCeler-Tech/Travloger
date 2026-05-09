@@ -38,7 +38,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
   /* Commented out for blackout test
   const handleWhatsAppClick = () => {
     trackEvent('whatsapp_click', { cta_position: 'hero' });
-    const phoneNumber = (content?.whatsappPhone || defaultContent?.whatsappPhone || '+919876543210').replace(/\s+/g, '');
+    const phoneNumber = (content?.whatsappPhone || defaultContent?.whatsappPhone || '+919876543210').replace(/[^0-9]/g, '');
     const message = encodeURIComponent(content?.whatsappMessage || defaultContent?.whatsappMessage || 'Hi! I am interested in planning a trip. Can you help me?');
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');

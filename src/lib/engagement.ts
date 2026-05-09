@@ -1,5 +1,28 @@
 const SESSION_KEY = 'travloger_engagement_session'
 const UTM_KEY = 'travloger_utm_params'
+const VISITOR_COOKIE = 'tvlg_vid'
+
+function getCookie(name: string): string | null {
+  const m = document.cookie.match('(^|;)\\s*' + name + '=([^;]*)')
+  return m ? decodeURIComponent(m[2]) : null
+}
+
+function setCookie(name: string, val: string, days: number) {
+  const d = new Date(); d.setTime(d.getTime() + days * 86400000)
+  const domain = location.hostname.replace(/^[^.]+/, '') // .travloger.in
+  document.cookie = `${name}=${encodeURIComponent(val)};expires=${d.toUTCString()};path=/;domain=${domain};SameSite=Lax`
+}
+
+export function getVisitorId(): string {
+  if (typeof window === 'undefined') return ''
+  let id = getCookie(VISITOR_COOKIE) || localStorage.getItem(VISITOR_COOKIE)
+  if (!id) {
+    id = `v_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`
+  }
+  setCookie(VISITOR_COOKIE, id, 365)
+  localStorage.setItem(VISITOR_COOKIE, id)
+  return id
+}
 
 export function getSessionId(): string {
   if (typeof window === 'undefined') return ''
@@ -35,6 +58,7 @@ export type EventType =
 
 export type EngagementEvent = {
   session_id: string
+  visitor_id?: string
   landing_page: string
   section_id?: string | null
   event_type: EventType
@@ -99,6 +123,7 @@ export function buildEvent(overrides: Partial<EngagementEvent> & { event_type: E
   const { device_type, browser } = getDeviceInfo()
   return {
     session_id: getSessionId(),
+    visitor_id: getVisitorId(),
     landing_page: getLandingPageFromPath(typeof window !== 'undefined' ? window.location.pathname : ''),
     utm_source: utm.utm_source || null,
     utm_medium: utm.utm_medium || null,
