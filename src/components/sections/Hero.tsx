@@ -39,7 +39,14 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
   const handleWhatsAppClick = () => {
     trackEvent('whatsapp_click', { cta_position: 'hero' });
     const phoneNumber = (content?.whatsappPhone || defaultContent?.whatsappPhone || '+919876543210').replace(/[^0-9]/g, '');
-    const message = encodeURIComponent(content?.whatsappMessage || defaultContent?.whatsappMessage || 'Hi! I am interested in planning a trip. Can you help me?');
+    // Build source tag from UTM params and landing page
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get('utm_source') || 'direct';
+    const campaign = params.get('utm_campaign') || '';
+    const page = window.location.pathname.replace(/^\//, '').split('/')[0] || 'home';
+    const tag = `#${source}${campaign ? '_' + campaign : ''}_${page}`;
+    const baseMessage = content?.whatsappMessage || defaultContent?.whatsappMessage || 'Hi! I am interested in planning a trip. Can you help me?';
+    const message = encodeURIComponent(`${tag} ${baseMessage}`);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };

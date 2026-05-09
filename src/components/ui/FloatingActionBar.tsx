@@ -54,7 +54,12 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
     // Use dynamic WhatsApp number or fallback — strip non-digits
     const rawNumber = content?.contact?.whatsapp || '+919876543210';
     const phoneNumber = rawNumber.replace(/[^0-9]/g, '');
-    const message = encodeURIComponent('Hi! I am interested in tour packages. Can you help me plan my trip?');
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get('utm_source') || 'direct';
+    const campaign = params.get('utm_campaign') || '';
+    const page = window.location.pathname.replace(/^\//, '').split('/')[0] || 'home';
+    const tag = `#${source}${campaign ? '_' + campaign : ''}_${page}`;
+    const message = encodeURIComponent(`${tag} Hi! I am interested in tour packages. Can you help me plan my trip?`);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };
