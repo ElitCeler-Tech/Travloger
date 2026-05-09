@@ -32,14 +32,6 @@ interface HeroProps {
 }
 
 const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
-  const handleWhatsAppClick = () => {
-    // Handled by tracker.js popup
-  };
-
-  const handleItineraryClick = () => {
-    const packagesSection = document.querySelector('#packages');
-    if (packagesSection) { packagesSection.scrollIntoView({ behavior: 'smooth' }); }
-  };
 
   // Static trust indicators data
   const trustIndicators = [
@@ -196,7 +188,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
 
             <div className="flex flex-wrap items-start gap-4">
               <button
-                onClick={handleWhatsAppClick}
+                onClick={() => {}}
                 className="bg-teal-500 hover:bg-teal-600 text-white rounded-full transition-all duration-300 font-cta w-full sm:w-auto min-w-[200px] h-12 md:h-14 flex items-center justify-center px-8 shadow-lg"
               >
                 <span className="flex items-center gap-2">
@@ -208,7 +200,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
               </button>
 
               <button
-                onClick={handleItineraryClick}
+                onClick={() => document.querySelector('#packages')?.scrollIntoView({ behavior: 'smooth' })}
                 className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full transition-all duration-300 font-cta w-full sm:w-auto min-w-[200px] h-12 md:h-14 flex items-center justify-center px-8 shadow-sm"
               >
                 <span className="flex items-center gap-2">
