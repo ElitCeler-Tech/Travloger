@@ -40,10 +40,11 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
     trackEvent('whatsapp_click', { cta_position: 'hero' });
     const phoneNumber = (content?.whatsappPhone || defaultContent?.whatsappPhone || '+919876543210').replace(/[^0-9]/g, '');
     const params = new URLSearchParams(window.location.search);
-    const source = params.get('utm_source') || 'direct';
-    const campaign = params.get('utm_campaign') || '';
+    const source = params.get('utm_source') || '';
     const page = window.location.pathname.replace(/^\//, '').split('/')[0] || 'home';
-    const tag = `#${source}${campaign ? '_' + campaign : ''}_${page}`;
+    const srcCode = source.toLowerCase().includes('google') || params.get('gclid') ? 'Gg' : source.toLowerCase().includes('meta') || source.toLowerCase().includes('facebook') || params.get('fbclid') ? 'Mt' : source ? 'Og' : 'Dr';
+    const pageName = page.charAt(0).toUpperCase() + page.slice(1);
+    const tag = `#Ad${srcCode}${pageName}`;
     const baseMessage = content?.whatsappMessage || defaultContent?.whatsappMessage || 'Hi! I am interested in planning a trip. Can you help me?';
     const message = encodeURIComponent(`${tag} ${baseMessage}`);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;

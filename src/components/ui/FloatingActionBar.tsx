@@ -54,10 +54,11 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
     const rawNumber = content?.contact?.whatsapp || '+919876543210';
     const phoneNumber = rawNumber.replace(/[^0-9]/g, '');
     const params = new URLSearchParams(window.location.search);
-    const source = params.get('utm_source') || 'direct';
-    const campaign = params.get('utm_campaign') || '';
+    const source = params.get('utm_source') || '';
     const page = window.location.pathname.replace(/^\//, '').split('/')[0] || 'home';
-    const tag = `#${source}${campaign ? '_' + campaign : ''}_${page}`;
+    const srcCode = source.toLowerCase().includes('google') || params.get('gclid') ? 'Gg' : source.toLowerCase().includes('meta') || source.toLowerCase().includes('facebook') || params.get('fbclid') ? 'Mt' : source ? 'Og' : 'Dr';
+    const pageName = page.charAt(0).toUpperCase() + page.slice(1);
+    const tag = `#Ad${srcCode}${pageName}`;
     const message = encodeURIComponent(`${tag} Hi! I am interested in tour packages. Can you help me plan my trip?`);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
