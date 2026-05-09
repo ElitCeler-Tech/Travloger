@@ -32,6 +32,9 @@ interface HeroProps {
 }
 
 const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
+  const [showWaForm, setShowWaForm] = React.useState(false);
+  const [waName, setWaName] = React.useState('');
+  const [waPhone, setWaPhone] = React.useState('');
 
   // Static trust indicators data
   const trustIndicators = [
@@ -78,6 +81,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
   ];
 
   return (
+    <>
     <section className="relative h-[70vh] w-full overflow-hidden">
       {/* Skip link for accessibility */}
       <a href="#packages" className={accessibility.skipLink}>
@@ -188,7 +192,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
 
             <div className="flex flex-wrap items-start gap-4">
               <button
-                onClick={() => {}}
+                onClick={() => setShowWaForm(true)}
                 className="bg-teal-500 hover:bg-teal-600 text-white rounded-full transition-all duration-300 font-cta w-full sm:w-auto min-w-[200px] h-12 md:h-14 flex items-center justify-center px-8 shadow-lg"
               >
                 <span className="flex items-center gap-2">
@@ -264,6 +268,33 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
         </div>
       </div>
     </section>
+    {showWaForm && (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowWaForm(false)}>
+        <div className="bg-white rounded-2xl p-6 w-[90%] max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
+          <h3 className="text-lg font-bold text-gray-900 mb-1">Connect on WhatsApp</h3>
+          <p className="text-sm text-gray-500 mb-4">Enter your details to get instant help</p>
+          <input type="text" placeholder="Your Name" value={waName} onChange={e => setWaName(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          <input type="tel" placeholder="Phone Number" value={waPhone} onChange={e => setWaPhone(e.target.value.replace(/[^0-9]/g, ''))} maxLength={10} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-4 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          <button onClick={() => {
+            if (!waName || waPhone.length < 10) { alert('Please enter name and 10-digit phone'); return }
+            const phoneNumber = (content?.whatsappPhone || defaultContent?.whatsappPhone || '+919876543210').replace(/[^0-9]/g, '');
+            const params = new URLSearchParams(window.location.search);
+            const page = window.location.pathname.replace(/^\//, '').split('/')[0] || 'home';
+            const src = params.get('utm_source') || '';
+            const srcCode = src.toLowerCase().includes('google') || params.get('gclid') ? 'Gg' : src.toLowerCase().includes('meta') || params.get('fbclid') ? 'Mt' : src ? 'Og' : 'Dr';
+            const tag = `#Ad${srcCode}${page.charAt(0).toUpperCase() + page.slice(1)}`;
+            const msg = encodeURIComponent(`${tag} ${content?.whatsappMessage || defaultContent?.whatsappMessage || 'Hi! I am interested in planning a trip.'}`);
+            window.open(`https://wa.me/${phoneNumber}?text=${msg}`, '_blank');
+            setShowWaForm(false);
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://travelogerapi.travloger.in';
+            fetch(`${apiUrl}/api/public/leads`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: waName, phone: waPhone, source: 'WhatsApp', destination: page.charAt(0).toUpperCase() + page.slice(1), landing_page_slug: page, landing_page: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) }).catch(() => {});
+            setWaName(''); setWaPhone('');
+          }} className="w-full py-3 bg-[#25D366] hover:bg-[#1fb855] text-white font-semibold rounded-lg transition-all">Open WhatsApp</button>
+          <button onClick={() => setShowWaForm(false)} className="w-full mt-2 text-sm text-gray-400 hover:text-gray-600">Cancel</button>
+        </div>
+      </div>
+    )}
+    </>
   );
 });
 
