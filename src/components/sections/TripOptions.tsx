@@ -50,6 +50,7 @@ interface TripCard {
 interface TripOptionsContent {
   heading?: string;
   subheading?: string;
+  highlightText?: string;
   customTrips?: TripCard[];
   groupTrips?: TripCard[];
 }
@@ -262,7 +263,17 @@ const TripCard = ({ trip, setSelectedTrip, setIsModalOpen }: {
 };
 
 // Helper component to highlight the destination name in the heading
-const HighlightedHeading = ({ text }: { text: string }) => {
+const HighlightedHeading = ({ text, highlightText }: { text: string; highlightText?: string }) => {
+  // If CMS provides specific text to highlight
+  if (highlightText && text.includes(highlightText)) {
+    const parts = text.split(highlightText);
+    return (
+      <>
+        {parts[0]}<span className="text-[#134956]">{highlightText}</span>{parts[1] || ''}
+      </>
+    );
+  }
+
   // If the text contains "Explore", highlight everything after it
   if (text.includes('Explore ')) {
     const parts = text.split('Explore ');
@@ -284,7 +295,6 @@ const HighlightedHeading = ({ text }: { text: string }) => {
     );
   }
 
-  // Return plain text if no pattern matches
   return <>{text}</>;
 };
 
@@ -337,7 +347,7 @@ const TripOptions = React.memo(({ content }: TripOptionsProps) => {
               mobileFirst.text('h1')
             )}>
               {content?.heading ? (
-                <HighlightedHeading text={content.heading} />
+                <HighlightedHeading text={content.heading} highlightText={content.highlightText} />
               ) : (
                 <>
                   How Do You Want To{' '}
