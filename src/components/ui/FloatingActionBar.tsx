@@ -52,6 +52,10 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
   const [showWaPopup, setShowWaPopup] = useState(false);
   const [waName, setWaName] = useState('');
   const [waPhone, setWaPhone] = useState('');
+  const [waEmail, setWaEmail] = useState('');
+  const [waTravelers, setWaTravelers] = useState('');
+  const [waDates, setWaDates] = useState('');
+  const [waNotes, setWaNotes] = useState('');
 
   const handleWhatsApp = () => {
     setShowWaPopup(true);
@@ -72,8 +76,8 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
     setShowWaPopup(false);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://travelogerapi.travloger.in';
-    fetch(`${apiUrl}/api/public/leads`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: waName, phone: waPhone, source: 'WhatsApp', destination: pageName, landing_page_slug: page, landing_page: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) }).catch(() => {});
-    setWaName(''); setWaPhone('');
+    fetch(`${apiUrl}/api/public/leads`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: waName, phone: waPhone, email: waEmail, numberOfTravelers: waTravelers, travelDates: waDates, customNotes: waNotes, source: 'WhatsApp', destination: pageName, landing_page_slug: page, landing_page: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) }).catch(() => {});
+    setWaName(''); setWaPhone(''); setWaEmail(''); setWaTravelers(''); setWaDates(''); setWaNotes('');
   };
 
   const handleEnquire = () => {
@@ -283,11 +287,15 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
       />
       {showWaPopup && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowWaPopup(false)}>
-          <div className="bg-white rounded-2xl p-6 w-[90%] max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="bg-white rounded-2xl p-6 w-[90%] max-w-sm shadow-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <h3 className="text-lg font-bold text-gray-900 mb-1">Connect on WhatsApp</h3>
-            <p className="text-sm text-gray-500 mb-4">Enter your details to get instant help</p>
-            <input type="text" placeholder="Your Name" value={waName} onChange={e => setWaName(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
-            <input type="tel" placeholder="Phone Number" value={waPhone} onChange={e => setWaPhone(e.target.value.replace(/[^0-9]/g, ''))} maxLength={10} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-4 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <p className="text-sm text-gray-500 mb-4">Fill your details to get instant help</p>
+            <input type="text" placeholder="Your Name *" value={waName} onChange={e => setWaName(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <input type="tel" placeholder="Phone Number *" value={waPhone} onChange={e => setWaPhone(e.target.value.replace(/[^0-9]/g, ''))} maxLength={10} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <input type="email" placeholder="Email Address" value={waEmail} onChange={e => setWaEmail(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <input type="text" placeholder="Number of Travelers" value={waTravelers} onChange={e => setWaTravelers(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <input type="text" placeholder="Travel Dates (e.g. 15 Jun - 20 Jun)" value={waDates} onChange={e => setWaDates(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <textarea placeholder="Any specific requirements?" value={waNotes} onChange={e => setWaNotes(e.target.value)} rows={2} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-4 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none" />
             <button onClick={submitWhatsApp} className="w-full py-3 bg-[#25D366] hover:bg-[#1fb855] text-white font-semibold rounded-lg transition-all">Open WhatsApp</button>
             <button onClick={() => setShowWaPopup(false)} className="w-full mt-2 text-sm text-gray-400 hover:text-gray-600">Cancel</button>
           </div>
