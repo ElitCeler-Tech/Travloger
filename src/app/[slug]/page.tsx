@@ -57,7 +57,7 @@ export default async function DynamicCityPage({ params }: { params: Promise<{ sl
       <ScrollProgress />
       <Header content={content?.header || undefined} />
       <Hero content={content?.hero || undefined} />
-      <TripOptions content={content?.tripOptions || undefined} />
+      <TripOptions content={content?.tripOptions ? { ...content.tripOptions, highlightText: content.tripOptions.highlightText || content.hero?.highlightText } : undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
       <Accommodation content={content?.accommodation || undefined} />
       <USP content={content?.usp || undefined} />

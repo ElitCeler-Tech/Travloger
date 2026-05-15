@@ -48,7 +48,7 @@ export default async function SingaporePage() {
       <ScrollProgress />
       <Header content={content?.header || undefined} />
       <SingaporeHero content={content?.hero || undefined} />
-      <SingaporeTripOptions content={content?.tripOptions || undefined} />
+      <SingaporeTripOptions content={content?.tripOptions ? { ...content.tripOptions, highlightText: content.tripOptions.highlightText || content.hero?.highlightText } : undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
       <Accommodation />
       <USP content={content?.usp || undefined} />

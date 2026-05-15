@@ -50,7 +50,7 @@ export default async function KeralaPage() {
       <ScrollProgress />
       <Header content={content?.header || undefined} />
       <KeralaHero content={content?.hero || undefined} />
-      <KeralaTripOptions content={content?.tripOptions || undefined} />
+      <KeralaTripOptions content={content?.tripOptions ? { ...content.tripOptions, highlightText: content.tripOptions.highlightText || content.hero?.highlightText } : undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
       <Accommodation content={content?.accommodation || undefined} />
       <USP content={content?.usp || undefined} />

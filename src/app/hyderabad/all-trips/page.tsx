@@ -50,7 +50,7 @@ export default async function HyderabadAllTripsPage() {
       <ScrollProgress />
       <Header content={content?.header || undefined} />
       <HyderabadHero content={content?.hero || undefined} />
-      <HyderabadTripOptions content={content?.tripOptions || undefined} />
+      <HyderabadTripOptions content={content?.tripOptions ? { ...content.tripOptions, highlightText: content.tripOptions.highlightText || content.hero?.highlightText } : undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
       <Accommodation />
       <USP content={content?.usp || undefined} />

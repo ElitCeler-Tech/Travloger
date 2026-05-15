@@ -50,7 +50,7 @@ export default async function ManaliAllTripsPage() {
       <ScrollProgress />
       <Header content={content?.header || undefined} />
       <ManaliHero content={content?.hero || undefined} />
-      <ManaliTripOptions content={content?.tripOptions || undefined} />
+      <ManaliTripOptions content={content?.tripOptions ? { ...content.tripOptions, highlightText: content.tripOptions.highlightText || content.hero?.highlightText } : undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
       <Accommodation />
       <USP content={content?.usp || undefined} />

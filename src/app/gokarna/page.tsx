@@ -48,7 +48,7 @@ export default async function GokarnaPage() {
       <ScrollProgress />
       <Header content={content?.header || undefined} />
       <GokarnaHero content={content?.hero || undefined} />
-      <GokarnaTripOptions content={content?.tripOptions || undefined} />
+      <GokarnaTripOptions content={content?.tripOptions ? { ...content.tripOptions, highlightText: content.tripOptions.highlightText || content.hero?.highlightText } : undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
       <Accommodation content={content?.accommodation || undefined} />
       <USP content={content?.usp || undefined} />

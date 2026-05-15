@@ -48,7 +48,7 @@ export default async function MeghalayaPage() {
       <ScrollProgress />
       <Header content={content?.header || undefined} />
       <MeghalayaHero content={content?.hero || undefined} />
-      <MeghalayaTripOptions content={content?.tripOptions || undefined} />
+      <MeghalayaTripOptions content={content?.tripOptions ? { ...content.tripOptions, highlightText: content.tripOptions.highlightText || content.hero?.highlightText } : undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
       <Accommodation />
       <USP content={content?.usp || undefined} />

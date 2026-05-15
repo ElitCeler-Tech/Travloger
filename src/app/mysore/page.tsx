@@ -48,7 +48,7 @@ export default async function MysorePage() {
       <ScrollProgress />
       <Header content={content?.header || undefined} />
       <MysoreHero content={content?.hero || undefined} />
-      <MysoreTripOptions content={content?.tripOptions || undefined} />
+      <MysoreTripOptions content={content?.tripOptions ? { ...content.tripOptions, highlightText: content.tripOptions.highlightText || content.hero?.highlightText } : undefined} />
       <UnfilteredReviews content={content?.reviews || undefined} />
       <Accommodation />
       <USP content={content?.usp || undefined} />
