@@ -2,11 +2,20 @@ import React from 'react';
 
 interface HighlightedHeadingProps {
     text: string;
-    className?: string; // Allow passing extra classes if needed
+    highlightText?: string;
+    className?: string;
 }
 
-export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, className }) => {
-    // If the text contains "Explore", highlight everything after it
+export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, highlightText, className }) => {
+    if (highlightText && text.includes(highlightText)) {
+        const parts = text.split(highlightText);
+        return (
+            <span className={className}>
+                {parts[0]}<span className="text-[#134956]">{highlightText}</span>{parts[1] || ''}
+            </span>
+        );
+    }
+
     if (text.includes('Explore ')) {
         const parts = text.split('Explore ');
         return (
@@ -16,10 +25,8 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, cl
         );
     }
 
-    // Basic fallback: highlight the last word if it looks like a destination heading
-    // and has enough words (to avoid highlighting in very short phrases inappropriately)
     const words = text.split(' ');
-    if (words.length > 2) { // Changed to > 2 (e.g. "Best of Ladakh")
+    if (words.length > 2) {
         const lastWord = words.pop();
         return (
             <span className={className}>
@@ -28,6 +35,5 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, cl
         );
     }
 
-    // Return plain text if no pattern matches
     return <span className={className}>{text}</span>;
 };

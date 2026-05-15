@@ -521,7 +521,7 @@ const MeghalayaTripOptions = React.memo(({ content }: MeghalayaTripOptionsProps)
               mobileFirst.text('h1')
             )}>
               {content?.heading ? (
-                <HighlightedHeading text={content.heading} />
+                <HighlightedHeading text={content.heading} highlightText={content.highlightText} />
               ) : (
                 <>
                   How Do You Want To{' '}
