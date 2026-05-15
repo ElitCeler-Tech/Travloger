@@ -17,15 +17,17 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, hi
                 </span>
             );
         }
-        // Partial match - highlight from first word of highlightText to end
-        const firstWord = highlightText.split(' ')[0];
-        if (firstWord && text.includes(firstWord)) {
-            const idx = text.indexOf(firstWord);
-            return (
-                <span className={className}>
-                    {text.slice(0, idx)}<span className="text-[#134956]">{text.slice(idx)}</span>
-                </span>
-            );
+        // Partial match - find last significant word from highlightText in the heading
+        const words = highlightText.replace(/[?!.]/, '').split(' ').filter(w => w.length > 2);
+        for (let i = words.length - 1; i >= 0; i--) {
+            if (text.includes(words[i])) {
+                const idx = text.indexOf(words[i]);
+                return (
+                    <span className={className}>
+                        {text.slice(0, idx)}<span className="text-[#134956]">{text.slice(idx)}</span>
+                    </span>
+                );
+            }
         }
     }
 
