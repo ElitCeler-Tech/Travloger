@@ -13,7 +13,6 @@ import logoImg from '../../../public/logo.png';
 import twitterIcon from '../../../public/footerIcons/1.svg';
 import facebookIcon from '../../../public/footerIcons/2.svg';
 import instagramIcon from '../../../public/footerIcons/3.svg';
-import githubIcon from '../../../public/footerIcons/4.svg';
 
 // Import contact icons
 import phoneIcon from '../../../public/footerIcons/Light/Icons.svg';
@@ -37,7 +36,14 @@ interface SocialLink {
   icon: typeof twitterIcon;
 }
 
-const Footer: React.FC = React.memo(() => {
+interface FooterContent {
+  socialLinks?: { twitter?: string; facebook?: string; instagram?: string };
+  contactPhone?: string;
+  contactEmail?: string;
+  contactAddress?: string;
+}
+
+const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cmsContent }) => {
   // const [imageErrors, setImageErrors] = useState<{ [key: string]: boolean }>({});
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({});
   const { setRef: setFooterRef, isInView: isFooterVisible } = useIntersectionObserver({
@@ -134,10 +140,9 @@ const Footer: React.FC = React.memo(() => {
   // ];
 
   const socialLinks: SocialLink[] = [
-    { name: 'Twitter', href: 'https://twitter.com/travloger', icon: twitterIcon },
-    { name: 'Facebook', href: 'https://facebook.com/travloger', icon: facebookIcon },
-    { name: 'Instagram', href: 'https://instagram.com/travloger', icon: instagramIcon },
-    { name: 'GitHub', href: 'https://github.com/travloger', icon: githubIcon },
+    { name: 'Twitter', href: cmsContent?.socialLinks?.twitter || 'https://twitter.com/travloger', icon: twitterIcon },
+    { name: 'Facebook', href: cmsContent?.socialLinks?.facebook || 'https://facebook.com/travloger', icon: facebookIcon },
+    { name: 'Instagram', href: cmsContent?.socialLinks?.instagram || 'https://instagram.com/travloger', icon: instagramIcon },
   ];
 
   const bottomLinks = [
@@ -410,10 +415,10 @@ const Footer: React.FC = React.memo(() => {
                     <div>
                       <p className="text-[14px] text-gray-300 leading-[22px]">Telephone</p>
                       <a 
-                        href="tel:+916281392007" 
+                        href={`tel:${cmsContent?.contactPhone || '+916281392007'}`}
                         className="text-[14px] text-white hover:text-gray-300 transition-colors duration-200 leading-[22px]"
                       >
-                        +91-62813-92007
+                        {cmsContent?.contactPhone || '+91-62813-92007'}
                       </a>
                     </div>
                   </div>
@@ -429,10 +434,10 @@ const Footer: React.FC = React.memo(() => {
                     <div>
                       <p className="text-[14px] text-gray-300 leading-[22px]">Mail</p>
                       <a 
-                        href="mailto:hello@travloger.in" 
+                        href={`mailto:${cmsContent?.contactEmail || 'hello@travloger.in'}`}
                         className="text-[14px] text-white hover:text-gray-300 transition-colors duration-200 leading-[22px]"
                       >
-                        hello@travloger.in
+                        {cmsContent?.contactEmail || 'hello@travloger.in'}
                       </a>
                     </div>
                   </div>
@@ -448,7 +453,7 @@ const Footer: React.FC = React.memo(() => {
                     <div>
                       <p className="text-[14px] text-gray-300 leading-[22px]">Address</p>
                       <p className="text-[14px] text-white leading-[22px]">
-                        ABC road, Hyderabad, Telangana
+                        {cmsContent?.contactAddress || 'ABC road, Hyderabad, Telangana'}
                       </p>
                     </div>
                   </div>
