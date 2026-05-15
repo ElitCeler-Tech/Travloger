@@ -7,13 +7,26 @@ interface HighlightedHeadingProps {
 }
 
 export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, highlightText, className }) => {
-    if (highlightText && text.includes(highlightText)) {
-        const parts = text.split(highlightText);
-        return (
-            <span className={className}>
-                {parts[0]}<span className="text-[#134956]">{highlightText}</span>{parts[1] || ''}
-            </span>
-        );
+    if (highlightText) {
+        // Exact match
+        if (text.includes(highlightText)) {
+            const parts = text.split(highlightText);
+            return (
+                <span className={className}>
+                    {parts[0]}<span className="text-[#134956]">{highlightText}</span>{parts[1] || ''}
+                </span>
+            );
+        }
+        // Partial match - highlight from first word of highlightText to end
+        const firstWord = highlightText.split(' ')[0];
+        if (firstWord && text.includes(firstWord)) {
+            const idx = text.indexOf(firstWord);
+            return (
+                <span className={className}>
+                    {text.slice(0, idx)}<span className="text-[#134956]">{text.slice(idx)}</span>
+                </span>
+            );
+        }
     }
 
     if (text.includes('Explore ')) {
