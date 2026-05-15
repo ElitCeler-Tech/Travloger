@@ -119,25 +119,25 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
     }
   ];
 
-  // const indianTrips: TripDestination[] = [
-  //   { name: 'HAMPI', imageSrc: '/footerImages/hampi.png', href: '/trips/hampi' },
-  //   { name: 'MANALI', imageSrc: '/footerImages/manali.png', href: '/trips/manali' },
-  //   { name: 'GOA', imageSrc: '/footerImages/goa.png', href: '/trips/goa' },
-  //   { name: 'KASHMIR', imageSrc: '/footerImages/kashmir.png', href: '/trips/kashmir' },
-  //   { name: 'RAJASTHAN', imageSrc: '/footerImages/rajasthan.png', href: '/trips/rajasthan' },
-  //   { name: 'SIKKIM', imageSrc: '/footerImages/sikkim.png', href: '/trips/sikkim' },
-  //   { name: 'GUJRAT', imageSrc: '/footerImages/gujrat.png', href: '/trips/gujrat' },
-  // ];
+  const indianTrips = [
+    { name: 'HAMPI', imageSrc: '/footerImages/hampi.png', href: '/trips/hampi' },
+    { name: 'MANALI', imageSrc: '/footerImages/manali.png', href: '/manali' },
+    { name: 'GOA', imageSrc: '/footerImages/goa.png', href: '/trips/goa' },
+    { name: 'KASHMIR', imageSrc: '/footerImages/kashmir.png', href: '/kashmir' },
+    { name: 'RAJASTHAN', imageSrc: '/footerImages/rajasthan.png', href: '/trips/rajasthan' },
+    { name: 'SIKKIM', imageSrc: '/footerImages/sikkim.png', href: '/trips/sikkim' },
+    { name: 'GUJRAT', imageSrc: '/footerImages/gujrat.png', href: '/trips/gujrat' },
+  ];
 
-  // const internationalTrips: TripDestination[] = [
-  //   { name: 'THAILAND', imageSrc: '/footerImages/thailand.png', href: '/trips/thailand' },
-  //   { name: 'JAPAN', imageSrc: '/footerImages/japan.png', href: '/trips/japan' },
-  //   { name: 'CHINA', imageSrc: '/footerImages/china.png', href: '/trips/china' },
-  //   { name: 'BAKU', imageSrc: '/footerImages/baku.png', href: '/trips/baku' },
-  //   { name: 'PERU', imageSrc: '/footerImages/peru.png', href: '/trips/peru' },
-  //   { name: 'KOREA', imageSrc: '/footerImages/korea.png', href: '/trips/korea' },
-  //   { name: 'VIETNAM', imageSrc: '/footerImages/vietnam.png', href: '/trips/vietnam' },
-  // ];
+  const internationalTrips = [
+    { name: 'THAILAND', imageSrc: '/footerImages/thailand.png', href: '/trips/thailand' },
+    { name: 'JAPAN', imageSrc: '/footerImages/japan.png', href: '/trips/japan' },
+    { name: 'CHINA', imageSrc: '/footerImages/china.png', href: '/trips/china' },
+    { name: 'BAKU', imageSrc: '/footerImages/baku.png', href: '/trips/baku' },
+    { name: 'PERU', imageSrc: '/footerImages/peru.png', href: '/trips/peru' },
+    { name: 'KOREA', imageSrc: '/footerImages/korea.png', href: '/trips/korea' },
+    { name: 'VIETNAM', imageSrc: '/footerImages/vietnam.png', href: '/trips/vietnam' },
+  ];
 
   const socialLinks: SocialLink[] = [
     { name: 'Twitter', href: cmsContent?.socialLinks?.twitter || 'https://twitter.com/travloger', icon: twitterIcon },
@@ -166,35 +166,28 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
     })
   };
 
-  // const renderTripCard = (trip: TripDestination) => (
-  //   <a
-  //     key={trip.name}
-  //     href={trip.href}
-  //     className="group relative overflow-hidden rounded-lg aspect-square bg-gray-800"
-  //   >
-  //     {!imageErrors[trip.name] ? (
-  //       <Image
-  //         src={trip.imageSrc}
-  //         alt={trip.name}
-  //         fill
-  //         className="object-cover group-hover:scale-105 transition-transform duration-300"
-  //         sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 14vw"
-  //         onError={() => handleImageError(trip.name)}
-  //         priority={false}
-  //       />
-  //     ) : (
-  //       <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
-  //         <span className="text-white text-lg font-semibold">{trip.name}</span>
-  //       </div>
-  //     )}
-  //     <div className="absolute inset-0 bg-gradient-to-t from-black/38 via-gray-600/38 to-transparent transition-all duration-300" />
-  //     <div className="absolute inset-0 flex items-center justify-center">
-  //       <p className="text-white font-black text-[15px] leading-[22px] text-center px-2 py-1">
-  //         {trip.name}
-  //       </p>
-  //     </div>
-  //   </a>
-  // );
+  const renderTripCard = (trip: { name: string; imageSrc: string; href: string }) => (
+    <a
+      key={trip.name}
+      href={trip.href}
+      className="group relative overflow-hidden rounded-lg aspect-square bg-gray-800"
+    >
+      <Image
+        src={trip.imageSrc}
+        alt={trip.name}
+        fill
+        className="object-cover group-hover:scale-105 transition-transform duration-300"
+        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 14vw"
+        priority={false}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <p className="text-white font-black text-[15px] leading-[22px] text-center px-2 py-1">
+          {trip.name}
+        </p>
+      </div>
+    </a>
+  );
 
   return (
     <footer 
@@ -204,14 +197,8 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-8 md:py-12">
         
-        {/* Trip Destinations Section - Now First */}
-        {/* <motion.div
-          variants={prefersReducedMotion ? undefined : sectionVariants}
-          initial={prefersReducedMotion ? { opacity: 1, y: 0 } : "hidden"}
-          animate={isFooterVisible ? "visible" : "hidden"}
-          custom={0}
-          className="space-y-8 mb-12"
-        >
+        {/* Trip Destinations Section */}
+        <div className="space-y-8 mb-12">
           <div className="space-y-4">
             <h3 className="text-[13px] font-medium text-white uppercase tracking-[1px] leading-[18px] font-subheading">Indian Trips</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
@@ -225,7 +212,7 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
               {internationalTrips.map(renderTripCard)}
             </div>
           </div>
-        </motion.div> */}
+        </div>
 
         {/* Bottom Section - Branding, About, Collab, Contact, Specials, Creators, Gift */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-6">
