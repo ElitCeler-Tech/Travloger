@@ -57,12 +57,17 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
   const [waDates, setWaDates] = useState('');
   const [waNotes, setWaNotes] = useState('');
 
+  const [waSubmitting, setWaSubmitting] = useState(false);
+  const [waSuccess, setWaSuccess] = useState(false);
+
   const handleWhatsApp = () => {
     setShowWaPopup(true);
+    setWaSuccess(false);
   };
 
-  const submitWhatsApp = () => {
+  const submitWhatsApp = async () => {
     if (!waName || waPhone.length < 10) { alert('Please enter name and 10-digit phone'); return; }
+    setWaSubmitting(true);
     trackEvent('whatsapp_click', { cta_position: 'floating-bar' });
     const rawNumber = content?.contact?.whatsapp || '+919876543210';
     const phoneNumber = rawNumber.replace(/[^0-9]/g, '');
@@ -73,11 +78,24 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
     const pageName = page.charAt(0).toUpperCase() + page.slice(1);
     const tag = `#Ad${srcCode}${pageName}`;
     const message = encodeURIComponent(`${tag} Hi! I am interested in tour packages. Can you help me plan my trip?`);
-    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
-    setShowWaPopup(false);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://travelogerapi.travloger.in';
-    fetch(`${apiUrl}/api/public/leads`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: waName, phone: waPhone, email: waEmail, number_of_travelers: waTravelers, travel_dates: waDates, custom_notes: waNotes, source: 'WhatsApp', destination: pageName, landing_page_slug: page, landing_page: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) }).catch(() => {});
-    setWaName(''); setWaPhone(''); setWaEmail(''); setWaTravelers(''); setWaDates(''); setWaNotes('');
+    try {
+      const res = await fetch(`${apiUrl}/api/public/leads`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: waName, phone: waPhone, email: waEmail, number_of_travelers: waTravelers, travel_dates: waDates, custom_notes: waNotes, source: 'WhatsApp', destination: pageName, landing_page_slug: page, landing_page: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) });
+      if (res.ok) {
+        setWaSuccess(true);
+        setTimeout(() => {
+          window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+          setShowWaPopup(false);
+          setWaSuccess(false);
+          setWaName(''); setWaPhone(''); setWaEmail(''); setWaTravelers(''); setWaDates(''); setWaNotes('');
+        }, 1000);
+      } else {
+        alert('Something went wrong. Please try again.');
+      }
+    } catch {
+      alert('Network error. Please try again.');
+    }
+    setWaSubmitting(false);
   };
 
   const handleEnquire = () => {
@@ -296,7 +314,9 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
             <input type="text" placeholder="Number of Travelers" value={waTravelers} onChange={e => setWaTravelers(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
             <input type="text" placeholder="Travel Dates (e.g. 15 Jun - 20 Jun)" value={waDates} onChange={e => setWaDates(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
             <textarea placeholder="Any specific requirements?" value={waNotes} onChange={e => setWaNotes(e.target.value)} rows={2} className="w-full px-4 py-3 border border-gray-200 rounded-lg mb-4 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none" />
-            <button onClick={submitWhatsApp} className="w-full py-3 bg-[#25D366] hover:bg-[#1fb855] text-white font-semibold rounded-lg transition-all">Open WhatsApp</button>
+            <button onClick={submitWhatsApp} disabled={waSubmitting} className="w-full py-3 bg-[#25D366] hover:bg-[#1fb855] text-white font-semibold rounded-lg transition-all disabled:opacity-50">
+              {waSuccess ? '✓ Submitted! Opening WhatsApp...' : waSubmitting ? 'Submitting...' : 'Open WhatsApp'}
+            </button>
             <button onClick={() => setShowWaPopup(false)} className="w-full mt-2 text-sm text-gray-400 hover:text-gray-600">Cancel</button>
           </div>
         </div>
