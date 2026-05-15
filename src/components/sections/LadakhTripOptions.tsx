@@ -49,7 +49,6 @@ interface TripOptionsContent {
   heading?: string;
   highlightText?: string;
   subheading?: string;
-  highlightText?: string;
   customTrips?: TripCard[];
   groupTrips?: TripCard[];
 }
