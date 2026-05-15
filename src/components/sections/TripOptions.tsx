@@ -51,6 +51,10 @@ interface TripOptionsContent {
   heading?: string;
   subheading?: string;
   highlightText?: string;
+  customTabLabel?: string;
+  groupTabLabel?: string;
+  customLabel?: string;
+  groupLabel?: string;
   customTrips?: TripCard[];
   groupTrips?: TripCard[];
 }
@@ -375,7 +379,7 @@ const TripOptions = React.memo(({ content }: TripOptionsProps) => {
                     : "text-gray-700 hover:text-[#134956]"
                 )}
               >
-                Custom Trip
+                {content?.customTabLabel || content?.customLabel || 'Custom Trip'}
               </button>
               <button
                 onClick={() => handleTabSwitch('group')}
@@ -387,7 +391,7 @@ const TripOptions = React.memo(({ content }: TripOptionsProps) => {
                     : "text-gray-700 hover:text-[#134956]"
                 )}
               >
-                Group Departure
+                {content?.groupTabLabel || content?.groupLabel || 'Group Departure'}
               </button>
             </div>
           </div>
