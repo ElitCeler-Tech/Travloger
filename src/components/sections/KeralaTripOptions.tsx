@@ -306,7 +306,9 @@ const StampBorder = ({ children, className = '' }: { children: React.ReactNode; 
 
 type TripOptionsContent = {
   heading?: string
+  highlightText?: string
   subheading?: string
+  highlightText?: string
   customLabel?: string
   groupLabel?: string
   customTrips?: TripCard[]

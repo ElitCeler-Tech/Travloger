@@ -49,6 +49,7 @@ interface TripCard {
 
 interface TripOptionsContent {
   heading?: string;
+  highlightText?: string;
   subheading?: string;
   highlightText?: string;
   customTabLabel?: string;
