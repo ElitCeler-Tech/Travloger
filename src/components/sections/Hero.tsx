@@ -175,9 +175,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
         )}
       </div>
 
-      {/* BLACKOUT TEST - Temporarily Hiding Content */}
-      {/* 
-      <div className={`relative z-30 min-h-[600px] h-[70vh] flex items-start pt-32 sm:pt-40 lg:pt-48 ${mobileFirst.container('xl')}`}>
+      <div className="relative z-30 min-h-[600px] h-[70vh] flex items-start pt-32 sm:pt-40 lg:pt-48 container mx-auto max-w-7xl">
         <div className="w-full max-w-2xl mx-auto lg:mx-0 lg:max-w-4xl px-4 sm:px-6 lg:px-8">
           <div>
             <h1 className="text-white font-heading leading-tight tracking-tight mb-4 sm:mb-6 text-left text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
@@ -218,7 +216,6 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
           </div>
         </div>
       </div>
-      */}
 
       {/* Static Trust Indicators with Glass Effect */}
       <div className="absolute bottom-0 left-0 right-0 z-30">
