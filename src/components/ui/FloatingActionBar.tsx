@@ -76,7 +76,7 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
     setShowWaPopup(false);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://travelogerapi.travloger.in';
-    fetch(`${apiUrl}/api/public/leads`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: waName, phone: waPhone, email: waEmail, numberOfTravelers: waTravelers, travelDates: waDates, customNotes: waNotes, source: 'WhatsApp', destination: pageName, landing_page_slug: page, landing_page: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) }).catch(() => {});
+    fetch(`${apiUrl}/api/public/leads`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: waName, phone: waPhone, email: waEmail, number_of_travelers: waTravelers, travel_dates: waDates, custom_notes: waNotes, source: 'WhatsApp', destination: pageName, landing_page_slug: page, landing_page: page, utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), gclid: params.get('gclid'), fbclid: params.get('fbclid'), session_id: sessionStorage.getItem('travloger_engagement_session') }) }).catch(() => {});
     setWaName(''); setWaPhone(''); setWaEmail(''); setWaTravelers(''); setWaDates(''); setWaNotes('');
   };
 
