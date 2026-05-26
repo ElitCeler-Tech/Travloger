@@ -188,7 +188,7 @@ const Hero = React.memo(({ content, defaultContent }: HeroProps) => {
                     </div>
                     <div className="text-left">
                       <div className="flex items-center gap-1">
-                        {indicator.rating === "4.9" && (
+                        {index === 0 && (
                           <span className="text-yellow-400 text-sm drop-shadow-sm">★</span>
                         )}
                         <span className="text-white font-semibold text-xs md:text-base drop-shadow-sm">
