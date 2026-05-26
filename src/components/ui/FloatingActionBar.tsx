@@ -14,6 +14,9 @@ interface FloatingActionBarProps {
       formBackgroundImageUrlMobile?: string;
       whatsapp?: string;
       expertButtonText?: string;
+      formTitle?: string;
+      formSubtitle?: string;
+      formButtonText?: string;
     };
   };
 }
@@ -302,6 +305,9 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
         onClose={handleCloseEnquireModal}
         backgroundImageUrl={content?.contact?.formBackgroundImageUrl}
         backgroundImageUrlMobile={content?.contact?.formBackgroundImageUrlMobile}
+        formTitle={content?.contact?.formTitle}
+        formSubtitle={content?.contact?.formSubtitle}
+        formButtonText={content?.contact?.formButtonText}
       />
       {showWaPopup && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowWaPopup(false)}>

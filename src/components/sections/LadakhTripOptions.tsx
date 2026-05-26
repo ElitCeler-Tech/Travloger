@@ -49,6 +49,8 @@ interface TripOptionsContent {
   heading?: string;
   highlightText?: string;
   subheading?: string;
+  customLabel?: string;
+  groupLabel?: string;
   customTrips?: TripCard[];
   groupTrips?: TripCard[];
 }
@@ -551,7 +553,7 @@ const LadakhTripOptions = React.memo(({ content }: LadakhTripOptionsProps) => {
                     : "text-gray-700 hover:text-[#134956]"
                 )}
               >
-                Custom Trip
+                {content?.customLabel || 'Custom Trip'}
               </button>
               <button
                 onClick={() => handleTabSwitch('group')}
@@ -563,7 +565,7 @@ const LadakhTripOptions = React.memo(({ content }: LadakhTripOptionsProps) => {
                     : "text-gray-700 hover:text-[#134956]"
                 )}
               >
-                Group Departure
+                {content?.groupLabel || 'Group Departure'}
               </button>
             </div>
           </div>

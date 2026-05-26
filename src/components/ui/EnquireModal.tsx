@@ -14,9 +14,12 @@ interface EnquireModalProps {
   onClose: () => void;
   backgroundImageUrl?: string;
   backgroundImageUrlMobile?: string;
+  formTitle?: string;
+  formSubtitle?: string;
+  formButtonText?: string;
 }
 
-const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroundImageUrl, backgroundImageUrlMobile }) => {
+const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroundImageUrl, backgroundImageUrlMobile, formTitle, formSubtitle, formButtonText }) => {
   const [formData, setFormData] = useState<EnquireFormData>({
     name: '',
     phone: '',
@@ -220,10 +223,10 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroun
               {/* Header */}
               <div className="text-center mb-4">
                 <h2 className="text-xl font-extrabold text-black font-heading ml-3 mb-1 pt-1">
-                  Let&apos;s Make It Happen!
+                  {formTitle || "Let\u0027s Make It Happen!"}
                 </h2>
                 <p className="text-gray-600 font-body text-xs">
-                  We&apos;ll call you with a perfect plan.
+                  {formSubtitle || "We\u0027ll call you with a perfect plan."}
                 </p>
               </div>
 
@@ -359,7 +362,7 @@ const EnquireModal = React.memo<EnquireModalProps>(({ isOpen, onClose, backgroun
                   className="w-full bg-gradient-to-r from-teal-800 to-teal-900 hover:from-teal-800 hover:to-teal-900 text-white font-bold py-2 px-6 rounded-lg text-sm transition-all duration-300 font-cta uppercase tracking-wide mt-auto"
                   size="lg"
                 >
-                  Get My Custom Plan
+                  {formButtonText || "Get My Custom Plan"}
                 </Button>
               </form>
 

@@ -6,6 +6,8 @@ interface HighlightedHeadingProps {
     className?: string;
 }
 
+const highlightClass = "text-[#134956] underline decoration-[#134956] decoration-[3px] underline-offset-4";
+
 export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, highlightText, className }) => {
     if (highlightText) {
         // Exact match
@@ -13,7 +15,7 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, hi
             const parts = text.split(highlightText);
             return (
                 <span className={className}>
-                    {parts[0]}<span className="text-[#134956]">{highlightText}</span>{parts[1] || ''}
+                    {parts[0]}<span className={highlightClass}>{highlightText}</span>{parts[1] || ''}
                 </span>
             );
         }
@@ -24,7 +26,7 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, hi
                 const idx = text.indexOf(words[i]);
                 return (
                     <span className={className}>
-                        {text.slice(0, idx)}<span className="text-[#134956]">{text.slice(idx)}</span>
+                        {text.slice(0, idx)}<span className={highlightClass}>{text.slice(idx)}</span>
                     </span>
                 );
             }
@@ -35,7 +37,7 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, hi
         const parts = text.split('Explore ');
         return (
             <span className={className}>
-                {parts[0]}<span className="text-[#134956]">Explore {parts[1]}</span>
+                {parts[0]}<span className={highlightClass}>Explore {parts[1]}</span>
             </span>
         );
     }
@@ -45,7 +47,7 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, hi
         const lastWord = words.pop();
         return (
             <span className={className}>
-                {words.join(' ')} <span className="text-[#134956]">{lastWord}</span>
+                {words.join(' ')} <span className={highlightClass}>{lastWord}</span>
             </span>
         );
     }
