@@ -6,7 +6,12 @@ interface HighlightedHeadingProps {
     className?: string;
 }
 
-const highlightClass = "text-[#134956] underline decoration-[#134956] decoration-[3px] underline-offset-4";
+const HighlightSpan: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <span className="relative text-[#134956]">
+        {children}
+        <span className="absolute left-0 right-0 bottom-0 h-[6px] bg-[#134956]/20 rounded-full -z-10 translate-y-[-2px] skew-x-[-2deg]" />
+    </span>
+);
 
 export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, highlightText, className }) => {
     if (highlightText) {
@@ -15,7 +20,7 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, hi
             const parts = text.split(highlightText);
             return (
                 <span className={className}>
-                    {parts[0]}<span className={highlightClass}>{highlightText}</span>{parts[1] || ''}
+                    {parts[0]}<HighlightSpan>{highlightText}</HighlightSpan>{parts[1] || ''}
                 </span>
             );
         }
@@ -26,7 +31,7 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, hi
                 const idx = text.indexOf(words[i]);
                 return (
                     <span className={className}>
-                        {text.slice(0, idx)}<span className={highlightClass}>{text.slice(idx)}</span>
+                        {text.slice(0, idx)}<HighlightSpan>{text.slice(idx)}</HighlightSpan>
                     </span>
                 );
             }
@@ -37,7 +42,7 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, hi
         const parts = text.split('Explore ');
         return (
             <span className={className}>
-                {parts[0]}<span className={highlightClass}>Explore {parts[1]}</span>
+                {parts[0]}<HighlightSpan>Explore {parts[1]}</HighlightSpan>
             </span>
         );
     }
@@ -47,7 +52,7 @@ export const HighlightedHeading: React.FC<HighlightedHeadingProps> = ({ text, hi
         const lastWord = words.pop();
         return (
             <span className={className}>
-                {words.join(' ')} <span className={highlightClass}>{lastWord}</span>
+                {words.join(' ')} <HighlightSpan>{lastWord}</HighlightSpan>
             </span>
         );
     }
