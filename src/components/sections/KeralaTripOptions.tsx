@@ -557,7 +557,7 @@ const KeralaTripOptions = React.memo(({ content }: { content?: TripOptionsConten
               ) : (
                 <>
                   How Do You Want To{' '}
-                  <span className="relative text-[#134956]">Explore Kerala<span className="absolute left-0 right-0 bottom-0 h-[6px] bg-[#134956]/20 rounded-full -z-10 translate-y-[-2px] skew-x-[-2deg]" /></span>?
+                  <span className="relative text-[#134956]">Explore Kerala<span className="absolute left-0 right-0 -bottom-1 h-[8px] bg-[#134956]/30 rounded-full skew-x-[-2deg]" /></span>?
                 </>
               )}
             </h2>
