@@ -526,7 +526,7 @@ const MeghalayaTripOptions = React.memo(({ content }: MeghalayaTripOptionsProps)
               ) : (
                 <>
                   How Do You Want To{' '}
-                  <span className="text-[#134956]">Explore Meghalaya</span>?
+                  <span className="relative text-[#134956]">Explore Meghalaya<span className="absolute left-0 right-0 bottom-0 h-[6px] bg-[#134956]/20 rounded-full -z-10 translate-y-[-2px] skew-x-[-2deg]" /></span>?
                 </>
               )}
             </h2>
