@@ -56,7 +56,7 @@ export default async function SingaporePage() {
       <GroupCTA content={content?.groupCta || undefined} />
       <CompanyLogos content={content?.brands || undefined} />
       <SingaporeFAQ content={content?.faq || undefined} />
-      <Footer content={content?.contact ? { socialLinks: { twitter: content.contact.twitterUrl, facebook: content.contact.facebookUrl, instagram: content.contact.instagramUrl, youtube: content.contact.youtubeUrl }, contactPhone: content.contact.phone, contactEmail: content.contact.email, contactAddress: content.contact.address } : undefined} />
+      <Footer content={content?.contact ? { socialLinks: { twitter: content.contact.twitterUrl, facebook: content.contact.facebookUrl, instagram: content.contact.instagramUrl, youtube: content.contact.youtubeUrl }, contactPhone: content.contact.phone, contactEmail: content.contact.email, contactAddress: content.contact.address, footerLocations: content.footerLocations } : undefined} />
       <FloatingActionBar content={content || undefined} />
     </>
   );

@@ -42,6 +42,11 @@ interface FooterContent {
   contactPhone?: string;
   contactEmail?: string;
   contactAddress?: string;
+  footerLocations?: {
+    enabled?: boolean;
+    indian?: { name: string; image: string; enabled: boolean }[];
+    international?: { name: string; image: string; enabled: boolean }[];
+  };
 }
 
 const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cmsContent }) => {
@@ -120,7 +125,7 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
     }
   ];
 
-  const indianTrips = [
+  const defaultIndianTrips = [
     { name: 'HAMPI', imageSrc: '/footerImages/hampi.png', href: '/trips/hampi' },
     { name: 'MANALI', imageSrc: '/footerImages/manali.png', href: '/manali' },
     { name: 'GOA', imageSrc: '/footerImages/goa.png', href: '/trips/goa' },
@@ -130,7 +135,7 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
     { name: 'GUJRAT', imageSrc: '/footerImages/gujrat.png', href: '/trips/gujrat' },
   ];
 
-  const internationalTrips = [
+  const defaultInternationalTrips = [
     { name: 'THAILAND', imageSrc: '/footerImages/thailand.png', href: '/trips/thailand' },
     { name: 'JAPAN', imageSrc: '/footerImages/japan.png', href: '/trips/japan' },
     { name: 'CHINA', imageSrc: '/footerImages/china.png', href: '/trips/china' },
@@ -139,6 +144,14 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
     { name: 'KOREA', imageSrc: '/footerImages/korea.png', href: '/trips/korea' },
     { name: 'VIETNAM', imageSrc: '/footerImages/vietnam.png', href: '/trips/vietnam' },
   ];
+
+  const indianTrips = cmsContent?.footerLocations?.indian
+    ? cmsContent.footerLocations.indian.filter(l => l.enabled).map(l => ({ name: l.name, imageSrc: l.image, href: `/${l.name.toLowerCase()}` }))
+    : defaultIndianTrips;
+
+  const internationalTrips = cmsContent?.footerLocations?.international
+    ? cmsContent.footerLocations.international.filter(l => l.enabled).map(l => ({ name: l.name, imageSrc: l.image, href: `/trips/${l.name.toLowerCase()}` }))
+    : defaultInternationalTrips;
 
   const socialLinks: SocialLink[] = [
     { name: 'Twitter', href: cmsContent?.socialLinks?.twitter || 'https://twitter.com/travloger', icon: twitterIcon },
