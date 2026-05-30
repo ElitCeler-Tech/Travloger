@@ -9,7 +9,7 @@ interface HighlightedHeadingProps {
 const HighlightSpan: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <span className="relative text-[#134956]">
         {children}
-        <span className="absolute left-0 right-0 -bottom-1 h-[10px] w-full" style={{ backgroundImage: 'url(/brush-underline.svg)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat' }} />
+        <span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={{ backgroundImage: 'url(/brush-underline.svg)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat' }} />
     </span>
 );
 

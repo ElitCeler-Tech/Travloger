@@ -273,7 +273,7 @@ const HighlightedHeading = ({ text, highlightText }: { text: string; highlightTe
     const parts = text.split(highlightText);
     return (
       <>
-        {parts[0]}<span className="relative text-[#134956]">{highlightText}<span className="absolute left-0 right-0 -bottom-1 h-[10px] w-full" style={{backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"}} /></span>{parts[1] || ''}
+        {parts[0]}<span className="relative text-[#134956]">{highlightText}<span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={{backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"}} /></span>{parts[1] || ''}
       </>
     );
   }
@@ -283,7 +283,7 @@ const HighlightedHeading = ({ text, highlightText }: { text: string; highlightTe
     const parts = text.split('Explore ');
     return (
       <>
-        {parts[0]}<span className="relative text-[#134956]">Explore {parts[1]}<span className="absolute left-0 right-0 -bottom-1 h-[10px] w-full" style={{backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"}} /></span>
+        {parts[0]}<span className="relative text-[#134956]">Explore {parts[1]}<span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={{backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"}} /></span>
       </>
     );
   }
@@ -294,7 +294,7 @@ const HighlightedHeading = ({ text, highlightText }: { text: string; highlightTe
     const lastWord = words.pop();
     return (
       <>
-        {words.join(' ')} <span className="relative text-[#134956]">{lastWord}<span className="absolute left-0 right-0 -bottom-1 h-[10px] w-full" style={{backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"}} /></span>
+        {words.join(' ')} <span className="relative text-[#134956]">{lastWord}<span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={{backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"}} /></span>
       </>
     );
   }
