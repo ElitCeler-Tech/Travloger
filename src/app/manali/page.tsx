@@ -58,7 +58,7 @@ export default async function ManaliPage() {
       <GroupCTA content={content?.groupCta || undefined} />
       <CompanyLogos content={content?.brands || undefined} />
       <ManaliFAQ content={content?.faq || undefined} />
-      <Footer content={content?.contact ? { socialLinks: { twitter: content.contact.twitterUrl, facebook: content.contact.facebookUrl, instagram: content.contact.instagramUrl, youtube: content.contact.youtubeUrl }, contactPhone: content.contact.phone, contactEmail: content.contact.email, contactAddress: content.contact.address, footerLocations: content.footerLocations } : undefined} />
+      <Footer content={content?.contact ? { socialLinks: { twitter: content.contact.twitterUrl, facebook: content.contact.facebookUrl, instagram: content.contact.instagramUrl, youtube: content.contact.youtubeUrl }, contactPhone: content.contact.phone, contactEmail: content.contact.email, contactAddress: content.contact.address, footerLocations: content.contact.footerLocations } : undefined} />
       <FloatingActionBar content={content || undefined} />
     </>
   );
