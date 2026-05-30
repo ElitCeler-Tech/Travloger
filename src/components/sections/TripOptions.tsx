@@ -294,7 +294,7 @@ const HighlightedHeading = ({ text, highlightText }: { text: string; highlightTe
       const after = text.slice(origEnd);
       return (
         <>
-          {before}<span className="relative text-[#134956]">{highlighted}<span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={brushStyle} /></span>{after}
+          {before}<span className="relative text-[#134956]">{highlighted}<span className="absolute left-0 right-0 -bottom-2 h-[18px] w-full" style={brushStyle} /></span>{after}
         </>
       );
     }
@@ -305,7 +305,7 @@ const HighlightedHeading = ({ text, highlightText }: { text: string; highlightTe
     const parts = text.split('Explore ');
     return (
       <>
-        {parts[0]}<span className="relative text-[#134956]">Explore {parts[1]}<span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={brushStyle} /></span>
+        {parts[0]}<span className="relative text-[#134956]">Explore {parts[1]}<span className="absolute left-0 right-0 -bottom-2 h-[18px] w-full" style={brushStyle} /></span>
       </>
     );
   }
