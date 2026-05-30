@@ -557,7 +557,7 @@ const ManaliTripOptions = React.memo(({ content }: { content?: TripOptionsConten
               ) : (
                 <>
                   How Do You Want To{' '}
-                  <span className="relative text-[#134956]">Explore Manali<span className="absolute left-0 right-0 -bottom-1 h-[8px] bg-[#134956]/30 rounded-full skew-x-[-2deg]" /></span>?
+                  <span className="relative text-[#134956]">Explore Manali<span className="absolute left-0 right-0 -bottom-1 h-[10px] w-full" style={{backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"}} /></span>?
                 </>
               )}
             </h2>
