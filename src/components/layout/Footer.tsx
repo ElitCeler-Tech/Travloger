@@ -13,6 +13,7 @@ import logoImg from '../../../public/logo.png';
 import twitterIcon from '../../../public/footerIcons/1.svg';
 import facebookIcon from '../../../public/footerIcons/2.svg';
 import instagramIcon from '../../../public/footerIcons/3.svg';
+import youtubeIcon from '../../../public/footerIcons/5.svg';
 
 // Import contact icons
 import phoneIcon from '../../../public/footerIcons/Light/Icons.svg';
@@ -37,7 +38,7 @@ interface SocialLink {
 }
 
 interface FooterContent {
-  socialLinks?: { twitter?: string; facebook?: string; instagram?: string };
+  socialLinks?: { twitter?: string; facebook?: string; instagram?: string; youtube?: string };
   contactPhone?: string;
   contactEmail?: string;
   contactAddress?: string;
@@ -143,6 +144,7 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
     { name: 'Twitter', href: cmsContent?.socialLinks?.twitter || 'https://twitter.com/travloger', icon: twitterIcon },
     { name: 'Facebook', href: cmsContent?.socialLinks?.facebook || 'https://facebook.com/travloger', icon: facebookIcon },
     { name: 'Instagram', href: cmsContent?.socialLinks?.instagram || 'https://instagram.com/travloger', icon: instagramIcon },
+    ...(cmsContent?.socialLinks?.youtube ? [{ name: 'YouTube', href: cmsContent.socialLinks.youtube, icon: youtubeIcon }] : []),
   ];
 
   const bottomLinks = [
