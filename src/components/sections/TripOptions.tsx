@@ -273,7 +273,7 @@ const HighlightedHeading = ({ text, highlightText }: { text: string; highlightTe
     const parts = text.split(highlightText);
     return (
       <>
-        {parts[0]}<span className="text-[#134956]">{highlightText}</span>{parts[1] || ''}
+        {parts[0]}<span className="relative text-[#134956]">{highlightText}<span className="absolute left-0 right-0 bottom-0 h-[6px] bg-[#134956]/20 rounded-full -z-10 translate-y-[-2px] skew-x-[-2deg]" /></span>{parts[1] || ''}
       </>
     );
   }
@@ -283,7 +283,7 @@ const HighlightedHeading = ({ text, highlightText }: { text: string; highlightTe
     const parts = text.split('Explore ');
     return (
       <>
-        {parts[0]}Explore <span className="text-[#134956]">{parts[1]}</span>
+        {parts[0]}<span className="relative text-[#134956]">Explore {parts[1]}<span className="absolute left-0 right-0 bottom-0 h-[6px] bg-[#134956]/20 rounded-full -z-10 translate-y-[-2px] skew-x-[-2deg]" /></span>
       </>
     );
   }
@@ -294,7 +294,7 @@ const HighlightedHeading = ({ text, highlightText }: { text: string; highlightTe
     const lastWord = words.pop();
     return (
       <>
-        {words.join(' ')} <span className="text-[#134956]">{lastWord}</span>
+        {words.join(' ')} <span className="relative text-[#134956]">{lastWord}<span className="absolute left-0 right-0 bottom-0 h-[6px] bg-[#134956]/20 rounded-full -z-10 translate-y-[-2px] skew-x-[-2deg]" /></span>
       </>
     );
   }
