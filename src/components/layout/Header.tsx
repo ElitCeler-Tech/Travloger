@@ -59,11 +59,7 @@ const Header = React.memo(({ content }: { content?: HeaderContent | null }) => {
   const handleEnquireClick = () => {
     trackEvent('cta_click', { cta_position: 'header' });
     setIsMobileMenuOpen(false);
-    // Scroll to contact section
-    const contactSection = document.querySelector('#contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    window.dispatchEvent(new Event('openEnquireModal'));
   };
 
   const toggleMobileMenu = () => {

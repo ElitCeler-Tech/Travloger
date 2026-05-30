@@ -27,6 +27,13 @@ const FloatingActionBar = React.memo(({ content }: FloatingActionBarProps) => {
   const { scrollY } = useScrollPosition();
   const prefersReducedMotion = useReducedMotion();
 
+  // Listen for header CTA event
+  useEffect(() => {
+    const handler = () => setIsEnquireModalOpen(true);
+    window.addEventListener('openEnquireModal', handler);
+    return () => window.removeEventListener('openEnquireModal', handler);
+  }, []);
+
 
   // Show/hide based on scroll position
   useEffect(() => {
