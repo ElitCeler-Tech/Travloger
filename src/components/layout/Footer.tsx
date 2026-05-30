@@ -146,11 +146,11 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
   ];
 
   const indianTrips = cmsContent?.footerLocations?.indian
-    ? cmsContent.footerLocations.indian.filter(l => l.enabled).map(l => ({ name: l.name, imageSrc: l.image, href: `/${l.name.toLowerCase()}` }))
+    ? cmsContent.footerLocations.indian.filter(l => l.enabled).map(l => ({ name: l.name, imageSrc: l.image, href: `/${l.name.toLowerCase().replace(/\s+/g, '-')}` }))
     : defaultIndianTrips;
 
   const internationalTrips = cmsContent?.footerLocations?.international
-    ? cmsContent.footerLocations.international.filter(l => l.enabled).map(l => ({ name: l.name, imageSrc: l.image, href: `/trips/${l.name.toLowerCase()}` }))
+    ? cmsContent.footerLocations.international.filter(l => l.enabled).map(l => ({ name: l.name, imageSrc: l.image, href: `/${l.name.toLowerCase().replace(/\s+/g, '-')}` }))
     : defaultInternationalTrips;
 
   const socialLinks: SocialLink[] = [
@@ -213,6 +213,7 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
       <div className="container mx-auto px-4 py-8 md:py-12">
         
         {/* Trip Destinations Section */}
+        {cmsContent?.footerLocations?.enabled !== false && (
         <div className="space-y-8 mb-12">
           <div className="space-y-4">
             <h3 className="text-[13px] font-medium text-white uppercase tracking-[1px] leading-[18px] font-subheading">Indian Trips</h3>
@@ -228,6 +229,7 @@ const Footer: React.FC<{ content?: FooterContent }> = React.memo(({ content: cms
             </div>
           </div>
         </div>
+        )}
 
         {/* Bottom Section - Branding, About, Collab, Contact, Specials, Creators, Gift */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-6">
