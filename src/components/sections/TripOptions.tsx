@@ -268,33 +268,44 @@ const TripCard = ({ trip, setSelectedTrip, setIsModalOpen }: {
 
 // Helper component to highlight the destination name in the heading
 const HighlightedHeading = ({ text, highlightText }: { text: string; highlightText?: string }) => {
-  // If CMS provides specific text to highlight
-  if (highlightText && text.includes(highlightText)) {
-    const parts = text.split(highlightText);
-    return (
-      <>
-        {parts[0]}<span className="relative text-[#134956]">{highlightText}<span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={{backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"}} /></span>{parts[1] || ''}
-      </>
-    );
+  const brushStyle = {backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"} as React.CSSProperties;
+
+  if (highlightText) {
+    const clean = (s: string) => s.replace(/[?!.,]/g, '').trim();
+    const cleanHL = clean(highlightText);
+
+    // Find the highlight words in the heading (ignoring punctuation)
+    const idx = clean(text).indexOf(cleanHL);
+    if (idx !== -1) {
+      // Map index back to original text (account for same char positions)
+      let origStart = 0, count = 0;
+      for (let i = 0; i < text.length && count < idx; i++) {
+        if (!/[?!.,]/.test(text[i])) count++;
+        origStart = i + 1;
+      }
+      // Find end position
+      let origEnd = origStart, matched = 0;
+      for (let i = origStart; i < text.length && matched < cleanHL.length; i++) {
+        if (!/[?!.,]/.test(text[i])) matched++;
+        origEnd = i + 1;
+      }
+      const before = text.slice(0, origStart);
+      const highlighted = text.slice(origStart, origEnd);
+      const after = text.slice(origEnd);
+      return (
+        <>
+          {before}<span className="relative text-[#134956]">{highlighted}<span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={brushStyle} /></span>{after}
+        </>
+      );
+    }
   }
 
-  // If the text contains "Explore", highlight everything after it
+  // Fallback: highlight "Explore ..." portion
   if (text.includes('Explore ')) {
     const parts = text.split('Explore ');
     return (
       <>
-        {parts[0]}<span className="relative text-[#134956]">Explore {parts[1]}<span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={{backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"}} /></span>
-      </>
-    );
-  }
-
-  // Basic fallback: highlight the last word if it looks like a destination heading
-  const words = text.split(' ');
-  if (words.length > 3) {
-    const lastWord = words.pop();
-    return (
-      <>
-        {words.join(' ')} <span className="relative text-[#134956]">{lastWord}<span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={{backgroundImage: "url(/brush-underline.svg)", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat"}} /></span>
+        {parts[0]}<span className="relative text-[#134956]">Explore {parts[1]}<span className="absolute left-0 right-0 -bottom-2 h-[14px] w-full" style={brushStyle} /></span>
       </>
     );
   }
